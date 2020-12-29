@@ -1,17 +1,17 @@
 package tests
 
 import (
-	"testing"
-	"net/http"
 	"bytes"
-	"io/ioutil"
 	"encoding/json"
-	common "nebula-http-gateway/utils"
+	"io/ioutil"
 	"log"
+	common "nebula-http-gateway/utils"
+	"net/http"
+	"testing"
 )
 
 type Response struct {
-	Code    int     `json:"code"`
+	Code    int        `json:"code"`
 	Data    common.Any `json:"data"`
 	Message string     `json:"message"`
 }
@@ -23,14 +23,14 @@ func Test_DB_Connect(t *testing.T) {
 		requestMethod string
 		requestBody   []byte
 	}{
-		{	
+		{
 			"http://127.0.0.1:8080/api/db/connect",
 			"POST",
 			[]byte(`{"username": "user",
 					"password": "password",
 					"host": "127.0.0.1:3699"}`),
 		},
-		{	
+		{
 			"http://127.0.0.1:8080/api/db/connect",
 			"POST",
 			[]byte(`{"username": "user1",
@@ -45,32 +45,31 @@ func Test_DB_Connect(t *testing.T) {
 
 		client := &http.Client{}
 		resp, err := client.Do(req)
-		
-    if err != nil {
-        t.Fail()
-    }
+
+		if err != nil {
+			t.Fail()
+		}
 
 		defer req.Body.Close()
 		body, _ := ioutil.ReadAll(resp.Body)
-		 
+
 		json.Unmarshal([]byte(body), &Response)
-		
+
 		if Response.Code != -1 && Response.Code != 0 {
 			t.Fail()
 		}
 	}
 }
 
-
 func Test_DB_Execute(t *testing.T) {
 	/*
-	*/
+	 */
 	cases := []struct {
 		path          string
 		requestMethod string
 		requestBody   []byte
 	}{
-		{	
+		{
 			"http://127.0.0.1:8080/api/db/exec",
 			"POST",
 			[]byte(`{"username" : "user",
@@ -81,18 +80,18 @@ func Test_DB_Execute(t *testing.T) {
 	}
 	for _, tc := range cases {
 		var Response Response
-		req, err := http.NewRequest(tc.requestMethod,tc.path, bytes.NewBuffer(tc.requestBody))
+		req, err := http.NewRequest(tc.requestMethod, tc.path, bytes.NewBuffer(tc.requestBody))
 		req.Header.Set("Content-Type", "application/json")
-		
+
 		client := &http.Client{}
 		resp, err := client.Do(req)
 
-    if err != nil {
-        log.Fatal(err)
+		if err != nil {
+			log.Fatal(err)
 		}
-		
+
 		defer resp.Body.Close()
-		
+
 		body, _ := ioutil.ReadAll(resp.Body)
 
 		json.Unmarshal([]byte(body), &Response)
