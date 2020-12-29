@@ -30,4 +30,4 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: vesoft/nebula-http-client-v2:latest
+        tags: vesoft/nebula-http-gateway-v2:latest
