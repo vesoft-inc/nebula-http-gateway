@@ -75,10 +75,10 @@ func getVertexInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (ma
 	}
 	id := node.GetID()
 	data["vid"] = id
-	tags := node.GetTags()
-	data["tags"] = tags
+	tags := make([]string, 0)
 	properties := make(map[string]map[string]common.Any)
-	for _, tagName := range tags {
+	for _, tagName := range node.GetTags() {
+		tags = append(tags, tagName)
 		props, err := node.Properties(tagName)
 		if err != nil {
 			return nil, err
@@ -93,6 +93,7 @@ func getVertexInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (ma
 		}
 		properties[tagName] = _props
 	}
+	data["tags"] = tags
 	data["properties"] = properties
 	return data, nil
 }
