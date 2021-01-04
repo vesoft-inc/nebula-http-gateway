@@ -22,11 +22,10 @@ type Request struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Address  string `json:"address"`
-	Port     int    `json:"port"`
 }
 
 type ExecuteRequest struct {
-	SessionID int64  `json:"sessionID"`
+	SessionID string  `json:"sessionID"`
 	Gql       string `json:"gql"`
 }
 
@@ -36,16 +35,30 @@ func (this *DatabaseController) Connect() {
 	var res Response
 	var params Request
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
-	nsid, err := dao.Connect(params.Address, params.Port, params.Username, params.Password)
+	port := 9669
+
+	nsid, err := dao.Connect(params.Address, port, params.Username, params.Password)
 	if err == nil {
 		res.Code = 0
+		m := make(map[string]common.Any)
+		m["nsid"] = nsid
+		res.Data = nsid
+		this.Ctx.SetCookie("Secure","true")  
+		this.Ctx.SetCookie("SameSite","None")
 		this.SetSession("nsid", nsid)
+		
 		res.Message = "Login successfully"
 	} else {
 		res.Code = -1
 		res.Message = err.Error()
 	}
 	this.Data["json"] = &res
+	this.ServeJSON()
+}
+
+func (this *DatabaseController) Home(){
+	var res Response
+	res.Code = 0
 	this.ServeJSON()
 }
 
