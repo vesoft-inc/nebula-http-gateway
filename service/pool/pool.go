@@ -6,7 +6,7 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	nebula "github.com/vesoft-inc/nebula-clients/go"
+	nebula "github.com/vesoft-inc/nebula-go"
 )
 
 type Account struct {

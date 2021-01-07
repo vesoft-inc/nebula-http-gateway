@@ -6,8 +6,8 @@ import (
 	pool "nebula-http-gateway/service/pool"
 	common "nebula-http-gateway/utils"
 
-	nebula "github.com/vesoft-inc/nebula-clients/go"
-	nebulaType "github.com/vesoft-inc/nebula-clients/go/nebula"
+	nebula "github.com/vesoft-inc/nebula-go"
+	nebulaType "github.com/vesoft-inc/nebula-go/nebula"
 )
 
 type ExecuteResult struct {
@@ -74,7 +74,15 @@ func getVertexInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (ma
 		return nil, err
 	}
 	id := node.GetID()
-	data["vid"] = id
+	idType := id.GetType()
+	log.Println("type", idType)
+	var vid common.Any
+	if idType == "string" {
+		vid, _ = id.AsString()
+	} else if idType == "int" {
+		vid, _ = id.AsInt()
+	}
+	data["vid"] = vid
 	tags := make([]string, 0)
 	properties := make(map[string]map[string]common.Any)
 	for _, tagName := range node.GetTags() {
@@ -267,14 +275,8 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 		return result, errors.New(string(resp.GetErrorMsg()))
 	}
 	if !resp.IsEmpty() {
-		rowSize, rowErr := resp.GetRowSize()
-		colSize, colErr := resp.GetColSize()
-		if rowErr != nil {
-			return result, err
-		}
-		if colErr != nil {
-			return result, err
-		}
+		rowSize := resp.GetRowSize()
+		colSize := resp.GetColSize()
 		colNames := resp.GetColNames()
 		result.Headers = colNames
 		for i := 0; i < rowSize; i++ {
