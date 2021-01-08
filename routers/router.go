@@ -8,6 +8,6 @@ import (
 
 func init() {
 	beego.Router("/", &controllers.DatabaseController{}, "*:Home")
-	beego.Router("/api/connect", &controllers.DatabaseController{}, "POST:Connect")
-	beego.Router("/api/exec", &controllers.DatabaseController{}, "POST:Execute")
+	beego.Router("/api/nebula/connect", &controllers.DatabaseController{}, "POST:Connect")
+	beego.Router("/api/nebula/exec", &controllers.DatabaseController{}, "POST:Execute")
 }
