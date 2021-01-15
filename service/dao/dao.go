@@ -64,6 +64,8 @@ func getBasicValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
 		return valWarp.AsTime()
 	} else if valType == "datetime" {
 		return valWarp.AsDateTime()
+	} else if valType == "empty" {
+		return "_EMPTY_", nil
 	}
 	return "", nil
 }
