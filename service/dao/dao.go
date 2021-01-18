@@ -16,6 +16,17 @@ type ExecuteResult struct {
 	TimeCost int32                   `json:"timeCost"`
 }
 
+func getID(idWarp nebula.ValueWrapper) common.Any {
+	idType := idWarp.GetType()
+	var vid common.Any
+	if idType == "string" {
+		vid, _ = idWarp.AsString()
+	} else if idType == "int" {
+		vid, _ = idWarp.AsInt()
+	}
+	return vid
+}
+
 func getValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
 	var valType = valWarp.GetType()
 	if valType == "vertex" {
@@ -76,15 +87,7 @@ func getVertexInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (ma
 		return nil, err
 	}
 	id := node.GetID()
-	idType := id.GetType()
-	log.Println("type", idType)
-	var vid common.Any
-	if idType == "string" {
-		vid, _ = id.AsString()
-	} else if idType == "int" {
-		vid, _ = id.AsInt()
-	}
-	data["vid"] = vid
+	data["vid"] = getID(id)
 	tags := make([]string, 0)
 	properties := make(map[string]map[string]common.Any)
 	for _, tagName := range node.GetTags() {
@@ -114,9 +117,9 @@ func getEdgeInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (map[
 		return nil, err
 	}
 	srcID := relationship.GetSrcVertexID()
-	data["srcID"] = srcID
+	data["srcID"] = getID(srcID)
 	dstID := relationship.GetDstVertexID()
-	data["dstID"] = dstID
+	data["dstID"] = getID(dstID)
 	edgeName := relationship.GetEdgeName()
 	data["edgeName"] = edgeName
 	rank := relationship.GetRanking()
@@ -144,9 +147,9 @@ func getPathInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (map[
 	for _, relation := range relationships {
 		_relation := make(map[string]common.Any)
 		srcID := relation.GetSrcVertexID()
-		_relation["srcID"] = srcID
+		_relation["srcID"] = getID(srcID)
 		dstID := relation.GetDstVertexID()
-		_relation["dstID"] = dstID
+		_relation["dstID"] = getID(dstID)
 		edgeName := relation.GetEdgeName()
 		_relation["edgeName"] = edgeName
 		rank := relation.GetRanking()
