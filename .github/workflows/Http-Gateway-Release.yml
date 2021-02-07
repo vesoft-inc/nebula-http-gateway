@@ -1,8 +1,8 @@
-name: Http-Gateway-Release
+name: Http-Gateway-Release-v1
 on:
   push:
     branches:
-      - master-v1
+      - v1
 jobs:
   release-image:
     runs-on: ubuntu-latest
