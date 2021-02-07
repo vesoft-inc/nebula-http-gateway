@@ -1,3 +1,3 @@
 package common
 
-type Any interface {}
+type Any interface{}
