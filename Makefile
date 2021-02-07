@@ -1,4 +1,3 @@
-
 .PHONY: build clean fmt
 
 default: build
