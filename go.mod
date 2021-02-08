@@ -8,7 +8,6 @@ require (
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/prometheus/client_golang v1.9.0 // indirect
-	github.com/prometheus/common v0.15.0 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18 // indirect
 	github.com/vesoft-inc/nebula-go v1.1.1-0.20210107025320-8998c3593a59
