@@ -26,7 +26,6 @@ type Request struct {
 }
 
 type ExecuteRequest struct {
-	SessionID string  `json:"sessionID"`
 	Gql       string `json:"gql"`
 }
 
