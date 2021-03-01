@@ -275,6 +275,34 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 		return result, response.Error
 	}
 	resp := response.Result
+	if resp.IsSetPlanDesc() {
+		format := string(resp.GetPlanDesc().GetFormat())
+		var rowValue = make(map[string]common.Any)
+		if format == "row" {
+			result.Headers = []string{"id", "name", "dependencies", "profiling data", "operator info"}
+			rows := resp.MakePlanByRow()
+			for i := 0; i < len(rows); i++ {
+				rowValue["id"] = rows[i][0]
+				rowValue["name"] = rows[i][1]
+				rowValue["dependencies"] = rows[i][2]
+				rowValue["profiling data"] = rows[i][3]
+				rowValue["operator info"] = rows[i][4]
+				result.Tables = append(result.Tables, rowValue)
+			}
+			return result, err
+		} else if format == "dot" {
+			result.Headers = append(result.Headers, "format")
+			rowValue["format"] = resp.MakeDotGraph()
+			result.Tables = append(result.Tables, rowValue)
+			return result, err
+		} else if format == "dot:struct" {
+			result.Headers = append(result.Headers, "format")
+			rowValue["format"] = resp.MakeDotGraphByStruct()
+			result.Tables = append(result.Tables, rowValue)
+			return result, err
+		}
+	}
+
 	if !resp.IsSucceed() {
 		log.Printf("ErrorCode: %v, ErrorMsg: %s", resp.GetErrorCode(), resp.GetErrorMsg())
 		return result, errors.New(string(resp.GetErrorMsg()))
