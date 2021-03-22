@@ -10,7 +10,8 @@ require (
 	github.com/prometheus/client_golang v1.9.0 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18 // indirect
-	github.com/vesoft-inc/nebula-go v1.1.1-0.20210225023903-c2ed782a5d6c
+	github.com/stretchr/testify v1.7.0 // indirect
+	github.com/vesoft-inc/nebula-go v0.0.0-20210322063004-e37085b865d6
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
 	golang.org/x/sys v0.0.0-20210105210732-16f7687f5001 // indirect
@@ -19,5 +20,5 @@ require (
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210106172901-c476de37821d // indirect
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
