@@ -70,11 +70,11 @@ func getBasicValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
 	} else if valType == "string" {
 		return valWarp.AsString()
 	} else if valType == "date" {
-		return valWarp.AsDate()
+		return valWarp.String(), nil
 	} else if valType == "time" {
-		return valWarp.AsTime()
+		return valWarp.String(), nil
 	} else if valType == "datetime" {
-		return valWarp.AsDateTime()
+		return valWarp.String(), nil
 	} else if valType == "empty" {
 		return "_EMPTY_", nil
 	}
