@@ -2,12 +2,16 @@ package pool
 
 import (
 	"errors"
+	"strings"
 	"sync"
 	"time"
 
+	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	uuid "github.com/satori/go.uuid"
 	nebula "github.com/vesoft-inc/nebula-go"
 )
+
+var ConnectionClosedError = errors.New("an existing connection was forcibly closed, please login again")
 
 type Account struct {
 	username string
@@ -82,6 +86,20 @@ func NewConnection(address string, port int, username string, password string) (
 				select {
 				case request := <-connection.RequestChannel:
 					response, err := connection.session.Execute(request.Gql)
+					if protoErr, ok := err.(thrift.ProtocolException); ok && protoErr != nil &&
+						protoErr.TypeID() == thrift.UNKNOWN_PROTOCOL_EXCEPTION {
+						if strings.Contains(protoErr.Error(), "wsasend") ||
+							strings.Contains(protoErr.Error(), "wsarecv") ||
+							strings.Contains(protoErr.Error(), "write: broken pipe") {
+							err = ConnectionClosedError
+						}
+					}
+					if transErr, ok := err.(thrift.TransportException); ok && transErr != nil &&
+						transErr.TypeID() == thrift.UNKNOWN_TRANSPORT_EXCEPTION {
+						if strings.Contains(transErr.Error(), "read: no route to host") {
+							err = ConnectionClosedError
+						}
+					}
 					request.ResponseChannel <- ChannelResponse{
 						Result: response,
 						Error:  err,
