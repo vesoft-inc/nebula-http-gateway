@@ -90,14 +90,16 @@ func NewConnection(address string, port int, username string, password string) (
 						protoErr.TypeID() == thrift.UNKNOWN_PROTOCOL_EXCEPTION {
 						if strings.Contains(protoErr.Error(), "wsasend") ||
 							strings.Contains(protoErr.Error(), "wsarecv") ||
-							strings.Contains(protoErr.Error(), "write: broken pipe") {
+							strings.Contains(protoErr.Error(), "write:") {
 							err = ConnectionClosedError
 						}
 					}
-					if transErr, ok := err.(thrift.TransportException); ok && transErr != nil &&
-						transErr.TypeID() == thrift.UNKNOWN_TRANSPORT_EXCEPTION {
-						if strings.Contains(transErr.Error(), "read: no route to host") {
-							err = ConnectionClosedError
+					if transErr, ok := err.(thrift.TransportException); ok && transErr != nil {
+						if transErr.TypeID() == thrift.UNKNOWN_TRANSPORT_EXCEPTION ||
+							transErr.TypeID() == thrift.TIMED_OUT {
+							if strings.Contains(transErr.Error(), "read:") {
+								err = ConnectionClosedError
+							}
 						}
 					}
 					request.ResponseChannel <- ChannelResponse{
