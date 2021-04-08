@@ -9,9 +9,13 @@ import (
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	uuid "github.com/satori/go.uuid"
 	nebula "github.com/vesoft-inc/nebula-go"
+	common "nebula-http-gateway/utils"
 )
 
-var ConnectionClosedError = errors.New("an existing connection was forcibly closed, please login again")
+var (
+	ConnectionClosedError = errors.New("an existing connection was forcibly closed, please check your network")
+	SessionLostError      = errors.New("the connection session was lost, please connect again")
+)
 
 type Account struct {
 	username string
@@ -85,27 +89,38 @@ func NewConnection(address string, port int, username string, password string) (
 			for {
 				select {
 				case request := <-connection.RequestChannel:
-					response, err := connection.session.Execute(request.Gql)
-					if protoErr, ok := err.(thrift.ProtocolException); ok && protoErr != nil &&
-						protoErr.TypeID() == thrift.UNKNOWN_PROTOCOL_EXCEPTION {
-						if strings.Contains(protoErr.Error(), "wsasend") ||
-							strings.Contains(protoErr.Error(), "wsarecv") ||
-							strings.Contains(protoErr.Error(), "write:") {
-							err = ConnectionClosedError
-						}
-					}
-					if transErr, ok := err.(thrift.TransportException); ok && transErr != nil {
-						if transErr.TypeID() == thrift.UNKNOWN_TRANSPORT_EXCEPTION ||
-							transErr.TypeID() == thrift.TIMED_OUT {
-							if strings.Contains(transErr.Error(), "read:") {
+					func(gql string) {
+						defer func() {
+							if err := recover(); err != nil {
+								common.LogPanic(err)
+								request.ResponseChannel <- ChannelResponse{
+									Result: nil,
+									Error:  SessionLostError,
+								}
+							}
+						}()
+						response, err := connection.session.Execute(gql)
+						if protoErr, ok := err.(thrift.ProtocolException); ok && protoErr != nil &&
+							protoErr.TypeID() == thrift.UNKNOWN_PROTOCOL_EXCEPTION {
+							if strings.Contains(protoErr.Error(), "wsasend") ||
+								strings.Contains(protoErr.Error(), "wsarecv") ||
+								strings.Contains(protoErr.Error(), "write:") {
 								err = ConnectionClosedError
 							}
 						}
-					}
-					request.ResponseChannel <- ChannelResponse{
-						Result: response,
-						Error:  err,
-					}
+						if transErr, ok := err.(thrift.TransportException); ok && transErr != nil {
+							if transErr.TypeID() == thrift.UNKNOWN_TRANSPORT_EXCEPTION ||
+								transErr.TypeID() == thrift.TIMED_OUT {
+								if strings.Contains(transErr.Error(), "read:") {
+									err = ConnectionClosedError
+								}
+							}
+						}
+						request.ResponseChannel <- ChannelResponse{
+							Result: response,
+							Error:  err,
+						}
+					}(request.Gql)
 				case <-connection.CloseChannel:
 					connection.session.Release()
 					connectLock.Lock()
@@ -128,7 +143,6 @@ func Disconnect(nsid string) {
 		connection.session.Release()
 		delete(connectionPool, nsid)
 	}
-	return
 }
 
 func GetConnection(nsid string) (connection *Connection, err error) {
