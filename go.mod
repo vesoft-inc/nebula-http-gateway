@@ -5,6 +5,7 @@ go 1.13
 require (
 	github.com/astaxie/beego v1.12.3
 	github.com/elazarl/go-bindata-assetfs v1.0.1 // indirect
+	github.com/facebook/fbthrift v0.0.0-20190922225929-2f9839604e25 // indirect
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/prometheus/client_golang v1.9.0 // indirect

@@ -3,11 +3,11 @@ package dao
 import (
 	"errors"
 	"log"
-	pool "nebula-http-gateway/service/pool"
-	common "nebula-http-gateway/utils"
 
 	nebula "github.com/vesoft-inc/nebula-go"
 	nebulaType "github.com/vesoft-inc/nebula-go/nebula"
+	"nebula-http-gateway/service/pool"
+	common "nebula-http-gateway/utils"
 )
 
 type ExecuteResult struct {
@@ -252,7 +252,6 @@ func Connect(address string, port int, username string, password string) (nsid s
 
 func Disconnect(nsid string) {
 	pool.Disconnect(nsid)
-	return
 }
 
 func Execute(nsid string, gql string) (result ExecuteResult, err error) {
