@@ -17,6 +17,8 @@ type ExecuteResult struct {
 	TimeCost int32                   `json:"timeCost"`
 }
 
+type list []common.Any
+
 func getID(idWarp nebula.ValueWrapper) common.Any {
 	idType := idWarp.GetType()
 	var vid common.Any
@@ -161,7 +163,7 @@ func getPathInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (map[
 	return data, nil
 }
 
-func getListInfo(valWarp *nebula.ValueWrapper, listType string, _verticesParsedList []common.Any, _edgesParsedList []common.Any, _pathsParsedList []common.Any) ([]common.Any, []common.Any, []common.Any, error) {
+func getListInfo(valWarp *nebula.ValueWrapper, listType string, _verticesParsedList *list, _edgesParsedList *list, _pathsParsedList *list) error {
 	var valueList []nebula.ValueWrapper
 	var err error
 	if listType == "list" {
@@ -170,7 +172,7 @@ func getListInfo(valWarp *nebula.ValueWrapper, listType string, _verticesParsedL
 		valueList, err = valWarp.AsDedupList()
 	}
 	if err != nil {
-		return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+		return err
 	}
 	for _, v := range valueList {
 		var props = make(map[string]common.Any)
@@ -179,50 +181,50 @@ func getListInfo(valWarp *nebula.ValueWrapper, listType string, _verticesParsedL
 		if vType == "vertex" {
 			props, err = getVertexInfo(&v, props)
 			if err == nil {
-				_verticesParsedList = append(_verticesParsedList, props)
+				*_verticesParsedList = append(*_verticesParsedList, props)
 			} else {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else if vType == "edge" {
 			props, err = getEdgeInfo(&v, props)
 			if err == nil {
-				_edgesParsedList = append(_edgesParsedList, props)
+				*_edgesParsedList = append(*_edgesParsedList, props)
 			} else {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else if vType == "path" {
 			props, err = getPathInfo(&v, props)
 			if err == nil {
-				_pathsParsedList = append(_pathsParsedList, props)
+				*_pathsParsedList = append(*_pathsParsedList, props)
 			} else {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else if vType == "list" {
-			_verticesParsedList, _edgesParsedList, _pathsParsedList, err = getListInfo(&v, "list", _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			err = getListInfo(&v, "list", _verticesParsedList, _edgesParsedList, _pathsParsedList)
 			if err != nil {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else if vType == "map" {
-			_verticesParsedList, _edgesParsedList, _pathsParsedList, err = getMapInfo(&v, _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			err = getMapInfo(&v, _verticesParsedList, _edgesParsedList, _pathsParsedList)
 			if err != nil {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else if vType == "set" {
-			_verticesParsedList, _edgesParsedList, _pathsParsedList, err = getListInfo(&v, "set", _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			err = getListInfo(&v, "set", _verticesParsedList, _edgesParsedList, _pathsParsedList)
 			if err != nil {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else {
 			// no need to parse basic value now
 		}
 	}
-	return _verticesParsedList, _edgesParsedList, _pathsParsedList, nil
+	return nil
 }
 
-func getMapInfo(valWarp *nebula.ValueWrapper, _verticesParsedList []common.Any, _edgesParsedList []common.Any, _pathsParsedList []common.Any) ([]common.Any, []common.Any, []common.Any, error) {
+func getMapInfo(valWarp *nebula.ValueWrapper, _verticesParsedList *list, _edgesParsedList *list, _pathsParsedList *list) error {
 	valueMap, err := valWarp.AsMap()
 	if err != nil {
-		return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+		return err
 	}
 	for _, v := range valueMap {
 		vType := v.GetType()
@@ -230,46 +232,46 @@ func getMapInfo(valWarp *nebula.ValueWrapper, _verticesParsedList []common.Any, 
 			var _props map[string]common.Any
 			_props, err = getVertexInfo(&v, _props)
 			if err == nil {
-				_verticesParsedList = append(_verticesParsedList, _props)
+				*_verticesParsedList = append(*_verticesParsedList, _props)
 			} else {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else if vType == "edge" {
 			var _props map[string]common.Any
 			_props, err = getEdgeInfo(&v, _props)
 			if err == nil {
-				_edgesParsedList = append(_edgesParsedList, _props)
+				*_edgesParsedList = append(*_edgesParsedList, _props)
 			} else {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else if vType == "path" {
 			var _props map[string]common.Any
 			_props, err = getPathInfo(&v, _props)
 			if err == nil {
-				_pathsParsedList = append(_pathsParsedList, _props)
+				*_pathsParsedList = append(*_pathsParsedList, _props)
 			} else {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else if vType == "list" {
-			_verticesParsedList, _edgesParsedList, _pathsParsedList, err = getListInfo(&v, "list", _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			err = getListInfo(&v, "list", _verticesParsedList, _edgesParsedList, _pathsParsedList)
 			if err != nil {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else if vType == "map" {
-			_verticesParsedList, _edgesParsedList, _pathsParsedList, err = getMapInfo(&v, _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			err = getMapInfo(&v, _verticesParsedList, _edgesParsedList, _pathsParsedList)
 			if err != nil {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else if vType == "set" {
-			_verticesParsedList, _edgesParsedList, _pathsParsedList, err = getListInfo(&v, "set", _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			err = getListInfo(&v, "set", _verticesParsedList, _edgesParsedList, _pathsParsedList)
 			if err != nil {
-				return _verticesParsedList, _edgesParsedList, _pathsParsedList, err
+				return err
 			}
 		} else {
 			// no need to parse basic value now
 		}
 	}
-	return _verticesParsedList, _edgesParsedList, _pathsParsedList, nil
+	return nil
 }
 
 // Connect return if the nebula connect succeed
@@ -345,9 +347,9 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 		for i := 0; i < rowSize; i++ {
 			var rowValue = make(map[string]common.Any)
 			record, err := resp.GetRowValuesByIndex(i)
-			var _verticesParsedList = make([]common.Any, 0)
-			var _edgesParsedList = make([]common.Any, 0)
-			var _pathsParsedList = make([]common.Any, 0)
+			var _verticesParsedList = make(list, 0)
+			var _edgesParsedList = make(list, 0)
+			var _pathsParsedList = make(list, 0)
 			if err != nil {
 				return result, err
 			}
@@ -378,11 +380,11 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 					parseValue["type"] = "path"
 					_pathsParsedList = append(_pathsParsedList, parseValue)
 				} else if valueType == "list" {
-					_verticesParsedList, _edgesParsedList, _pathsParsedList, err = getListInfo(rowData, "list", _verticesParsedList, _edgesParsedList, _pathsParsedList)
+					err = getListInfo(rowData, "list", &_verticesParsedList, &_edgesParsedList, &_pathsParsedList)
 				} else if valueType == "set" {
-					_verticesParsedList, _edgesParsedList, _pathsParsedList, err = getListInfo(rowData, "set", _verticesParsedList, _edgesParsedList, _pathsParsedList)
+					err = getListInfo(rowData, "set", &_verticesParsedList, &_edgesParsedList, &_pathsParsedList)
 				} else if valueType == "map" {
-					_verticesParsedList, _edgesParsedList, _pathsParsedList, err = getMapInfo(rowData, _verticesParsedList, _edgesParsedList, _pathsParsedList)
+					err = getMapInfo(rowData, &_verticesParsedList, &_edgesParsedList, &_pathsParsedList)
 				}
 				if len(_verticesParsedList) > 0 {
 					rowValue["_verticesParsedList"] = _verticesParsedList
