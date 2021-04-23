@@ -74,6 +74,8 @@ github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.m
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
 github.com/facebook/fbthrift v0.0.0-20190922225929-2f9839604e25 h1:dezRDs9oGYxeavyvcNg/Js+dK6kIvfzERoJ7K8Xkv14=
 github.com/facebook/fbthrift v0.0.0-20190922225929-2f9839604e25/go.mod h1:2tncLx5rmw69e5kMBv/yJneERbzrr1yr5fdlnTbu8lU=
+github.com/facebook/fbthrift v0.31.1-0.20210223140454-614a73a42488 h1:A4KCT0mvTBkvb93gGN+efLPkrgTqmqMeaLDG51KVhMM=
+github.com/facebook/fbthrift v0.31.1-0.20210223140454-614a73a42488/go.mod h1:2tncLx5rmw69e5kMBv/yJneERbzrr1yr5fdlnTbu8lU=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/franela/goblin v0.0.0-20200105215937-c9ffbefa60db/go.mod h1:7dvUGVsVBjqR7JHJk0brhHOZYGmfBYOrK0ZhYMEtBr4=
 github.com/franela/goreq v0.0.0-20171204163338-bcd34c9993f8/go.mod h1:ZhphrRTfi2rbfLwlschooIH4+wKKDR4Pdxhh+TRoA20=
@@ -330,6 +332,8 @@ github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijb
 github.com/urfave/cli v1.22.1/go.mod h1:Gos4lmkARVdJ6EkW0WaNv/tZAAMe9V7XWyB60NtXRu0=
 github.com/vesoft-inc/nebula-go v0.0.0-20210322063004-e37085b865d6 h1:qdKi4VNi8DzD/gAAEHztqJr2KDpcQfkEhP1liIMRRm8=
 github.com/vesoft-inc/nebula-go v0.0.0-20210322063004-e37085b865d6/go.mod h1:wxhWNoVVP0+TLETNwaIa93H9tOECxlEv4XH+/do22Qk=
+github.com/vesoft-inc/nebula-go v1.1.1-0.20210416024212-052593cefbb9 h1:BcqoJC+roj1EHwHNrg7ds23VZ4nVK9FzYEZVJLl+pvQ=
+github.com/vesoft-inc/nebula-go v1.1.1-0.20210416024212-052593cefbb9/go.mod h1:UOCePSb9RuaLIYSUgURxkRp/9wEWuyB8uqS954tJJYA=
 github.com/wendal/errors v0.0.0-20130201093226-f66c77a7882b/go.mod h1:Q12BUT7DqIlHRmgv3RskH+UCM/4eqVMgI0EMmlSpAXc=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/yuin/gopher-lua v0.0.0-20171031051903-609c9cd26973/go.mod h1:aEV29XrmTYFr3CiRxZeGHpkvbwq+prZduBqMaascyCU=

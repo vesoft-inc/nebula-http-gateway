@@ -5,14 +5,14 @@ go 1.13
 require (
 	github.com/astaxie/beego v1.12.3
 	github.com/elazarl/go-bindata-assetfs v1.0.1 // indirect
-	github.com/facebook/fbthrift v0.0.0-20190922225929-2f9839604e25 // indirect
+	github.com/facebook/fbthrift v0.31.1-0.20210223140454-614a73a42488
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/prometheus/client_golang v1.9.0 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
-	github.com/vesoft-inc/nebula-go v0.0.0-20210322063004-e37085b865d6
+	github.com/vesoft-inc/nebula-go v1.1.1-0.20210416024212-052593cefbb9
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
 	golang.org/x/sys v0.0.0-20210105210732-16f7687f5001 // indirect

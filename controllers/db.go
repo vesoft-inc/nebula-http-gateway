@@ -22,11 +22,11 @@ type Request struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Address  string `json:"address"`
-	Port int `json:"port"`
+	Port     int    `json:"port"`
 }
 
 type ExecuteRequest struct {
-	Gql       string `json:"gql"`
+	Gql string `json:"gql"`
 }
 
 type Data map[string]interface{}
@@ -41,10 +41,10 @@ func (this *DatabaseController) Connect() {
 		m := make(map[string]common.Any)
 		m["nsid"] = nsid
 		res.Data = nsid
-		this.Ctx.SetCookie("Secure","true")  
-		this.Ctx.SetCookie("SameSite","None")
+		this.Ctx.SetCookie("Secure", "true")
+		this.Ctx.SetCookie("SameSite", "None")
 		this.SetSession("nsid", nsid)
-		
+
 		res.Message = "Login successfully"
 	} else {
 		res.Code = -1
@@ -54,7 +54,7 @@ func (this *DatabaseController) Connect() {
 	this.ServeJSON()
 }
 
-func (this *DatabaseController) Home(){
+func (this *DatabaseController) Home() {
 	var res Response
 	res.Code = 0
 	this.ServeJSON()
