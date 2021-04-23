@@ -4,10 +4,11 @@ import (
 	"errors"
 	"log"
 
-	nebula "github.com/vesoft-inc/nebula-go"
-	nebulaType "github.com/vesoft-inc/nebula-go/nebula"
 	"nebula-http-gateway/service/pool"
 	common "nebula-http-gateway/utils"
+
+	nebula "github.com/vesoft-inc/nebula-go"
+	nebulaType "github.com/vesoft-inc/nebula-go/nebula"
 )
 
 type ExecuteResult struct {
@@ -15,6 +16,8 @@ type ExecuteResult struct {
 	Tables   []map[string]common.Any `json:"tables"`
 	TimeCost int32                   `json:"timeCost"`
 }
+
+type list []common.Any
 
 func getID(idWarp nebula.ValueWrapper) common.Any {
 	idType := idWarp.GetType()
@@ -160,7 +163,7 @@ func getPathInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (map[
 	return data, nil
 }
 
-func getListInfo(valWarp *nebula.ValueWrapper, data []common.Any, listType string) ([]common.Any, error) {
+func getListInfo(valWarp *nebula.ValueWrapper, listType string, _verticesParsedList *list, _edgesParsedList *list, _pathsParsedList *list) error {
 	var valueList []nebula.ValueWrapper
 	var err error
 	if listType == "list" {
@@ -169,7 +172,7 @@ func getListInfo(valWarp *nebula.ValueWrapper, data []common.Any, listType strin
 		valueList, err = valWarp.AsDedupList()
 	}
 	if err != nil {
-		return nil, err
+		return err
 	}
 	for _, v := range valueList {
 		var props = make(map[string]common.Any)
@@ -177,68 +180,98 @@ func getListInfo(valWarp *nebula.ValueWrapper, data []common.Any, listType strin
 		props["type"] = vType
 		if vType == "vertex" {
 			props, err = getVertexInfo(&v, props)
+			if err == nil {
+				*_verticesParsedList = append(*_verticesParsedList, props)
+			} else {
+				return err
+			}
 		} else if vType == "edge" {
 			props, err = getEdgeInfo(&v, props)
-		} else if vType == "list" {
-			var items = make([]common.Any, 0)
-			items, err = getListInfo(&v, items, "list")
-			props["items"] = items
-		} else if vType == "map" {
-			var items = make(map[string]common.Any)
-			items, err = getMapInfo(&v, items)
-			props["items"] = items
-		} else if vType == "set" {
-			var items = make([]common.Any, 0)
-			items, err = getListInfo(&v, items, "set")
-			props["items"] = items
-		} else {
-			basicVal, err := getBasicValue(&v)
-			if err != nil {
-				return data, err
+			if err == nil {
+				*_edgesParsedList = append(*_edgesParsedList, props)
+			} else {
+				return err
 			}
-			props["value"] = basicVal
+		} else if vType == "path" {
+			props, err = getPathInfo(&v, props)
+			if err == nil {
+				*_pathsParsedList = append(*_pathsParsedList, props)
+			} else {
+				return err
+			}
+		} else if vType == "list" {
+			err = getListInfo(&v, "list", _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			if err != nil {
+				return err
+			}
+		} else if vType == "map" {
+			err = getMapInfo(&v, _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			if err != nil {
+				return err
+			}
+		} else if vType == "set" {
+			err = getListInfo(&v, "set", _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			if err != nil {
+				return err
+			}
+		} else {
+			// no need to parse basic value now
 		}
-		data = append(data, props)
 	}
-	return data, nil
+	return nil
 }
 
-func getMapInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (map[string]common.Any, error) {
+func getMapInfo(valWarp *nebula.ValueWrapper, _verticesParsedList *list, _edgesParsedList *list, _pathsParsedList *list) error {
 	valueMap, err := valWarp.AsMap()
 	if err != nil {
-		return nil, err
+		return err
 	}
-	for k, v := range valueMap {
+	for _, v := range valueMap {
 		vType := v.GetType()
 		if vType == "vertex" {
 			var _props map[string]common.Any
 			_props, err = getVertexInfo(&v, _props)
-			data[k] = _props
+			if err == nil {
+				*_verticesParsedList = append(*_verticesParsedList, _props)
+			} else {
+				return err
+			}
 		} else if vType == "edge" {
 			var _props map[string]common.Any
 			_props, err = getEdgeInfo(&v, _props)
-			data[k] = _props
-		} else if vType == "list" {
-			var items = make([]common.Any, 0)
-			items, err = getListInfo(&v, items, "list")
-			data[k] = items
-		} else if vType == "map" {
-			var items = make(map[string]common.Any)
-			items, err = getMapInfo(&v, items)
-			data[k] = items
-		} else if vType == "set" {
-			var items = make([]common.Any, 0)
-			items, err = getListInfo(&v, items, "set")
-			data[k] = items
-		} else {
-			basicVal, err := getBasicValue(&v)
-			if err != nil {
-				return data, err
+			if err == nil {
+				*_edgesParsedList = append(*_edgesParsedList, _props)
+			} else {
+				return err
 			}
-			data[k] = basicVal
+		} else if vType == "path" {
+			var _props map[string]common.Any
+			_props, err = getPathInfo(&v, _props)
+			if err == nil {
+				*_pathsParsedList = append(*_pathsParsedList, _props)
+			} else {
+				return err
+			}
+		} else if vType == "list" {
+			err = getListInfo(&v, "list", _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			if err != nil {
+				return err
+			}
+		} else if vType == "map" {
+			err = getMapInfo(&v, _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			if err != nil {
+				return err
+			}
+		} else if vType == "set" {
+			err = getListInfo(&v, "set", _verticesParsedList, _edgesParsedList, _pathsParsedList)
+			if err != nil {
+				return err
+			}
+		} else {
+			// no need to parse basic value now
 		}
 	}
-	return data, nil
+	return nil
 }
 
 // Connect return if the nebula connect succeed
@@ -314,6 +347,9 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 		for i := 0; i < rowSize; i++ {
 			var rowValue = make(map[string]common.Any)
 			record, err := resp.GetRowValuesByIndex(i)
+			var _verticesParsedList = make(list, 0)
+			var _edgesParsedList = make(list, 0)
+			var _pathsParsedList = make(list, 0)
 			if err != nil {
 				return result, err
 			}
@@ -329,26 +365,35 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 				rowValue[result.Headers[j]] = value
 				valueType := rowData.GetType()
 				if valueType == "vertex" {
-					rowValue, err = getVertexInfo(rowData, rowValue)
-					rowValue["type"] = "vertex"
+					var parseValue = make(map[string]common.Any)
+					parseValue, err = getVertexInfo(rowData, parseValue)
+					parseValue["type"] = "vertex"
+					_verticesParsedList = append(_verticesParsedList, parseValue)
 				} else if valueType == "edge" {
-					rowValue, err = getEdgeInfo(rowData, rowValue)
-					rowValue["type"] = "edge"
+					var parseValue = make(map[string]common.Any)
+					parseValue, err = getEdgeInfo(rowData, parseValue)
+					parseValue["type"] = "edge"
+					_edgesParsedList = append(_edgesParsedList, parseValue)
 				} else if valueType == "path" {
-					rowValue, err = getPathInfo(rowData, rowValue)
-					rowValue["type"] = "path"
+					var parseValue = make(map[string]common.Any)
+					parseValue, err = getPathInfo(rowData, parseValue)
+					parseValue["type"] = "path"
+					_pathsParsedList = append(_pathsParsedList, parseValue)
 				} else if valueType == "list" {
-					var info = make([]common.Any, 0)
-					info, err = getListInfo(rowData, info, "list")
-					rowValue[result.Headers[j]+"_info"] = info
+					err = getListInfo(rowData, "list", &_verticesParsedList, &_edgesParsedList, &_pathsParsedList)
 				} else if valueType == "set" {
-					var info = make([]common.Any, 0)
-					info, err = getListInfo(rowData, info, "set")
-					rowValue[result.Headers[j]+"_info"] = info
+					err = getListInfo(rowData, "set", &_verticesParsedList, &_edgesParsedList, &_pathsParsedList)
 				} else if valueType == "map" {
-					var info = make(map[string]common.Any)
-					info, err = getMapInfo(rowData, info)
-					rowValue[result.Headers[j]+"_info"] = info
+					err = getMapInfo(rowData, &_verticesParsedList, &_edgesParsedList, &_pathsParsedList)
+				}
+				if len(_verticesParsedList) > 0 {
+					rowValue["_verticesParsedList"] = _verticesParsedList
+				}
+				if len(_edgesParsedList) > 0 {
+					rowValue["_edgesParsedList"] = _edgesParsedList
+				}
+				if len(_pathsParsedList) > 0 {
+					rowValue["_pathsParsedList"] = _pathsParsedList
 				}
 				if err != nil {
 					return result, err
