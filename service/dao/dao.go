@@ -309,11 +309,11 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 	resp := response.Result
 	if resp.IsSetPlanDesc() {
 		format := string(resp.GetPlanDesc().GetFormat())
-		var rowValue = make(map[string]common.Any)
 		if format == "row" {
 			result.Headers = []string{"id", "name", "dependencies", "profiling data", "operator info"}
 			rows := resp.MakePlanByRow()
 			for i := 0; i < len(rows); i++ {
+				var rowValue = make(map[string]common.Any)
 				rowValue["id"] = rows[i][0]
 				rowValue["name"] = rows[i][1]
 				rowValue["dependencies"] = rows[i][2]
@@ -322,14 +322,14 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 				result.Tables = append(result.Tables, rowValue)
 			}
 			return result, err
-		} else if format == "dot" {
+		} else {
+			var rowValue = make(map[string]common.Any)
 			result.Headers = append(result.Headers, "format")
-			rowValue["format"] = resp.MakeDotGraph()
-			result.Tables = append(result.Tables, rowValue)
-			return result, err
-		} else if format == "dot:struct" {
-			result.Headers = append(result.Headers, "format")
-			rowValue["format"] = resp.MakeDotGraphByStruct()
+			if format == "dot" {
+				rowValue["format"] = resp.MakeDotGraph()
+			} else if format == "dot:struct" {
+				rowValue["format"] = resp.MakeDotGraphByStruct()
+			}
 			result.Tables = append(result.Tables, rowValue)
 			return result, err
 		}
