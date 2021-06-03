@@ -12,7 +12,7 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
-	github.com/vesoft-inc/nebula-go v1.1.1-0.20210416024212-052593cefbb9
+	github.com/vesoft-inc/nebula-go/v2 v2.0.0-20210603033436-24ea78f90a1e
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
 	golang.org/x/sys v0.0.0-20210105210732-16f7687f5001 // indirect
