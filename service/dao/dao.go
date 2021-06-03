@@ -7,8 +7,8 @@ import (
 	"nebula-http-gateway/service/pool"
 	common "nebula-http-gateway/utils"
 
-	nebula "github.com/vesoft-inc/nebula-go"
-	nebulaType "github.com/vesoft-inc/nebula-go/nebula"
+	nebula "github.com/vesoft-inc/nebula-go/v2"
+	nebulaType "github.com/vesoft-inc/nebula-go/v2/nebula"
 )
 
 type ExecuteResult struct {
