@@ -61,7 +61,7 @@ func NewConnection(address string, port int, username string, password string) (
 	// Initialize connectin pool
 	pool, err := nebula.NewConnectionPool(hostList, poolConfig, nebulaLog)
 	if err != nil {
-		return "", errors.New("Fail to initialize the connection pool")
+		return "", err
 	}
 	err = pool.Ping(hostList[0], 5000*time.Millisecond)
 	if err != nil {
