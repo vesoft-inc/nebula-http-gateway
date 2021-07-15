@@ -21,7 +21,8 @@ type TaskMgr struct {
 }
 
 type Task struct {
-	Runner *cmd.Runner
+	Runner   *cmd.Runner
+	TimeCost int64
 }
 
 func GetTaskMgr() *TaskMgr {
