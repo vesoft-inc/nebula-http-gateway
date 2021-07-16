@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -429,10 +430,16 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 	return result, nil
 }
 
-func Import(path string) (tid string, err error) {
+func Import(configPath string) (tid string, err error) {
+
+	path := filepath.Join(
+		beego.AppConfig.String("uploadspath"),
+		configPath,
+	)
 
 	conf, err := config.Parse(path)
 	if err != nil {
+		beego.Error(err.(importerErrors.ImporterError))
 		return tid, err.(importerErrors.ImporterError)
 	}
 

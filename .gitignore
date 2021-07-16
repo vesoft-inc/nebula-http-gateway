@@ -19,4 +19,6 @@ vendor/
 tmp/*
 
 logs
+uploads
+
 err
