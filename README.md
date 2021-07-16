@@ -23,11 +23,14 @@ $ ./nebula-httpd
 ## User Guide
 
 #### API Definition
+
 | Name | Path | Method |
 | --- | --- | --- |
 | connect | /api/db/connect | POST |
 | exec | /api/db/exec | POST |
 | disconnect | /api/db/disconnect | POST |
+| import | /api/task/import | POST |
+| action | /api/task/action | POST |
 
 > Connect API
 
@@ -85,20 +88,21 @@ The request header is necessary to request exec api, cookies must be set to get 
 
 ```bash
 $ curl -H "Cookie: SameSite=None; nsid=bec2e665ba62a13554b617d70de8b9b9" -H "nsid: bec2e665ba62a13554b617d70de8b9b9" -X POST -d '{"gql": "show spaces;"}' http://127.0.0.1:8080/api/db/exec
-  {
-    "code": 0,
-    "data": {
-      "headers": [
-        "Name"
-      ],
-      "tables": [
-        {
-          "Name": "nba"
-        }
-      ],
-      "timeCost": 4232
-    },
-    "message": ""
+{
+  "code": 0,
+  "data": {
+   "headers": [
+      "Name"
+    ],
+    "tables": [
+      {
+        "Name": "nba"
+      }
+    ],
+    "timeCost": 4232
+  },
+  "message": ""
+}
 ```
 
 > Disconnect API
@@ -109,4 +113,64 @@ $ curl -X POST http://127.0.0.1:8080/api/db/disconnect
   "code": 0,
   "data": null,
   "message": "Disconnect successfully"
+}
 ```
+
+
+> Import API
+
+The requested json body
+
+```json
+{
+  "configPath": "./examples/v2/example.yaml"
+}
+```
+
+The description of the parameters is as follows.
+
+| Field      | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| configPath | Sets the file path of import config，it can be relevant, absoluted now |
+
+```bash
+curl -X POST -d "path=./examples/v2/example.yaml" http://127.0.0.1:8080/api/task/import
+{
+  "code": 0,
+  "data": null,
+  "message": "Import task 0 submit successfully"
+}
+```
+
+> Action API
+
+The requested json body
+
+```json
+{
+  "taskID": 0,
+  "taskAction": "stopAll"
+}
+```
+
+The description of the parameters is as follows.
+
+| Field      | Description                                    |
+| ---------- | ---------------------------------------------- |
+| taskID     | Set the task id to do task action              |
+| taskAction | Enums, include: stop, stopAll, query, queryAll |
+
+```bash
+curl -X POST -d "taskID=0&taskAction=stopAll" http://127.0.0.1:8080/api/task/action
+{
+    "code": 0,
+    "data": {
+        "taskIDs": [
+            "0"
+        ],
+        "taskStatus": "Task stop successfully"
+    },
+    "message": "Processing task action successfully"
+}
+```
+
