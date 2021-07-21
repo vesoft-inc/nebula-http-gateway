@@ -1,7 +1,6 @@
 package dao
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"path/filepath"
@@ -471,15 +470,12 @@ func Import(configPath string) (tid string, err error) {
 			result.ErrorResult.ErrorCode = err.ErrCode
 			result.ErrorResult.ErrorMsg = err.ErrMsg.Error()
 
-			beego.Error(fmt.Sprintf("Failed to finish a import task: `%s` with config: `%s`", tid, path))
-			resultAsBytes, _ := json.Marshal(result)
-			beego.Info(fmt.Sprintf("Import task result: `%s`", string(resultAsBytes)))
+			beego.Error(fmt.Sprintf("Failed to finish a import task: `%s` with config: `%s`, task result: `%v`", tid, path, result))
 		} else {
 			result.FailedRows = task.Runner.NumFailed
 			taskmgr.GetTaskMgr().DelTask(tid)
-			beego.Debug(fmt.Sprintf("Success to finish a import task: `%s` with config: `%s`", tid, path))
-			resultAsBytes, _ := json.Marshal(result)
-			beego.Debug(fmt.Sprintf("Import task result: `%s`", string(resultAsBytes)))
+
+			beego.Debug(fmt.Sprintf("Success to finish a import task: `%s` with config: `%s`, task result: `%v`", tid, path, result))
 		}
 	}()
 	return tid, nil
@@ -537,9 +533,7 @@ func Action(taskID string, taskAction taskmgr.TaskAction) (result ActionResult, 
 		err = errors.New("unknown task action")
 	}
 
-	beego.Debug(fmt.Sprintf("The import task action: `%s` for task: `%s` finished", taskAction.String(), taskID))
-	resultAsBytes, _ := json.Marshal(result)
-	beego.Debug(fmt.Sprintf("Import task action result: `%s`", string(resultAsBytes)))
+	beego.Debug(fmt.Sprintf("The import task action: `%s` for task: `%s` finished, action result: `%v`", taskAction.String(), taskID, result))
 
 	return result, err
 }
