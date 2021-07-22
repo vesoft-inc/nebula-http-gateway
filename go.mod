@@ -1,4 +1,4 @@
-module nebula-http-gateway
+module github.com/vesoft-inc/nebula-http-gateway
 
 go 1.13
 
@@ -12,7 +12,7 @@ require (
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/vesoft-inc/nebula-go/v2 v2.0.0-20210709070507-5ab4bdcd57db
-	github.com/vesoft-inc/nebula-importer v0.0.0-20210701091702-4da4f888f412
+	github.com/vesoft-inc/nebula-importer v0.0.0-20210716031041-8882282482b2
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
 	golang.org/x/sys v0.0.0-20210105210732-16f7687f5001 // indirect

@@ -1,21 +1,22 @@
 package dao
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
+	"path/filepath"
 	"strconv"
 	"time"
 
-	"nebula-http-gateway/service/pool"
-	taskmgr "nebula-http-gateway/service/taskmgr"
-	common "nebula-http-gateway/utils"
-
 	"github.com/astaxie/beego"
-	nebula "github.com/vesoft-inc/nebula-go/v2"
-	nebulaType "github.com/vesoft-inc/nebula-go/v2/nebula"
+	"github.com/vesoft-inc/nebula-http-gateway/common"
+	"github.com/vesoft-inc/nebula-http-gateway/service/pool"
+	"github.com/vesoft-inc/nebula-http-gateway/service/taskmgr"
 	"github.com/vesoft-inc/nebula-importer/pkg/cmd"
 	"github.com/vesoft-inc/nebula-importer/pkg/config"
+
+	nebula "github.com/vesoft-inc/nebula-go/v2"
+	nebulaType "github.com/vesoft-inc/nebula-go/v2/nebula"
 	importerErrors "github.com/vesoft-inc/nebula-importer/pkg/errors"
 )
 
@@ -359,7 +360,7 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 	}
 
 	if !resp.IsSucceed() {
-		beego.Debug(fmt.Sprintf("ErrorCode: %v, ErrorMsg: %s", resp.GetErrorCode(), resp.GetErrorMsg()))
+		log.Printf("ErrorCode: %v, ErrorMsg: %s", resp.GetErrorCode(), resp.GetErrorMsg())
 		return result, errors.New(string(resp.GetErrorMsg()))
 	}
 	if !resp.IsEmpty() {
@@ -429,10 +430,16 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 	return result, nil
 }
 
-func Import(path string) (tid string, err error) {
+func Import(configPath string) (tid string, err error) {
+
+	path := filepath.Join(
+		beego.AppConfig.String("uploadspath"),
+		configPath,
+	)
 
 	conf, err := config.Parse(path)
 	if err != nil {
+		beego.Error(err.(importerErrors.ImporterError))
 		return tid, err.(importerErrors.ImporterError)
 	}
 
@@ -464,15 +471,12 @@ func Import(path string) (tid string, err error) {
 			result.ErrorResult.ErrorCode = err.ErrCode
 			result.ErrorResult.ErrorMsg = err.ErrMsg.Error()
 
-			beego.Error(fmt.Sprintf("Failed to finish a import task: `%s` with config: `%s`", tid, path))
-			resultAsBytes, _ := json.Marshal(result)
-			beego.Info(fmt.Sprintf("Import task result: `%s`", string(resultAsBytes)))
+			beego.Error(fmt.Sprintf("Failed to finish a import task: `%s` with config: `%s`, task result: `%v`", tid, path, result))
 		} else {
 			result.FailedRows = task.Runner.NumFailed
 			taskmgr.GetTaskMgr().DelTask(tid)
-			beego.Debug(fmt.Sprintf("Success to finish a import task: `%s` with config: `%s`", tid, path))
-			resultAsBytes, _ := json.Marshal(result)
-			beego.Debug(fmt.Sprintf("Import task result: `%s`", string(resultAsBytes)))
+
+			beego.Debug(fmt.Sprintf("Success to finish a import task: `%s` with config: `%s`, task result: `%v`", tid, path, result))
 		}
 	}()
 	return tid, nil
@@ -530,9 +534,7 @@ func Action(taskID string, taskAction taskmgr.TaskAction) (result ActionResult, 
 		err = errors.New("unknown task action")
 	}
 
-	beego.Debug(fmt.Sprintf("The import task action: `%s` for task: `%s` finished", taskAction.String(), taskID))
-	resultAsBytes, _ := json.Marshal(result)
-	beego.Debug(fmt.Sprintf("Import task action result: `%s`", string(resultAsBytes)))
+	beego.Debug(fmt.Sprintf("The import task action: `%s` for task: `%s` finished, action result: `%v`", taskAction.String(), taskID, result))
 
 	return result, err
 }
