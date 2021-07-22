@@ -4,8 +4,8 @@ import (
 	"errors"
 	"log"
 
-	"nebula-http-gateway/service/pool"
-	common "nebula-http-gateway/utils"
+	"github.com/vesoft-inc/nebula-http-gateway/common"
+	"github.com/vesoft-inc/nebula-http-gateway/service/pool"
 
 	nebula "github.com/vesoft-inc/nebula-go/v2"
 	nebulaType "github.com/vesoft-inc/nebula-go/v2/nebula"

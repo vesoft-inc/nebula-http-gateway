@@ -1,8 +1,6 @@
 package main
 
 import (
-	_ "nebula-http-gateway/routers"
-
 	"github.com/astaxie/beego"
 )
 

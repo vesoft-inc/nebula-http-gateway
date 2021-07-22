@@ -1,4 +1,4 @@
-module nebula-http-gateway
+module github.com/vesoft-inc/nebula-http-gateway
 
 go 1.13
 
