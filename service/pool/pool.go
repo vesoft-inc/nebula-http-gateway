@@ -53,7 +53,7 @@ func isThriftProtoError(err error) bool {
 	if protoErr.TypeID() != thrift.UNKNOWN_PROTOCOL_EXCEPTION {
 		return false
 	}
-	var errPrefix = []string{"wsasend", "wsarecv", "write:"}
+	errPrefix := []string{"wsasend", "wsarecv", "write:"}
 	errStr := protoErr.Error()
 	for _, e := range errPrefix {
 		if strings.Contains(errStr, e) {
