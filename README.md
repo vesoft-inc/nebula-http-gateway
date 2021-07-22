@@ -43,7 +43,7 @@ The request json body
 }
 ```
 
-The description of the parameters is as follows.
+The description of the parameters is as follows:
 
 | Field    | Description                                                                                                                 |
 |----------|-----------------------------------------------------------------------------------------------------------------------------|
@@ -81,7 +81,7 @@ Date: Fri, 02 Apr 2021 08:49:18 GMT
 Notice:
 
 The response data nsid `5e18fa40-5343-422f-84e3-e7f9cad6b735` is encoded by HMAC-SH256 encryption algorithm, so it's not the same as what you get from a cookie.
-If you connect the graphd service succeed, remember to save the *NSID*, it's important for the *exec api* to execute nGQL.
+If you connect to the graphd service successfully, remember to save the *NSID* locally, which is important for the *exec api* to execute nGQL.
 If you restart the gateway server, all authenticated session will be lost, please noticed.
 
 #### Exec API ####
@@ -94,7 +94,7 @@ The requested json body
 }
 ```
 
-The request header is necessary to request exec api, cookies must be set to get results.
+**Cookies** must be set in the request header to request `exec` api.
 
 
 ```bash
