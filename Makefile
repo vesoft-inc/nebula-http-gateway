@@ -8,8 +8,9 @@ clean:
 fmt:
 	@find . -type f -iname \*.go -exec go fmt {} \;
 
-test: clean fmt
-	@go test -v ./...
-
 build: clean fmt
 	@go build -o nebula-httpd main.go
+
+test: build
+	./nebula-httpd
+	go test -v ./...
