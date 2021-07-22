@@ -22,15 +22,7 @@ $ ./nebula-httpd
 
 ## User Guide
 
-#### API Definition
-
-| Name | Path | Method |
-| --- | --- | --- |
-| connect | /api/db/connect | POST |
-| exec | /api/db/exec | POST |
-| disconnect | /api/db/disconnect | POST |
-| import | /api/task/import | POST |
-| action | /api/task/action | POST |
+### API Definition
 
 | Name       | Path               | Method |
 |------------|--------------------|--------|
@@ -106,30 +98,11 @@ The requested json body
 
 
 ```bash
-<<<<<<< HEAD
-$ curl -H "Cookie: SameSite=None; nsid=bec2e665ba62a13554b617d70de8b9b9" -H "nsid: bec2e665ba62a13554b617d70de8b9b9" -X POST -d '{"gql": "show spaces;"}' http://127.0.0.1:8080/api/db/exec
-{
-  "code": 0,
-  "data": {
-   "headers": [
-      "Name"
-    ],
-    "tables": [
-      {
-        "Name": "nba"
-      }
-    ],
-    "timeCost": 4232
-  },
-  "message": ""
-}
-=======
 $ curl -X POST \
     -H "Cookie: SameSite=None; nsid=bec2e665ba62a13554b617d70de8b9b9" \
     -H "nsid: bec2e665ba62a13554b617d70de8b9b9" \
     -d '{"gql": "show spaces;"}' \
     http://127.0.0.1:8080/api/db/exec
->>>>>>> upstream/master
 ```
 
 response:
@@ -166,30 +139,31 @@ response:
   "data": null,
   "message": "Disconnect successfully"
 }
-<<<<<<< HEAD
 ```
 
-
-> Import API
+#### Import API #### 
 
 The requested json body
 
 ```json
 {
-  "configPath": "./examples/v2/example.yaml"
+  "configPath": "examples/v2/example.yaml"
 }
-=======
->>>>>>> upstream/master
 ```
 
 The description of the parameters is as follows.
 
 | Field      | Description                                                  |
 | ---------- | ------------------------------------------------------------ |
-| configPath | Sets the file path of import config，it can be relevant, absoluted now |
+| configPath | `configPath` is a relative path undering `uploadspath` in `app.conf` |
 
 ```bash
-curl -X POST -d "path=./examples/v2/example.yaml" http://127.0.0.1:8080/api/task/import
+$ curl -X POST -d "path=./examples/v2/example.yaml" http://127.0.0.1:8080/api/task/import
+```
+
+response:
+
+```json
 {
   "code": 0,
   "data": null,
@@ -197,7 +171,7 @@ curl -X POST -d "path=./examples/v2/example.yaml" http://127.0.0.1:8080/api/task
 }
 ```
 
-> Action API
+#### Action API ####
 
 The requested json body
 
@@ -210,13 +184,18 @@ The requested json body
 
 The description of the parameters is as follows.
 
-| Field      | Description                                    |
-| ---------- | ---------------------------------------------- |
-| taskID     | Set the task id to do task action              |
-| taskAction | Enums, include: stop, stopAll, query, queryAll |
+| Field      | Description                                          |
+| ---------- | ---------------------------------------------------- |
+| taskID     | Set the task id to do task action                    |
+| taskAction | Enums, include: stop, stopAll, query, queryAll, etc. |
 
 ```bash
-curl -X POST -d "taskID=0&taskAction=stopAll" http://127.0.0.1:8080/api/task/action
+$ curl -X POST -d "taskID=0&taskAction=stopAll" http://127.0.0.1:8080/api/task/action
+```
+
+response:
+
+```json
 {
     "code": 0,
     "data": {

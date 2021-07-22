@@ -3,10 +3,10 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	dao "nebula-http-gateway/service/dao"
-	"nebula-http-gateway/service/taskmgr"
 
 	"github.com/astaxie/beego"
+	"github.com/vesoft-inc/nebula-http-gateway/service/dao"
+	"github.com/vesoft-inc/nebula-http-gateway/service/taskmgr"
 )
 
 type TaskController struct {

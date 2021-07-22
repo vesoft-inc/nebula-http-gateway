@@ -3,19 +3,20 @@ package dao
 import (
 	"errors"
 	"fmt"
+	"log"
 	"path/filepath"
 	"strconv"
 	"time"
 
-	"nebula-http-gateway/service/pool"
-	taskmgr "nebula-http-gateway/service/taskmgr"
-	common "nebula-http-gateway/utils"
-
 	"github.com/astaxie/beego"
-	nebula "github.com/vesoft-inc/nebula-go/v2"
-	nebulaType "github.com/vesoft-inc/nebula-go/v2/nebula"
+	"github.com/vesoft-inc/nebula-http-gateway/common"
+	"github.com/vesoft-inc/nebula-http-gateway/service/pool"
+	"github.com/vesoft-inc/nebula-http-gateway/service/taskmgr"
 	"github.com/vesoft-inc/nebula-importer/pkg/cmd"
 	"github.com/vesoft-inc/nebula-importer/pkg/config"
+
+	nebula "github.com/vesoft-inc/nebula-go/v2"
+	nebulaType "github.com/vesoft-inc/nebula-go/v2/nebula"
 	importerErrors "github.com/vesoft-inc/nebula-importer/pkg/errors"
 )
 
@@ -359,7 +360,7 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 	}
 
 	if !resp.IsSucceed() {
-		beego.Debug(fmt.Sprintf("ErrorCode: %v, ErrorMsg: %s", resp.GetErrorCode(), resp.GetErrorMsg()))
+		log.Printf("ErrorCode: %v, ErrorMsg: %s", resp.GetErrorCode(), resp.GetErrorMsg())
 		return result, errors.New(string(resp.GetErrorMsg()))
 	}
 	if !resp.IsEmpty() {

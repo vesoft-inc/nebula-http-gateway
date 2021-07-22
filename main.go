@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"path/filepath"
 
-	_ "nebula-http-gateway/routers"
-	common "nebula-http-gateway/utils"
-
 	"github.com/astaxie/beego"
+	"github.com/vesoft-inc/nebula-http-gateway/common"
 )
 
 func main() {
