@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
-	common "nebula-http-gateway/utils"
 	"net/http"
 	"testing"
+
+	"github.com/vesoft-inc/nebula-http-gateway/common"
 )
 
 type Response struct {
