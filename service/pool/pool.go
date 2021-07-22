@@ -45,6 +45,36 @@ var connectionPool = make(map[string]*Connection)
 var currentConnectionNum = 0
 var connectLock sync.Mutex
 
+func isThriftProtoError(err error) bool {
+	protoErr, ok := err.(thrift.ProtocolException)
+	if !ok {
+		return false
+	}
+	if protoErr.TypeID() != thrift.UNKNOWN_PROTOCOL_EXCEPTION {
+		return false
+	}
+	var errPrefix = []string{"wsasend", "wsarecv", "write:"}
+	errStr := protoErr.Error()
+	for _, e := range errPrefix {
+		if strings.Contains(errStr, e) {
+			return true
+		}
+	}
+	return false
+}
+
+func isThriftTransportError(err error) bool {
+	if transErr, ok := err.(thrift.TransportException); ok {
+		typeId := transErr.TypeID()
+		if typeId == thrift.UNKNOWN_TRANSPORT_EXCEPTION || typeId == thrift.TIMED_OUT {
+			if strings.Contains(transErr.Error(), "read:") {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func NewConnection(address string, port int, username string, password string) (nsid string, err error) {
 	connectLock.Lock()
 	defer connectLock.Unlock()
@@ -95,24 +125,8 @@ func NewConnection(address string, port int, username string, password string) (
 						}
 					}()
 					response, err := connection.session.Execute(request.Gql)
-					if err != nil {
-						if protoErr, ok := err.(thrift.ProtocolException); ok {
-							if protoErr.TypeID() == thrift.UNKNOWN_PROTOCOL_EXCEPTION {
-								if strings.Contains(protoErr.Error(), "wsasend") ||
-									strings.Contains(protoErr.Error(), "wsarecv") ||
-									strings.Contains(protoErr.Error(), "write:") {
-									err = ConnectionClosedError
-								}
-							}
-						}
-						if transErr, ok := err.(thrift.TransportException); ok {
-							if transErr.TypeID() == thrift.UNKNOWN_TRANSPORT_EXCEPTION ||
-								transErr.TypeID() == thrift.TIMED_OUT {
-								if strings.Contains(transErr.Error(), "read:") {
-									err = ConnectionClosedError
-								}
-							}
-						}
+					if err != nil && (isThriftProtoError(err) || isThriftTransportError(err)) {
+						err = ConnectionClosedError
 					}
 					request.ResponseChannel <- ChannelResponse{
 						Result: response,
