@@ -9,12 +9,6 @@ import (
 	"testing"
 )
 
-// type Response struct {
-// 	Code    int        `json:"code"`
-// 	Data    common.Any `json:"data"`
-// 	Message string     `json:"message"`
-// }
-
 func Test_DB_Connect(t *testing.T) {
 	var Response Response
 	cases := []struct {
