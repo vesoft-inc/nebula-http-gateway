@@ -94,7 +94,7 @@ The requested json body
 }
 ```
 
-**Cookies** must be set in the request header to request `exec` api.
+**Cookie** is required in the request header to request `exec` api.
 
 
 ```bash
