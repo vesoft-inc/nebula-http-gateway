@@ -41,11 +41,6 @@ type Connection struct {
 	session        *nebula.Session
 }
 
-const (
-	maxConnectionNum  = 200
-	secondsOfHalfHour = int64(30 * 60)
-)
-
 var connectionPool = make(map[string]*Connection)
 var currentConnectionNum = 0
 var connectLock sync.Mutex
@@ -90,26 +85,27 @@ func NewConnection(address string, port int, username string, password string) (
 			for {
 				select {
 				case request := <-connection.RequestChannel:
-					func(gql string) {
-						defer func() {
-							if err := recover(); err != nil {
-								common.LogPanic(err)
-								request.ResponseChannel <- ChannelResponse{
-									Result: nil,
-									Error:  SessionLostError,
-								}
-							}
-						}()
-						response, err := connection.session.Execute(gql)
-						if protoErr, ok := err.(thrift.ProtocolException); ok && protoErr != nil &&
-							protoErr.TypeID() == thrift.UNKNOWN_PROTOCOL_EXCEPTION {
-							if strings.Contains(protoErr.Error(), "wsasend") ||
-								strings.Contains(protoErr.Error(), "wsarecv") ||
-								strings.Contains(protoErr.Error(), "write:") {
-								err = ConnectionClosedError
+					defer func() {
+						if err := recover(); err != nil {
+							common.LogPanic(err)
+							request.ResponseChannel <- ChannelResponse{
+								Result: nil,
+								Error:  SessionLostError,
 							}
 						}
-						if transErr, ok := err.(thrift.TransportException); ok && transErr != nil {
+					}()
+					response, err := connection.session.Execute(request.Gql)
+					if err != nil {
+						if protoErr, ok := err.(thrift.ProtocolException); ok {
+							if protoErr.TypeID() == thrift.UNKNOWN_PROTOCOL_EXCEPTION {
+								if strings.Contains(protoErr.Error(), "wsasend") ||
+									strings.Contains(protoErr.Error(), "wsarecv") ||
+									strings.Contains(protoErr.Error(), "write:") {
+									err = ConnectionClosedError
+								}
+							}
+						}
+						if transErr, ok := err.(thrift.TransportException); ok {
 							if transErr.TypeID() == thrift.UNKNOWN_TRANSPORT_EXCEPTION ||
 								transErr.TypeID() == thrift.TIMED_OUT {
 								if strings.Contains(transErr.Error(), "read:") {
@@ -117,11 +113,11 @@ func NewConnection(address string, port int, username string, password string) (
 								}
 							}
 						}
-						request.ResponseChannel <- ChannelResponse{
-							Result: response,
-							Error:  err,
-						}
-					}(request.Gql)
+					}
+					request.ResponseChannel <- ChannelResponse{
+						Result: response,
+						Error:  err,
+					}
 				case <-connection.CloseChannel:
 					connection.session.Release()
 					connectLock.Lock()
@@ -150,20 +146,9 @@ func GetConnection(nsid string) (connection *Connection, err error) {
 	connectLock.Lock()
 	defer connectLock.Unlock()
 
-	connection, ok := connectionPool[nsid]
-	if ok {
+	if connection, ok := connectionPool[nsid]; ok {
 		connection.updateTime = time.Now().Unix()
 		return connection, nil
 	}
 	return nil, errors.New("connection refused for being released")
-}
-
-func recoverConnections() {
-	nowTimeStamps := time.Now().Unix()
-	for _, connection := range connectionPool {
-		// release connection if not use over 30minutes
-		if nowTimeStamps-connection.updateTime > secondsOfHalfHour {
-			connection.CloseChannel <- true
-		}
-	}
 }

@@ -7,17 +7,9 @@ import (
 	"log"
 	"net/http"
 	"testing"
-
-	"github.com/vesoft-inc/nebula-http-gateway/common"
 )
 
-type Response struct {
-	Code    int        `json:"code"`
-	Data    common.Any `json:"data"`
-	Message string     `json:"message"`
-}
-
-func Test_DB_Connect(t *testing.T) {
+func TestDBConnect(t *testing.T) {
 	var Response Response
 	cases := []struct {
 		path          string
@@ -27,34 +19,41 @@ func Test_DB_Connect(t *testing.T) {
 		{
 			"http://127.0.0.1:8080/api/db/connect",
 			"POST",
-			[]byte(`{"username": "user",
-					"password": "password",
-					"host": "127.0.0.1:3699"}`),
+			[]byte(`{"username": "root",
+					"password": "nebula",
+					"host": "127.0.0.1:9669"}`),
 		},
 		{
 			"http://127.0.0.1:8080/api/db/connect",
 			"POST",
 			[]byte(`{"username": "user1",
 					"password": "password",
-					"host": "127.0.0.1:3699"}`),
+					"host": "127.0.0.1:9669"}`),
 		},
 	}
-	for _, tc := range cases {
 
+	for _, tc := range cases {
 		req, err := http.NewRequest(tc.requestMethod, tc.path, bytes.NewBuffer(tc.requestBody))
+		if err != nil {
+			t.Fail()
+		}
 		req.Header.Set("Content-Type", "application/json")
 
 		client := &http.Client{}
 		resp, err := client.Do(req)
-
 		if err != nil {
 			t.Fail()
 		}
 
 		defer req.Body.Close()
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			t.Fail()
+		}
 
-		json.Unmarshal([]byte(body), &Response)
+		if err := json.Unmarshal([]byte(body), &Response); err != nil {
+			t.Fail()
+		}
 
 		if Response.Code != -1 && Response.Code != 0 {
 			t.Fail()
@@ -62,9 +61,7 @@ func Test_DB_Connect(t *testing.T) {
 	}
 }
 
-func Test_DB_Execute(t *testing.T) {
-	/*
-	 */
+func TestDBExecute(t *testing.T) {
 	cases := []struct {
 		path          string
 		requestMethod string
@@ -75,13 +72,16 @@ func Test_DB_Execute(t *testing.T) {
 			"POST",
 			[]byte(`{"username" : "user",
 					"password" : "password",
-					"host" : "127.0.0.1:3699",
+					"host" : "127.0.0.1:9669",
 					"gql" : "SHOW SPACES11;"}`),
 		},
 	}
 	for _, tc := range cases {
 		var Response Response
 		req, err := http.NewRequest(tc.requestMethod, tc.path, bytes.NewBuffer(tc.requestBody))
+		if err != nil {
+			t.Fail()
+		}
 		req.Header.Set("Content-Type", "application/json")
 
 		client := &http.Client{}
@@ -93,9 +93,15 @@ func Test_DB_Execute(t *testing.T) {
 
 		defer resp.Body.Close()
 
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			t.Fail()
+		}
 
-		json.Unmarshal([]byte(body), &Response)
+		if err := json.Unmarshal([]byte(body), &Response); err != nil {
+			t.Fail()
+		}
+
 		if Response.Code != -1 && Response.Code != 0 {
 			t.Fail()
 		}
