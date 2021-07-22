@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
-	dao "nebula-http-gateway/service/dao"
-	common "nebula-http-gateway/utils"
 
 	"github.com/astaxie/beego"
+	"github.com/vesoft-inc/nebula-http-gateway/common"
+	"github.com/vesoft-inc/nebula-http-gateway/service/dao"
 )
 
 type DatabaseController struct {

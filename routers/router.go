@@ -1,9 +1,8 @@
 package routers
 
 import (
-	"nebula-http-gateway/controllers"
-
 	"github.com/astaxie/beego"
+	"github.com/vesoft-inc/nebula-http-gateway/controllers"
 )
 
 func init() {
