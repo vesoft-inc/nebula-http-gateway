@@ -1,4 +1,4 @@
-package tests
+package controllers
 
 import (
 	"bytes"

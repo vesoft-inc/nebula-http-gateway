@@ -6,9 +6,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	"github.com/vesoft-inc/nebula-http-gateway/common"
 
-	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	uuid "github.com/satori/go.uuid"
 	nebula "github.com/vesoft-inc/nebula-go/v2"
 )
