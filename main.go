@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"path/filepath"
 
+	_ "github.com/vesoft-inc/nebula-http-gateway/routers"
+
 	"github.com/astaxie/beego"
 	"github.com/vesoft-inc/nebula-http-gateway/common"
 )
