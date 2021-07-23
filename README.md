@@ -190,7 +190,7 @@ The description of the parameters is as follows.
 | taskAction | Enums, include: stop, stopAll, query, queryAll, etc. |
 
 ```bash
-$ curl -X POST -d "taskID=0&taskAction=stopAll" http://127.0.0.1:8080/api/task/action
+$ curl -X POST -d "taskID=0&taskAction=stopAll" http://127.0.0.1:8080/api/task/import/action
 ```
 
 response:
