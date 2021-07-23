@@ -12,5 +12,5 @@ func init() {
 	beego.Router("/api/db/disconnect", &controllers.DatabaseController{}, "POST:Disconnect")
 
 	beego.Router("/api/task/import", &controllers.TaskController{}, "POST:Import")
-	beego.Router("/api/task/action", &controllers.TaskController{}, "POST:Action")
+	beego.Router("/api/task/import/action", &controllers.TaskController{}, "POST:ImportAction")
 }

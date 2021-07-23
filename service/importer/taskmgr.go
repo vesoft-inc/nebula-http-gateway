@@ -1,4 +1,4 @@
-package taskmgr
+package importer
 
 import (
 	"fmt"
@@ -87,39 +87,37 @@ func (mgr *TaskMgr) GetAllTaskIDs() []string {
 type TaskAction int
 
 const (
-	Query TaskAction = iota
+	UnknownAction TaskAction = iota
+	Query
 	QueryAll
 	Stop
 	StopAll
-	UnknownAction
 )
 
+var taskActionMap = map[TaskAction]string{
+	Query:    "query",
+	QueryAll: "queryAll",
+	Stop:     "stop",
+	StopAll:  "stopAll",
+}
+
+var taskActionRevMap = map[string]TaskAction{
+	"query":    Query,
+	"queryAll": QueryAll,
+	"stop":     Stop,
+	"stopAll":  StopAll,
+}
+
 func NewTaskAction(action string) TaskAction {
-	switch action {
-	case "stop":
-		return Stop
-	case "stopAll":
-		return StopAll
-	case "query":
-		return Query
-	case "queryAll":
-		return QueryAll
-	default:
-		return UnknownAction
+	if v, ok := taskActionRevMap[action]; ok {
+		return v
 	}
+	return UnknownAction
 }
 
 func (action TaskAction) String() string {
-	switch action {
-	case Stop:
-		return "stop"
-	case StopAll:
-		return "stopAll"
-	case Query:
-		return "query"
-	case QueryAll:
-		return "queryAll"
-	default:
-		return "unknownAction"
+	if v, ok := taskActionMap[action]; ok {
+		return v
 	}
+	return "unknownAction"
 }

@@ -5,8 +5,7 @@ import (
 	"fmt"
 
 	"github.com/astaxie/beego"
-	"github.com/vesoft-inc/nebula-http-gateway/service/dao"
-	"github.com/vesoft-inc/nebula-http-gateway/service/taskmgr"
+	"github.com/vesoft-inc/nebula-http-gateway/service/importer"
 )
 
 type TaskController struct {
@@ -17,7 +16,7 @@ type ImportRequest struct {
 	ConfigPath string `json:"configPath"`
 }
 
-type ActionRequest struct {
+type ImportActionRequest struct {
 	TaskID     string `json:"taskID"`
 	TaskAction string `json:"taskAction"`
 }
@@ -27,7 +26,7 @@ func (this *TaskController) Import() {
 	var params ImportRequest
 
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
-	tid, err := dao.Import(params.ConfigPath)
+	tid, err := importer.Import(params.ConfigPath)
 	if err == nil {
 		res.Code = 0
 		res.Message = fmt.Sprintf("Import task %s submit successfully", tid)
@@ -39,12 +38,12 @@ func (this *TaskController) Import() {
 	this.ServeJSON()
 }
 
-func (this *TaskController) Action() {
+func (this *TaskController) ImportAction() {
 	var res Response
-	var params ActionRequest
+	var params ImportActionRequest
 
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
-	result, err := dao.Action(params.TaskID, taskmgr.NewTaskAction(params.TaskAction))
+	result, err := importer.ImportAction(params.TaskID, importer.NewTaskAction(params.TaskAction))
 	if err == nil {
 		res.Code = 0
 		res.Data = result
