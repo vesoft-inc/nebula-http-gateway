@@ -22,9 +22,9 @@ func CreateFileWithPerm(filePath string, permCode string) (*os.File, error) {
 	mask := syscall.Umask(0)
 	defer syscall.Umask(mask)
 	filedir := path.Dir(filePath)
-	os.MkdirAll(filedir, os.FileMode(0770))
+	os.MkdirAll(filedir, os.FileMode(perm))
 	fd, err := os.OpenFile(filePath, os.O_WRONLY|os.O_APPEND|os.O_CREATE, os.FileMode(perm))
-	if err == nil {
+	if os.IsExist(err) {
 		os.Chmod(filePath, os.FileMode(perm))
 	}
 	return fd, err

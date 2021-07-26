@@ -27,7 +27,7 @@ func main() {
 	*/
 	logsPath := beego.AppConfig.String("logspath")
 	absLogsPath, _ := filepath.Abs(logsPath)
-	_, err := common.CreateFileWithPerm(absLogsPath+"/", "0660")
+	_, err := common.CreateFileWithPerm(absLogsPath+"/", "0720")
 
 	if err != nil && os.IsNotExist(err) {
 		log.Fatalf("create file %s with error: %s", absLogsPath, err.Error())
@@ -37,7 +37,7 @@ func main() {
 		absLogsPath,
 		"test.log",
 	)
-	beego.SetLogger("file", fmt.Sprintf(`{"filename":"%s","MaxSize":104857600,"perm":"0660"}`, logFilePath))
+	beego.SetLogger("file", fmt.Sprintf(`{"filename":"%s","MaxSize":104857600,"perm":"0620"}`, logFilePath))
 	beego.BeeLogger.DelLogger("console")
 	beego.SetLogFuncCall(true)
 	beego.BeeLogger.SetLogFuncCallDepth(3)
@@ -49,7 +49,7 @@ func main() {
 	*/
 	uploadsPath := beego.AppConfig.String("uploadspath")
 	absUploadsPath, _ := filepath.Abs(uploadsPath)
-	_, err = common.CreateFileWithPerm(absUploadsPath+"/", "0640")
+	_, err = common.CreateFileWithPerm(absUploadsPath+"/", "0720")
 
 	if err != nil && os.IsNotExist(err) {
 		log.Fatalf("create file %s with error: %s", absLogsPath, err.Error())
