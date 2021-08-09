@@ -158,7 +158,7 @@ The description of the parameters is as follows.
 | configPath | `configPath` is a relative path undering `uploadspath` in `app.conf` |
 
 ```bash
-$ curl -X POST -d "path=./examples/v2/example.yaml" http://127.0.0.1:8080/api/task/import
+$ curl -X POST -d '{"configPath": "./examples/v2/example.yaml"}' http://127.0.0.1:8080/api/task/import
 ```
 
 response:
@@ -190,7 +190,7 @@ The description of the parameters is as follows.
 | taskAction | Enums, include: stop, stopAll, query, queryAll, etc. |
 
 ```bash
-$ curl -X POST -d "taskID=0&taskAction=stopAll" http://127.0.0.1:8080/api/task/import/action
+$ curl -X POST -d '{"taskID": 0, "taskAction": "stopAll"}' http://127.0.0.1:8080/api/task/import/action
 ```
 
 response:
