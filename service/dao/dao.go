@@ -2,7 +2,7 @@ package dao
 
 import (
 	"errors"
-	"log"
+	"log	"math"
 
 	"github.com/vesoft-inc/nebula-http-gateway/common"
 	"github.com/vesoft-inc/nebula-http-gateway/service/pool"
@@ -55,15 +55,15 @@ func getBasicValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
 		value, err := valWarp.AsNull()
 		switch value {
 		case nebulaType.NullType___NULL__:
-			return "NULL", err
+			return nil, err
 		case nebulaType.NullType_NaN:
-			return "NaN", err
+			return math.NaN(), err
 		case nebulaType.NullType_BAD_DATA:
 			return "BAD_DATA", err
 		case nebulaType.NullType_BAD_TYPE:
 			return "BAD_TYPE", err
 		}
-		return "NULL", err
+		return nil, err
 	} else if valType == "bool" {
 		return valWarp.AsBool()
 	} else if valType == "int" {
