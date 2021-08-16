@@ -156,7 +156,7 @@ The description of the parameters is as follows.
 | Field      | Description                                                  |
 | ---------- | ------------------------------------------------------------ |
 | configPath | `configPath` is a relative path that under the `uploadspath` in `app.conf`. |
-| configBody | `configBody` is the detailed configuration. If you choose to use `configBody`, |
+| configBody | `configBody` is the detail configuration.|
 
 If you choose to use `configPath`, you need to make sure that the config file has been uploaded to `uploadspath`.
 
@@ -166,7 +166,7 @@ $ curl -X POST -d '{"configPath": "./examples/v2/example.yaml","configBody": {}}
 
 If you choose to use `configBody`, you need to set the `configPath` value to `""` and set the configBody as JSON format:
 
-<details><summary><strong>The request body raw data example</strong></summary>
+<details><summary><strong>Please to see the request body example</strong></summary>
 
 ```json
 {
