@@ -2,7 +2,8 @@ package dao
 
 import (
 	"errors"
-	"log	"math"
+	"log"
+	"math"
 
 	"github.com/vesoft-inc/nebula-http-gateway/common"
 	"github.com/vesoft-inc/nebula-http-gateway/service/pool"
