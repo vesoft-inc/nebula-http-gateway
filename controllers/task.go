@@ -7,6 +7,8 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/vesoft-inc/nebula-http-gateway/service/importer"
 	"github.com/vesoft-inc/nebula-importer/pkg/config"
+
+	importerErrors "github.com/vesoft-inc/nebula-importer/pkg/errors"
 )
 
 type TaskController struct {
@@ -24,12 +26,20 @@ type ImportActionRequest struct {
 }
 
 func (this *TaskController) Import() {
-	var res Response
-	var params ImportRequest
+	var (
+		res    Response
+		params ImportRequest
+		tid    string
+		err    error
+	)
 
-	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
+	err = json.Unmarshal(this.Ctx.Input.RequestBody, &params)
 
-	tid, err := importer.Import(params.ConfigPath, &params.ConfigBody)
+	if err == nil {
+		tid, err = importer.Import(params.ConfigPath, &params.ConfigBody)
+	} else {
+		err = importerErrors.Wrap(importerErrors.InvalidConfigPathOrFormat, err)
+	}
 
 	if err == nil {
 		res.Code = 0
