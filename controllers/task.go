@@ -6,6 +6,7 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/vesoft-inc/nebula-http-gateway/service/importer"
+	"github.com/vesoft-inc/nebula-importer/pkg/config"
 )
 
 type TaskController struct {
@@ -13,7 +14,8 @@ type TaskController struct {
 }
 
 type ImportRequest struct {
-	ConfigPath string `json:"configPath"`
+	ConfigPath string            `json:"configPath"`
+	ConfigBody config.YAMLConfig `json:"configBody"`
 }
 
 type ImportActionRequest struct {
@@ -26,7 +28,9 @@ func (this *TaskController) Import() {
 	var params ImportRequest
 
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
-	tid, err := importer.Import(params.ConfigPath)
+
+	tid, err := importer.Import(params.ConfigPath, &params.ConfigBody)
+
 	if err == nil {
 		res.Code = 0
 		res.Message = fmt.Sprintf("Import task %s submit successfully", tid)

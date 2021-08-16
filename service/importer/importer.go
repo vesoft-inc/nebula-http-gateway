@@ -28,17 +28,23 @@ type ActionResult struct {
 	TaskStatus string   `json:"taskStatus"`
 }
 
-func Import(configPath string) (tid string, err error) {
+func Import(configPath string, configBody *config.YAMLConfig) (tid string, err error) {
+	var conf *config.YAMLConfig
 
-	path := filepath.Join(
-		beego.AppConfig.String("uploadspath"),
-		configPath,
-	)
+	if configPath != "" {
+		conf, err = config.Parse(
+			filepath.Join(
+				beego.AppConfig.String("uploadspath"),
+				configPath,
+			),
+		)
 
-	conf, err := config.Parse(path)
-	if err != nil {
-		beego.Error(err.(importerErrors.ImporterError))
-		return tid, err.(importerErrors.ImporterError)
+		if err != nil {
+			beego.Error(err.(importerErrors.ImporterError))
+			return tid, err.(importerErrors.ImporterError)
+		}
+	} else {
+		conf = configBody
 	}
 
 	if err := conf.ValidateAndReset(""); err != nil {
@@ -46,13 +52,12 @@ func Import(configPath string) (tid string, err error) {
 	}
 
 	tid = NewTaskID()
-
-	beego.Debug(fmt.Sprintf("Start a import task: `%s` with config: `%s`", tid, path))
-
 	task := &Task{
 		Runner: &cmd.Runner{},
 	}
 	GetTaskMgr().PutTask(tid, task)
+
+	beego.Debug(fmt.Sprintf("Start a import task: `%s`", tid))
 
 	go func() {
 		result := ImportResult{}
@@ -69,12 +74,12 @@ func Import(configPath string) (tid string, err error) {
 			result.ErrorResult.ErrorCode = err.ErrCode
 			result.ErrorResult.ErrorMsg = err.ErrMsg.Error()
 
-			beego.Error(fmt.Sprintf("Failed to finish a import task: `%s` with config: `%s`, task result: `%v`", tid, path, result))
+			beego.Error(fmt.Sprintf("Failed to finish a import task: `%s`, task result: `%v`", tid, result))
 		} else {
 			result.FailedRows = task.Runner.NumFailed
 			GetTaskMgr().DelTask(tid)
 
-			beego.Debug(fmt.Sprintf("Success to finish a import task: `%s` with config: `%s`, task result: `%v`", tid, path, result))
+			beego.Debug(fmt.Sprintf("Success to finish a import task: `%s`, task result: `%v`", tid, result))
 		}
 	}()
 	return tid, nil
