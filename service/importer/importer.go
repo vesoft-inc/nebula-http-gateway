@@ -3,12 +3,12 @@ package importer
 import (
 	"errors"
 	"fmt"
+	"log"
 	"path/filepath"
 	"strconv"
 	"time"
 
 	"github.com/astaxie/beego"
-	"github.com/vesoft-inc/nebula-importer/pkg/cmd"
 	"github.com/vesoft-inc/nebula-importer/pkg/config"
 	importerErrors "github.com/vesoft-inc/nebula-importer/pkg/errors"
 )
@@ -24,11 +24,11 @@ type ImportResult struct {
 }
 
 type ActionResult struct {
-	TaskIDs    []string `json:"taskIDs"`
-	TaskStatus string   `json:"taskStatus"`
+	Results []Task `json:"results"`
+	Msg     string `json:"msg"`
 }
 
-func Import(configPath string, configBody *config.YAMLConfig) (tid string, err error) {
+func Import(taskID string, configPath string, configBody *config.YAMLConfig) (err error) {
 	var conf *config.YAMLConfig
 
 	if configPath != "" {
@@ -41,48 +41,50 @@ func Import(configPath string, configBody *config.YAMLConfig) (tid string, err e
 
 		if err != nil {
 			beego.Error(err.(importerErrors.ImporterError))
-			return tid, err.(importerErrors.ImporterError)
+			return err.(importerErrors.ImporterError)
 		}
 	} else {
 		conf = configBody
 	}
 
 	if err := conf.ValidateAndReset(""); err != nil {
-		return tid, err
+		return err
 	}
 
-	tid = NewTaskID()
-	task := &Task{
-		Runner: &cmd.Runner{},
-	}
-	GetTaskMgr().PutTask(tid, task)
+	task := NewTask(taskID)
+	GetTaskMgr().PutTask(taskID, &task)
 
-	beego.Debug(fmt.Sprintf("Start a import task: `%s`", tid))
+	beego.Debug(fmt.Sprintf("Start a import task: `%s`", taskID))
 
 	go func() {
 		result := ImportResult{}
+
 		now := time.Now()
-		task.Runner.Run(conf)
-		task.TimeCost = time.Since(now).Milliseconds()
+		task.GetRunner().Run(conf)
+		timeCost := time.Since(now).Milliseconds()
 
-		result.TaskId = tid
-		result.TimeCost = fmt.Sprintf("%dms", task.TimeCost)
+		result.TaskId = taskID
+		result.TimeCost = fmt.Sprintf("%dms", timeCost)
 
-		if rerr := task.Runner.Error(); rerr != nil {
+		if rerr := task.GetRunner().Error(); rerr != nil {
+			task.TaskStatus = StatusAborted.String()
+
 			err, _ := rerr.(importerErrors.ImporterError)
 
 			result.ErrorResult.ErrorCode = err.ErrCode
 			result.ErrorResult.ErrorMsg = err.ErrMsg.Error()
 
-			beego.Error(fmt.Sprintf("Failed to finish a import task: `%s`, task result: `%v`", tid, result))
+			beego.Error(fmt.Sprintf("Failed to finish a import task: `%s`, task result: `%v`", taskID, result))
 		} else {
-			result.FailedRows = task.Runner.NumFailed
-			GetTaskMgr().DelTask(tid)
+			task.TaskStatus = StatusStoped.String()
 
-			beego.Debug(fmt.Sprintf("Success to finish a import task: `%s`, task result: `%v`", tid, result))
+			result.FailedRows = task.GetRunner().NumFailed
+			GetTaskMgr().DelTask(taskID)
+
+			beego.Debug(fmt.Sprintf("Success to finish a import task: `%s`, task result: `%v`", taskID, result))
 		}
 	}()
-	return tid, nil
+	return nil
 }
 
 func ImportAction(taskID string, taskAction TaskAction) (result ActionResult, err error) {
@@ -91,48 +93,14 @@ func ImportAction(taskID string, taskAction TaskAction) (result ActionResult, er
 	result = ActionResult{}
 
 	switch taskAction {
-	case Stop:
-		if ok := GetTaskMgr().StopTask(taskID); !ok {
-			tid, _ := strconv.ParseUint(taskID, 0, 64)
-			if tid > GetTaskID() {
-				result.TaskStatus = "Task not exist"
-			} else {
-				result.TaskStatus = "Task has stoped"
-			}
-		} else {
-			result.TaskStatus = "Task stop successfully"
-		}
-	case StopAll:
-		tids := GetTaskMgr().GetAllTaskIDs()
-		result.TaskIDs = make([]string, 0, len(tids))
-
-		for _, tid := range tids {
-			GetTaskMgr().StopTask(tid)
-			result.TaskIDs = append(result.TaskIDs, tid)
-		}
-
-		result.TaskStatus = "Tasks stop successfully"
-	case Query:
-		if _, ok := GetTaskMgr().GetTask(taskID); !ok {
-			tid, _ := strconv.ParseUint(taskID, 0, 64)
-			if tid > GetTaskID() {
-				result.TaskStatus = "Task not exist"
-			} else {
-				result.TaskStatus = "Task has stoped"
-			}
-		} else {
-			result.TaskStatus = "Task is processing"
-		}
-	case QueryAll:
-		tids := GetTaskMgr().GetAllTaskIDs()
-		result.TaskIDs = make([]string, 0, len(tids))
-
-		for _, tid := range tids {
-			GetTaskMgr().StopTask(tid)
-			result.TaskIDs = append(result.TaskIDs, tid)
-		}
-
-		result.TaskStatus = "Tasks are processing"
+	case ActionQuery:
+		result.Msg = actionQuery(taskID, &result)
+	case ActionQueryAll:
+		result.Msg = actionQueryAll(&result)
+	case ActionStop:
+		result.Msg = actionStop(taskID, &result)
+	case ActionStopAll:
+		result.Msg = actionStopAll(&result)
 	default:
 		err = errors.New("unknown task action")
 	}
@@ -140,4 +108,54 @@ func ImportAction(taskID string, taskAction TaskAction) (result ActionResult, er
 	beego.Debug(fmt.Sprintf("The import task action: `%s` for task: `%s` finished, action result: `%v`", taskAction.String(), taskID, result))
 
 	return result, err
+}
+
+func actionQuery(taskID string, result *ActionResult) (msg string) {
+	task := Task{}
+
+	tid, _ := strconv.ParseUint(taskID, 0, 64)
+
+	log.Println(tid)
+
+	if tid > GetTaskID() {
+		task.TaskID = taskID
+		task.TaskStatus = StatusNotExisted.String()
+		result.Results = append(result.Results, task)
+		return "Task not existed"
+	}
+
+	if t, ok := GetTaskMgr().GetTask(taskID); !ok {
+		task.TaskID = taskID
+		task.TaskStatus = StatusStoped.String()
+		result.Results = append(result.Results, task)
+		return "Task has stoped"
+	} else {
+		task.TaskID = t.TaskID
+		task.TaskStatus = t.TaskStatus
+		result.Results = append(result.Results, task)
+		return "Task is processing"
+	}
+}
+
+func actionQueryAll(result *ActionResult) (msg string) {
+	taskIDs := GetTaskMgr().GetAllTaskIDs()
+	for _, taskID := range taskIDs {
+		actionQuery(taskID, result)
+	}
+
+	return "Tasks are processing"
+}
+
+func actionStop(taskID string, result *ActionResult) (msg string) {
+	GetTaskMgr().StopTask(taskID)
+	return actionQuery(taskID, result)
+}
+
+func actionStopAll(result *ActionResult) (msg string) {
+	taskIDs := GetTaskMgr().GetAllTaskIDs()
+	for _, taskID := range taskIDs {
+		actionStop(taskID, result)
+	}
+
+	return "Tasks stop successfully"
 }

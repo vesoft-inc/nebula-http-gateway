@@ -29,20 +29,21 @@ func (this *TaskController) Import() {
 	var (
 		res    Response
 		params ImportRequest
-		tid    string
+		tid    string = importer.NewTaskID()
 		err    error
 	)
 
 	err = json.Unmarshal(this.Ctx.Input.RequestBody, &params)
 
 	if err == nil {
-		tid, err = importer.Import(params.ConfigPath, &params.ConfigBody)
+		err = importer.Import(tid, params.ConfigPath, &params.ConfigBody)
 	} else {
 		err = importerErrors.Wrap(importerErrors.InvalidConfigPathOrFormat, err)
 	}
 
 	if err == nil {
 		res.Code = 0
+		res.Data = []string{tid}
 		res.Message = fmt.Sprintf("Import task %s submit successfully", tid)
 	} else {
 		res.Code = -1

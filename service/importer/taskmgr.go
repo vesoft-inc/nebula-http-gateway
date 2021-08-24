@@ -21,8 +21,22 @@ type TaskMgr struct {
 }
 
 type Task struct {
-	Runner   *cmd.Runner
-	TimeCost int64
+	runner *cmd.Runner
+
+	TaskID     string `json:"taskID"`
+	TaskStatus string `json:"taskStatus"`
+}
+
+func NewTask(taskID string) Task {
+	return Task{
+		runner:     &cmd.Runner{},
+		TaskID:     taskID,
+		TaskStatus: StatusProcessing.String(),
+	}
+}
+
+func (task *Task) GetRunner() *cmd.Runner {
+	return task.runner
 }
 
 func GetTaskMgr() *TaskMgr {
@@ -39,8 +53,8 @@ func GetTaskID() (tid uint64) {
 func NewTaskID() (tid string) {
 	mux.Lock()
 	defer mux.Unlock()
-	tid = fmt.Sprintf("%d", taskID)
 	taskID++
+	tid = fmt.Sprintf("%d", taskID)
 	return tid
 }
 
@@ -62,7 +76,7 @@ func (mgr *TaskMgr) DelTask(tid string) {
 
 func (mgr *TaskMgr) StopTask(tid string) bool {
 	if task, ok := mgr.GetTask(tid); ok {
-		for _, r := range task.Runner.Readers {
+		for _, r := range task.GetRunner().Readers {
 			r.Stop()
 		}
 
@@ -87,37 +101,75 @@ func (mgr *TaskMgr) GetAllTaskIDs() []string {
 type TaskAction int
 
 const (
-	UnknownAction TaskAction = iota
-	Query
-	QueryAll
-	Stop
-	StopAll
+	ActionUnknown TaskAction = iota
+	ActionQuery
+	ActionQueryAll
+	ActionStop
+	ActionStopAll
 )
 
 var taskActionMap = map[TaskAction]string{
-	Query:    "query",
-	QueryAll: "queryAll",
-	Stop:     "stop",
-	StopAll:  "stopAll",
+	ActionQuery:    "actionQuery",
+	ActionQueryAll: "actionQueryAll",
+	ActionStop:     "actionStop",
+	ActionStopAll:  "actionStopAll",
 }
 
 var taskActionRevMap = map[string]TaskAction{
-	"query":    Query,
-	"queryAll": QueryAll,
-	"stop":     Stop,
-	"stopAll":  StopAll,
+	"actionQuery":    ActionQuery,
+	"actionQueryAll": ActionQueryAll,
+	"actionStop":     ActionStop,
+	"actionStopAll":  ActionStopAll,
 }
 
 func NewTaskAction(action string) TaskAction {
 	if v, ok := taskActionRevMap[action]; ok {
 		return v
 	}
-	return UnknownAction
+	return ActionUnknown
 }
 
 func (action TaskAction) String() string {
 	if v, ok := taskActionMap[action]; ok {
 		return v
 	}
-	return "unknownAction"
+	return "actionUnknown"
+}
+
+type TaskStatus int
+
+const (
+	StatusUnknown TaskStatus = iota
+	StatusStoped
+	StatusProcessing
+	StatusNotExisted
+	StatusAborted
+)
+
+var taskStatusMap = map[TaskStatus]string{
+	StatusStoped:     "statusStoped",
+	StatusProcessing: "statusProcessing",
+	StatusNotExisted: "statusNotExisted",
+	StatusAborted:    "statusAborted",
+}
+
+var taskStatusRevMap = map[string]TaskStatus{
+	"statusStoped":     StatusStoped,
+	"statusProcessing": StatusProcessing,
+	"statusNotExisted": StatusNotExisted,
+	"statusAborted":    StatusAborted,
+}
+
+func NewTaskStatus(status string) TaskStatus {
+	if v, ok := taskStatusRevMap[status]; ok {
+		return v
+	}
+	return StatusUnknown
+}
+
+func (status TaskStatus) String() string {
+	if v, ok := taskStatusMap[status]; ok {
+		return v
+	}
+	return "statusUnknown"
 }
