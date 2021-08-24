@@ -3,7 +3,6 @@ package importer
 import (
 	"errors"
 	"fmt"
-	"log"
 	"path/filepath"
 	"strconv"
 	"time"
@@ -114,8 +113,6 @@ func actionQuery(taskID string, result *ActionResult) (msg string) {
 	task := Task{}
 
 	tid, _ := strconv.ParseUint(taskID, 0, 64)
-
-	log.Println(tid)
 
 	if tid > GetTaskID() {
 		task.TaskID = taskID
