@@ -170,9 +170,11 @@ response:
 
 ```json
 {
-  "code": 0,
-  "data": null,
-  "message": "Import task 0 submit successfully"
+    "code": 0,
+    "data": [
+        "1"
+    ],
+    "message": "Import task 1 submit successfully"
 }
 ```
 
@@ -182,8 +184,8 @@ The requested json body
 
 ```json
 {
-  "taskID": 0,
-  "taskAction": "stopAll"
+  "taskID": "1",
+  "taskAction": "actionQuery"
 }
 ```
 
@@ -192,24 +194,27 @@ The description of the parameters is as follows.
 | Field      | Description                                          |
 | ---------- | ---------------------------------------------------- |
 | taskID     | Set the task id to do task action                    |
-| taskAction | Enums, include: stop, stopAll, query, queryAll, etc. |
+| taskAction | The task action enums, include: actionQuery, actionQueryAll, actionStop, actionStopAll, etc. |
 
 ```bash
-$ curl -X POST -d '{"taskID": 0, "taskAction": "stopAll"}' http://127.0.0.1:8080/api/task/import/action
+$ curl -X POST -d '{"taskID": "1", "taskAction": "actionQuery"}' http://127.0.0.1:8080/api/task/import/action
 ```
 
 response:
 
 ```json
 {
-    "code": 0,
-    "data": {
-        "taskIDs": [
-            "0"
-        ],
-        "taskStatus": "Task stop successfully"
-    },
-    "message": "Processing task action successfully"
+  "code": 0,
+  "data": {
+    "results": [
+      {
+        "taskID": "1",
+        "taskStatus": "statusProcessing"
+      }
+    ],
+    "msg": "Task is processing"
+  },
+  "message": "Processing a task action successfully"
 }
 ```
 
