@@ -113,7 +113,7 @@ func actionQuery(taskID string, result *ActionResult) (msg string) {
 	// a temp task obj for response
 	task := Task{}
 
-	if t, ok := GetTaskMgr().GetTask(taskID); !ok {
+	if t, ok := GetTaskMgr().GetTask(taskID); ok {
 		task.TaskID = t.TaskID
 		task.TaskStatus = t.TaskStatus
 		result.Results = append(result.Results, task)
