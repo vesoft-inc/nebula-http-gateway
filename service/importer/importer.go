@@ -28,7 +28,11 @@ type ActionResult struct {
 }
 
 func Import(taskID string, configPath string, configBody *config.YAMLConfig) (err error) {
+
+	beego.Debug(fmt.Sprintf("Start a import task: `%s`", taskID))
+
 	var conf *config.YAMLConfig
+	task, _ := GetTaskMgr().GetTask(taskID)
 
 	if configPath != "" {
 		conf, err = config.Parse(
@@ -50,11 +54,6 @@ func Import(taskID string, configPath string, configBody *config.YAMLConfig) (er
 		return err
 	}
 
-	task := NewTask(taskID)
-	GetTaskMgr().PutTask(taskID, &task)
-
-	beego.Debug(fmt.Sprintf("Start a import task: `%s`", taskID))
-
 	go func() {
 		result := ImportResult{}
 
@@ -66,6 +65,7 @@ func Import(taskID string, configPath string, configBody *config.YAMLConfig) (er
 		result.TimeCost = fmt.Sprintf("%dms", timeCost)
 
 		if rerr := task.GetRunner().Error(); rerr != nil {
+			// task err: import task not finished err handle
 			task.TaskStatus = StatusAborted.String()
 
 			err, _ := rerr.(importerErrors.ImporterError)
@@ -114,7 +114,7 @@ func actionQuery(taskID string, result *ActionResult) (msg string) {
 
 	tid, _ := strconv.ParseUint(taskID, 0, 64)
 
-	if tid > GetTaskID() {
+	if tid > GetTaskID() || tid <= 0 {
 		task.TaskID = taskID
 		task.TaskStatus = StatusNotExisted.String()
 		result.Results = append(result.Results, task)
@@ -130,7 +130,7 @@ func actionQuery(taskID string, result *ActionResult) (msg string) {
 		task.TaskID = t.TaskID
 		task.TaskStatus = t.TaskStatus
 		result.Results = append(result.Results, task)
-		return "Task is processing"
+		return "Task query successfully"
 	}
 }
 
@@ -140,12 +140,13 @@ func actionQueryAll(result *ActionResult) (msg string) {
 		actionQuery(taskID, result)
 	}
 
-	return "Tasks are processing"
+	return "Tasks query successfully"
 }
 
 func actionStop(taskID string, result *ActionResult) (msg string) {
 	GetTaskMgr().StopTask(taskID)
-	return actionQuery(taskID, result)
+	actionQuery(taskID, result)
+	return "Task stop successfully"
 }
 
 func actionStopAll(result *ActionResult) (msg string) {

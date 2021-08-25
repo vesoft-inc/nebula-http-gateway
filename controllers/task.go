@@ -29,25 +29,32 @@ func (this *TaskController) Import() {
 	var (
 		res    Response
 		params ImportRequest
-		tid    string = importer.NewTaskID()
+		taskID string = importer.NewTaskID()
 		err    error
 	)
 
+	task := importer.NewTask(taskID)
+	importer.GetTaskMgr().PutTask(taskID, &task)
+
 	err = json.Unmarshal(this.Ctx.Input.RequestBody, &params)
 
-	if err == nil {
-		err = importer.Import(tid, params.ConfigPath, &params.ConfigBody)
-	} else {
+	if err != nil {
 		err = importerErrors.Wrap(importerErrors.InvalidConfigPathOrFormat, err)
+	} else {
+		err = importer.Import(taskID, params.ConfigPath, &params.ConfigBody)
 	}
 
-	if err == nil {
-		res.Code = 0
-		res.Data = []string{tid}
-		res.Message = fmt.Sprintf("Import task %s submit successfully", tid)
-	} else {
+	if err != nil {
+		// task err: import task not start err handle
+		task.TaskStatus = importer.StatusAborted.String()
+		beego.Error(fmt.Sprintf("Failed to start a import task: `%s`, task result: `%v`", taskID, err))
+
 		res.Code = -1
 		res.Message = err.Error()
+	} else {
+		res.Code = 0
+		res.Data = []string{taskID}
+		res.Message = fmt.Sprintf("Import task %s submit successfully", taskID)
 	}
 	this.Data["json"] = &res
 	this.ServeJSON()
