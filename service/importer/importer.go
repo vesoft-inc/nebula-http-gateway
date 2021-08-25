@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
-	"strconv"
 	"time"
 
 	"github.com/astaxie/beego"
@@ -32,7 +31,6 @@ func Import(taskID string, configPath string, configBody *config.YAMLConfig) (er
 	beego.Debug(fmt.Sprintf("Start a import task: `%s`", taskID))
 
 	var conf *config.YAMLConfig
-	task, _ := GetTaskMgr().GetTask(taskID)
 
 	if configPath != "" {
 		conf, err = config.Parse(
@@ -53,6 +51,8 @@ func Import(taskID string, configPath string, configBody *config.YAMLConfig) (er
 	if err := conf.ValidateAndReset(""); err != nil {
 		return err
 	}
+
+	task, _ := GetTaskMgr().GetTask(taskID)
 
 	go func() {
 		result := ImportResult{}
@@ -75,7 +75,7 @@ func Import(taskID string, configPath string, configBody *config.YAMLConfig) (er
 
 			beego.Error(fmt.Sprintf("Failed to finish a import task: `%s`, task result: `%v`", taskID, result))
 		} else {
-			task.TaskStatus = StatusStoped.String()
+			task.TaskStatus = StatusFinished.String()
 
 			result.FailedRows = task.GetRunner().NumFailed
 			GetTaskMgr().DelTask(taskID)
@@ -110,27 +110,19 @@ func ImportAction(taskID string, taskAction TaskAction) (result ActionResult, er
 }
 
 func actionQuery(taskID string, result *ActionResult) (msg string) {
+	// a temp task obj for response
 	task := Task{}
 
-	tid, _ := strconv.ParseUint(taskID, 0, 64)
-
-	if tid > GetTaskID() || tid <= 0 {
-		task.TaskID = taskID
-		task.TaskStatus = StatusNotExisted.String()
-		result.Results = append(result.Results, task)
-		return "Task not existed"
-	}
-
 	if t, ok := GetTaskMgr().GetTask(taskID); !ok {
-		task.TaskID = taskID
-		task.TaskStatus = StatusStoped.String()
-		result.Results = append(result.Results, task)
-		return "Task has stoped"
-	} else {
 		task.TaskID = t.TaskID
 		task.TaskStatus = t.TaskStatus
 		result.Results = append(result.Results, task)
 		return "Task query successfully"
+	} else {
+		task.TaskID = taskID
+		task.TaskStatus = StatusNotExisted.String()
+		result.Results = append(result.Results, task)
+		return "Task not existed"
 	}
 }
 
@@ -144,8 +136,14 @@ func actionQueryAll(result *ActionResult) (msg string) {
 }
 
 func actionStop(taskID string, result *ActionResult) (msg string) {
-	GetTaskMgr().StopTask(taskID)
+	ok := GetTaskMgr().StopTask(taskID)
+
 	actionQuery(taskID, result)
+
+	if !ok {
+		return "Task has stoped or finished"
+	}
+
 	return "Task stop successfully"
 }
 

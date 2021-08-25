@@ -1,23 +1,33 @@
 package importer
 
 import (
+	"database/sql"
 	"fmt"
+	"log"
+	"os"
+	"strconv"
 	"sync"
 
+	"github.com/astaxie/beego"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/vesoft-inc/nebula-importer/pkg/cmd"
 )
 
 var (
 	taskmgr *TaskMgr = &TaskMgr{
 		tasks: sync.Map{},
+		db:    &sql.DB{},
 	}
 
-	taskID uint64 = 0
-	mux    sync.Mutex
+	tid uint64 = 0
+
+	dbMux  sync.Mutex
+	tidMux sync.Mutex
 )
 
 type TaskMgr struct {
 	tasks sync.Map
+	db    *sql.DB
 }
 
 type Task struct {
@@ -25,6 +35,10 @@ type Task struct {
 
 	TaskID     string `json:"taskID"`
 	TaskStatus string `json:"taskStatus"`
+}
+
+func init() {
+	initDB()
 }
 
 func NewTask(taskID string) Task {
@@ -43,44 +57,59 @@ func GetTaskMgr() *TaskMgr {
 	return taskmgr
 }
 
-func GetTaskID() (tid uint64) {
-	mux.Lock()
-	defer mux.Unlock()
-	tid = taskID
-	return tid
+func GetTaskID() (_tid uint64) {
+	tidMux.Lock()
+	defer tidMux.Unlock()
+	_tid = tid
+	return _tid
 }
 
-func NewTaskID() (tid string) {
-	mux.Lock()
-	defer mux.Unlock()
-	taskID++
-	tid = fmt.Sprintf("%d", taskID)
-	return tid
+func NewTaskID() (taskID string) {
+	tidMux.Lock()
+	defer tidMux.Unlock()
+	tid++
+	taskID = fmt.Sprintf("%d", tid)
+	return taskID
 }
 
-func (mgr *TaskMgr) GetTask(tid string) (*Task, bool) {
-	if task, ok := mgr.tasks.Load(tid); ok {
-		return task.(*Task), true
+func (mgr *TaskMgr) GetTask(taskID string) (*Task, bool) {
+	_tid, _ := strconv.ParseUint(taskID, 0, 64)
+
+	if _tid > GetTaskID() || tid <= 0 {
+		return nil, false
 	}
 
-	return nil, false
+	if task, ok := mgr.getTaskFromMap(taskID); ok {
+		return task, true
+	}
+
+	return mgr.getTaskFromSQL(taskID), true
 }
 
-func (mgr *TaskMgr) PutTask(tid string, task *Task) {
-	mgr.tasks.Store(tid, task)
+func (mgr *TaskMgr) PutTask(taskID string, task *Task) {
+	mgr.tasks.Store(taskID, task)
 }
 
-func (mgr *TaskMgr) DelTask(tid string) {
-	mgr.tasks.Delete(tid)
+func (mgr *TaskMgr) DelTask(taskID string) {
+	task, ok := mgr.getTaskFromMap(taskID)
+
+	if !ok {
+		return
+	}
+
+	mgr.tasks.Delete(taskID)
+	mgr.putTaskIntoSQL(taskID, task)
 }
 
-func (mgr *TaskMgr) StopTask(tid string) bool {
-	if task, ok := mgr.GetTask(tid); ok {
+func (mgr *TaskMgr) StopTask(taskID string) bool {
+	if task, ok := mgr.getTaskFromMap(taskID); ok {
 		for _, r := range task.GetRunner().Readers {
 			r.Stop()
 		}
 
-		mgr.DelTask(tid)
+		task.TaskStatus = StatusStoped.String()
+
+		mgr.DelTask(taskID)
 
 		return true
 	}
@@ -96,6 +125,68 @@ func (mgr *TaskMgr) GetAllTaskIDs() []string {
 	})
 
 	return ids
+}
+
+func initDB() {
+	dbFilePath := beego.AppConfig.String("sqlitedbfilepath")
+
+	os.Remove(dbFilePath)
+
+	_db, err := sql.Open("sqlite3", dbFilePath)
+
+	if err != nil {
+		beego.Emergency(err.Error())
+		log.Panic(err)
+	}
+
+	GetTaskMgr().db = _db
+
+	sqlStmt := `
+		create table tasks (taskID integer not null primary key, taskStatus text);
+		delete from tasks;
+	`
+	_, err = GetTaskMgr().db.Exec(sqlStmt)
+
+	if err != nil {
+		beego.Emergency(fmt.Sprintf("%q: %s\n", err, sqlStmt))
+		log.Panicf("%q: %s\n", err, sqlStmt)
+	}
+
+}
+
+func (mgr *TaskMgr) getTaskFromMap(taskID string) (*Task, bool) {
+	if task, ok := mgr.tasks.Load(taskID); ok {
+		return task.(*Task), true
+	}
+
+	return nil, false
+}
+
+func (mgr *TaskMgr) getTaskFromSQL(taskID string) *Task {
+	dbMux.Lock()
+	defer dbMux.Unlock()
+
+	var taskStatus string
+
+	rows, _ := mgr.db.Query(fmt.Sprintf("SELECT taskStatus FROM tasks WHERE taskID=%s", taskID))
+
+	for rows.Next() {
+		_ = rows.Scan(&taskStatus)
+	}
+
+	return &Task{
+		TaskID:     taskID,
+		TaskStatus: taskStatus,
+	}
+}
+
+func (mgr *TaskMgr) putTaskIntoSQL(taskID string, task *Task) {
+	dbMux.Lock()
+	defer dbMux.Unlock()
+
+	stmt, _ := mgr.db.Prepare("INSERT INTO tasks(taskID, taskStatus) values(?,?)")
+
+	_, _ = stmt.Exec(taskID, task.TaskStatus)
 }
 
 type TaskAction int
@@ -138,8 +229,13 @@ func (action TaskAction) String() string {
 
 type TaskStatus int
 
+/*
+	the task in memory (map) has 2 status: processing, aborted;
+	and the task in local sql has 2 status: finished, stoped;
+*/
 const (
 	StatusUnknown TaskStatus = iota
+	StatusFinished
 	StatusStoped
 	StatusProcessing
 	StatusNotExisted
@@ -147,6 +243,7 @@ const (
 )
 
 var taskStatusMap = map[TaskStatus]string{
+	StatusFinished:   "statusFinished",
 	StatusStoped:     "statusStoped",
 	StatusProcessing: "statusProcessing",
 	StatusNotExisted: "statusNotExisted",
@@ -154,6 +251,7 @@ var taskStatusMap = map[TaskStatus]string{
 }
 
 var taskStatusRevMap = map[string]TaskStatus{
+	"statusFinished":   StatusFinished,
 	"statusStoped":     StatusStoped,
 	"statusProcessing": StatusProcessing,
 	"statusNotExisted": StatusNotExisted,
