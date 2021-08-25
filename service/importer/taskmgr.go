@@ -21,8 +21,7 @@ var (
 
 	tid uint64 = 0
 
-	dbMux  sync.Mutex
-	tidMux sync.Mutex
+	mux sync.Mutex
 )
 
 type TaskMgr struct {
@@ -53,23 +52,23 @@ func (task *Task) GetRunner() *cmd.Runner {
 	return task.runner
 }
 
-func GetTaskMgr() *TaskMgr {
-	return taskmgr
-}
-
 func GetTaskID() (_tid uint64) {
-	tidMux.Lock()
-	defer tidMux.Unlock()
+	mux.Lock()
+	defer mux.Unlock()
 	_tid = tid
 	return _tid
 }
 
 func NewTaskID() (taskID string) {
-	tidMux.Lock()
-	defer tidMux.Unlock()
+	mux.Lock()
+	defer mux.Unlock()
 	tid++
 	taskID = fmt.Sprintf("%d", tid)
 	return taskID
+}
+
+func GetTaskMgr() *TaskMgr {
+	return taskmgr
 }
 
 func (mgr *TaskMgr) GetTask(taskID string) (*Task, bool) {
@@ -163,9 +162,6 @@ func (mgr *TaskMgr) getTaskFromMap(taskID string) (*Task, bool) {
 }
 
 func (mgr *TaskMgr) getTaskFromSQL(taskID string) *Task {
-	dbMux.Lock()
-	defer dbMux.Unlock()
-
 	var taskStatus string
 
 	rows, _ := mgr.db.Query(fmt.Sprintf("SELECT taskStatus FROM tasks WHERE taskID=%s", taskID))
@@ -181,9 +177,6 @@ func (mgr *TaskMgr) getTaskFromSQL(taskID string) *Task {
 }
 
 func (mgr *TaskMgr) putTaskIntoSQL(taskID string, task *Task) {
-	dbMux.Lock()
-	defer dbMux.Unlock()
-
 	stmt, _ := mgr.db.Prepare("INSERT INTO tasks(taskID, taskStatus) values(?,?)")
 
 	_, _ = stmt.Exec(taskID, task.TaskStatus)
