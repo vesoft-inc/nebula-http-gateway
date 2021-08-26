@@ -1,10 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
+	"time"
 
 	_ "github.com/vesoft-inc/nebula-http-gateway/routers"
 
@@ -55,5 +59,31 @@ func main() {
 		log.Fatalf("create file %s with error: %s", absLogsPath, err.Error())
 	}
 
+	/*
+		use channel to wait server quit.
+	*/
+	done := make(chan bool, 1)
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+
+	go func() {
+		<-quit
+
+		beego.Info("server is shutting down")
+
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
+		defer cancel()
+
+		beego.BeeApp.Server.SetKeepAlivesEnabled(false)
+		if err := beego.BeeApp.Server.Shutdown(ctx); err != nil {
+			beego.Error(err.Error())
+		}
+
+		close(done)
+	}()
+
 	beego.Run()
+
+	<-done
+	beego.Info("server closed")
 }
