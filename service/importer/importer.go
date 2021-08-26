@@ -93,13 +93,13 @@ func ImportAction(taskID string, taskAction TaskAction) (result ActionResult, er
 
 	switch taskAction {
 	case ActionQuery:
-		result.Msg = actionQuery(taskID, &result)
+		actionQuery(taskID, &result)
 	case ActionQueryAll:
-		result.Msg = actionQueryAll(&result)
+		actionQueryAll(&result)
 	case ActionStop:
-		result.Msg = actionStop(taskID, &result)
+		actionStop(taskID, &result)
 	case ActionStopAll:
-		result.Msg = actionStopAll(&result)
+		actionStopAll(&result)
 	default:
 		err = errors.New("unknown task action")
 	}
@@ -109,7 +109,7 @@ func ImportAction(taskID string, taskAction TaskAction) (result ActionResult, er
 	return result, err
 }
 
-func actionQuery(taskID string, result *ActionResult) (msg string) {
+func actionQuery(taskID string, result *ActionResult) {
 	// a temp task obj for response
 	task := Task{}
 
@@ -117,41 +117,49 @@ func actionQuery(taskID string, result *ActionResult) (msg string) {
 		task.TaskID = t.TaskID
 		task.TaskStatus = t.TaskStatus
 		result.Results = append(result.Results, task)
-		return "Task query successfully"
+		result.Msg = "Task query successfully"
 	} else {
 		task.TaskID = taskID
 		task.TaskStatus = StatusNotExisted.String()
 		result.Results = append(result.Results, task)
-		return "Task not existed"
+		result.Msg = "Task not existed"
 	}
 }
 
-func actionQueryAll(result *ActionResult) (msg string) {
+/*
+	`actionQueryAll` will return all tasks with status Aborted or Processing
+*/
+func actionQueryAll(result *ActionResult) {
 	taskIDs := GetTaskMgr().GetAllTaskIDs()
 	for _, taskID := range taskIDs {
 		actionQuery(taskID, result)
 	}
 
-	return "Tasks query successfully"
+	result.Msg = "Tasks query successfully"
 }
 
-func actionStop(taskID string, result *ActionResult) (msg string) {
+func actionStop(taskID string, result *ActionResult) {
 	ok := GetTaskMgr().StopTask(taskID)
 
 	actionQuery(taskID, result)
 
 	if !ok {
-		return "Task has stoped or finished"
+		result.Msg = "Task has stoped or finished"
 	}
 
-	return "Task stop successfully"
+	result.Msg = "Task stop successfully"
 }
 
-func actionStopAll(result *ActionResult) (msg string) {
+/*
+	`actionStopAll` will stop all tasks with status Processing
+*/
+func actionStopAll(result *ActionResult) {
 	taskIDs := GetTaskMgr().GetAllTaskIDs()
 	for _, taskID := range taskIDs {
-		actionStop(taskID, result)
+		if _task, _ := GetTaskMgr().GetTask(taskID); _task.TaskStatus == StatusProcessing.String() {
+			actionStop(taskID, result)
+		}
 	}
 
-	return "Tasks stop successfully"
+	result.Msg = "Tasks stop successfully"
 }

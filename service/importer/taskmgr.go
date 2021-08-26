@@ -71,6 +71,9 @@ func GetTaskMgr() *TaskMgr {
 	return taskmgr
 }
 
+/*
+	`GetTask` get task from map and local sql
+*/
 func (mgr *TaskMgr) GetTask(taskID string) (*Task, bool) {
 	_tid, _ := strconv.ParseUint(taskID, 0, 64)
 
@@ -85,10 +88,17 @@ func (mgr *TaskMgr) GetTask(taskID string) (*Task, bool) {
 	return mgr.getTaskFromSQL(taskID), true
 }
 
+/*
+	`PutTask` put task into tasks map
+*/
 func (mgr *TaskMgr) PutTask(taskID string, task *Task) {
 	mgr.tasks.Store(taskID, task)
 }
 
+/*
+	`DelTask` will delete task in the map,
+	and put the task into local sql
+*/
 func (mgr *TaskMgr) DelTask(taskID string) {
 	task, ok := mgr.getTaskFromMap(taskID)
 
@@ -100,6 +110,10 @@ func (mgr *TaskMgr) DelTask(taskID string) {
 	mgr.putTaskIntoSQL(taskID, task)
 }
 
+/*
+	`StopTask` will change the task status to `StatusStoped`,
+	and then call `DelTask`
+*/
 func (mgr *TaskMgr) StopTask(taskID string) bool {
 	if task, ok := mgr.getTaskFromMap(taskID); ok {
 		for _, r := range task.GetRunner().Readers {
@@ -116,6 +130,9 @@ func (mgr *TaskMgr) StopTask(taskID string) bool {
 	return false
 }
 
+/*
+	`GetAllTaskIDs` will return all task ids in map
+*/
 func (mgr *TaskMgr) GetAllTaskIDs() []string {
 	ids := make([]string, 0)
 	mgr.tasks.Range(func(k, v interface{}) bool {
@@ -126,6 +143,9 @@ func (mgr *TaskMgr) GetAllTaskIDs() []string {
 	return ids
 }
 
+/*
+	`initDB` initialize local sql by open sql and create tasks table
+*/
 func initDB() {
 	dbFilePath := beego.AppConfig.String("sqlitedbfilepath")
 
