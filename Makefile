@@ -10,3 +10,6 @@ fmt:
 
 build: clean fmt
 	@go build -o nebula-httpd main.go
+
+run: build
+	./nebula-httpd

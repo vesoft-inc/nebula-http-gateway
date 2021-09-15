@@ -31,6 +31,7 @@ type ChannelResponse struct {
 type ChannelRequest struct {
 	Gql             string
 	ResponseChannel chan ChannelResponse
+	ParamsMap       common.ParamterMap
 }
 
 type Connection struct {
@@ -100,7 +101,7 @@ func NewConnection(address string, port int, username string, password string) (
 								}
 							}
 						}()
-						response, err := connection.session.Execute(gql)
+						response, err := connection.session.ExecuteWithParameter(gql, request.ParamsMap)
 						if protoErr, ok := err.(thrift.ProtocolException); ok && protoErr != nil &&
 							protoErr.TypeID() == thrift.UNKNOWN_PROTOCOL_EXCEPTION {
 							if strings.Contains(protoErr.Error(), "wsasend") ||

@@ -287,7 +287,7 @@ func Disconnect(nsid string) {
 	pool.Disconnect(nsid)
 }
 
-func Execute(nsid string, gql string) (result ExecuteResult, err error) {
+func Execute(nsid string, gql string, paramsMap common.ParamterMap) (result ExecuteResult, err error) {
 	result = ExecuteResult{
 		Headers: make([]string, 0),
 		Tables:  make([]map[string]common.Any, 0),
@@ -296,11 +296,11 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 	if err != nil {
 		return result, err
 	}
-
 	responseChannel := make(chan pool.ChannelResponse)
 	connection.RequestChannel <- pool.ChannelRequest{
 		Gql:             gql,
 		ResponseChannel: responseChannel,
+		ParamsMap:       paramsMap,
 	}
 	response := <-responseChannel
 	if response.Error != nil {

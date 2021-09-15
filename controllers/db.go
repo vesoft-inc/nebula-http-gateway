@@ -26,7 +26,8 @@ type Request struct {
 }
 
 type ExecuteRequest struct {
-	Gql string `json:"gql"`
+	Gql       string             `json:"gql"`
+	ParamsMap common.ParamterMap `json:"paramsMap"`
 }
 
 type Data map[string]interface{}
@@ -81,7 +82,7 @@ func (this *DatabaseController) Execute() {
 		res.Message = "connection refused for lack of session"
 	} else {
 		json.Unmarshal(this.Ctx.Input.RequestBody, &params)
-		result, err := dao.Execute(nsid.(string), params.Gql)
+		result, err := dao.Execute(nsid.(string), params.Gql, params.ParamsMap)
 		if err == nil {
 			res.Code = 0
 			res.Data = &result
