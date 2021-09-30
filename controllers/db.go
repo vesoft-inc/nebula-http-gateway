@@ -26,8 +26,8 @@ type Request struct {
 }
 
 type ExecuteRequest struct {
-	Gql       string             `json:"gql"`
-	ParamsMap common.ParamterMap `json:"paramsMap"`
+	Gql       string              `json:"gql"`
+	ParamsMap common.ParameterMap `json:"paramsMap"`
 }
 
 type Data map[string]interface{}

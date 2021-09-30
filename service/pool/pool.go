@@ -31,7 +31,7 @@ type ChannelResponse struct {
 type ChannelRequest struct {
 	Gql             string
 	ResponseChannel chan ChannelResponse
-	ParamsMap       common.ParamterMap
+	ParamsMap       common.ParameterMap
 }
 
 type Connection struct {

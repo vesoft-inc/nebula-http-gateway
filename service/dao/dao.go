@@ -287,7 +287,7 @@ func Disconnect(nsid string) {
 	pool.Disconnect(nsid)
 }
 
-func Execute(nsid string, gql string, paramsMap common.ParamterMap) (result ExecuteResult, err error) {
+func Execute(nsid string, gql string, paramsMap common.ParameterMap) (result ExecuteResult, err error) {
 	result = ExecuteResult{
 		Headers: make([]string, 0),
 		Tables:  make([]map[string]common.Any, 0),

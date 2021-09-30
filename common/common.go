@@ -2,4 +2,4 @@ package common
 
 type Any interface{}
 
-type ParamterMap map[string]interface{}
+type ParameterMap map[string]interface{}
