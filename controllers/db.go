@@ -57,6 +57,9 @@ func (this *DatabaseController) Connect() {
 func (this *DatabaseController) Home() {
 	var res Response
 	res.Code = 0
+	res.Data = "Run Successfully!"
+	res.Message = "Welcome to nebula http gateway!"
+	this.Data["json"] = &res
 	this.ServeJSON()
 }
 
