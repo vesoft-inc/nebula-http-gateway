@@ -139,3 +139,81 @@ response:
   "message": "Disconnect successfully"
 }
 ```
+
+#### Import API #### 
+
+The requested json body
+
+```json
+{
+  "configPath": "examples/v2/example.yaml"
+}
+```
+
+The description of the parameters is as follows.
+
+| Field      | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| configPath | `configPath` is a relative path that under the `uploadspath` in `app.conf`. |
+| configBody | `configBody` is the detail configuration with JSON format (instead of YAML format).|
+
+If you choose to use `configPath`, you need to make sure that the config file has been uploaded to `uploadspath`.
+
+```bash
+$ curl -X POST -d '{"configPath": "./examples/v2/example.yaml","configBody": {}}' http://127.0.0.1:8080/api/task/import
+```
+
+If you choose to use `configBody`, you need to set the `configPath` value to `""` and set the `configBody` as JSON format.
+
+response:
+
+```json
+{
+    "code": 0,
+    "data": [
+        "1"
+    ],
+    "message": "Import task 1 submit successfully"
+}
+```
+
+#### Action API ####
+
+The requested json body
+
+```json
+{
+  "taskID": "1",
+  "taskAction": "actionQuery"
+}
+```
+
+The description of the parameters is as follows.
+
+| Field      | Description                                          |
+| ---------- | ---------------------------------------------------- |
+| taskID     | Set the task id to do task action                    |
+| taskAction | The task action enums, include: actionQuery, actionQueryAll, actionStop, actionStopAll, etc. |
+
+```bash
+$ curl -X POST -d '{"taskID": "1", "taskAction": "actionQuery"}' http://127.0.0.1:8080/api/task/import/action
+```
+
+response:
+
+```json
+{
+  "code": 0,
+  "data": {
+    "results": [
+      {
+        "taskID": "1",
+        "taskStatus": "statusProcessing"
+      }
+    ],
+    "msg": "Task is processing"
+  },
+  "message": "Processing a task action successfully"
+}
+```
+

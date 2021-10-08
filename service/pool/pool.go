@@ -8,6 +8,7 @@ import (
 
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	"github.com/vesoft-inc/nebula-http-gateway/common"
+	"github.com/vesoft-inc/nebula-http-gateway/service/logger"
 
 	uuid "github.com/satori/go.uuid"
 	nebula "github.com/vesoft-inc/nebula-go/v2"
@@ -79,12 +80,12 @@ func NewConnection(address string, port int, username string, password string) (
 	connectLock.Lock()
 	defer connectLock.Unlock()
 	// Initialize logger
-	var nebulaLog = nebula.DefaultLogger{}
+	var httpgatewayLog = logger.HttpGatewayLogger{}
 	hostAddress := nebula.HostAddress{Host: address, Port: port}
 	hostList := []nebula.HostAddress{hostAddress}
 	poolConfig := nebula.GetDefaultConf()
 	// Initialize connectin pool
-	pool, err := nebula.NewConnectionPool(hostList, poolConfig, nebulaLog)
+	pool, err := nebula.NewConnectionPool(hostList, poolConfig, httpgatewayLog)
 	if err != nil {
 		return "", err
 	}
