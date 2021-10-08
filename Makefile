@@ -1,4 +1,4 @@
-.PHONY: build clean fmt
+.PHONY: build clean fmt test
 
 default: build
 
@@ -10,3 +10,7 @@ fmt:
 
 build: clean fmt
 	@go build -o nebula-httpd main.go
+
+test: build
+	./nebula-httpd
+	go test -v ./...

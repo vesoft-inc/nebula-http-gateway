@@ -53,8 +53,7 @@ The description of the parameters is as follows:
 | port     | Sets the port number of the graphd service. The default port number is 9669.                                                |
 
 ```bash
-$ curl -i \
-    -X POST \
+$ curl -i -X POST \
     -d '{"username":"user","password":"password","address":"192.168.8.26","port":9669}' \
     http://127.0.0.1:8080/api/db/connect
 ```
