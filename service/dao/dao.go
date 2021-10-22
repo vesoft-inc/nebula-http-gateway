@@ -68,6 +68,8 @@ func getBasicValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
 		return valWarp.String(), nil
 	} else if valType == "datetime" {
 		return valWarp.String(), nil
+	} else if valType == "geography" {
+		return valWarp.String(), nil
 	} else if valType == "empty" {
 		return "_EMPTY_", nil
 	}
