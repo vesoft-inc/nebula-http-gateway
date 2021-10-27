@@ -116,23 +116,25 @@ func NewConnection(address string, port int, username string, password string) (
 			for {
 				select {
 				case request := <-connection.RequestChannel:
-					defer func() {
-						if err := recover(); err != nil {
-							common.LogPanic(err)
-							request.ResponseChannel <- ChannelResponse{
-								Result: nil,
-								Error:  SessionLostError,
+					func() {
+						defer func() {
+							if err := recover(); err != nil {
+								common.LogPanic(err)
+								request.ResponseChannel <- ChannelResponse{
+									Result: nil,
+									Error:  SessionLostError,
+								}
 							}
+						}()
+						response, err := connection.session.Execute(request.Gql)
+						if err != nil && (isThriftProtoError(err) || isThriftTransportError(err)) {
+							err = ConnectionClosedError
+						}
+						request.ResponseChannel <- ChannelResponse{
+							Result: response,
+							Error:  err,
 						}
 					}()
-					response, err := connection.session.Execute(request.Gql)
-					if err != nil && (isThriftProtoError(err) || isThriftTransportError(err)) {
-						err = ConnectionClosedError
-					}
-					request.ResponseChannel <- ChannelResponse{
-						Result: response,
-						Error:  err,
-					}
 				case <-connection.CloseChannel:
 					connection.session.Release()
 					connectLock.Lock()
