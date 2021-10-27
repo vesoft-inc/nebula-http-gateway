@@ -5,7 +5,7 @@ WORKDIR /nebula-http-gateway
 COPY . /nebula-http-gateway
  # Make port available to the world outside this container
 ENV GOPROXY https://goproxy.cn
-RUN go build
+RUN CGO_ENABLED=0 go build
 
 FROM alpine
 
