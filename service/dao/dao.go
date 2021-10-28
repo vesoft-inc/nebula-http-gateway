@@ -31,20 +31,10 @@ func getID(idWarp nebula.ValueWrapper) common.Any {
 }
 
 func getValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
-	var valType = valWarp.GetType()
-	if valType == "vertex" {
+	switch valWarp.GetType() {
+	case "vertex", "edge", "path", "list", "map", "set":
 		return valWarp.String(), nil
-	} else if valType == "edge" {
-		return valWarp.String(), nil
-	} else if valType == "path" {
-		return valWarp.String(), nil
-	} else if valType == "list" {
-		return valWarp.String(), nil
-	} else if valType == "map" {
-		return valWarp.String(), nil
-	} else if valType == "set" {
-		return valWarp.String(), nil
-	} else {
+	default:
 		return getBasicValue(valWarp)
 	}
 }
@@ -77,6 +67,8 @@ func getBasicValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
 	} else if valType == "time" {
 		return valWarp.String(), nil
 	} else if valType == "datetime" {
+		return valWarp.String(), nil
+	} else if valType == "geography" {
 		return valWarp.String(), nil
 	} else if valType == "empty" {
 		return "_EMPTY_", nil
