@@ -1,13 +1,13 @@
-FROM golang:1.13.1-alpine as builder
+FROM golang:1.13.1 as builder
 # Set the working directory to /app
 WORKDIR /nebula-http-gateway
 # Copy the current directory contents into the container at /app
 COPY . /nebula-http-gateway
  # Make port available to the world outside this container
 ENV GOPROXY https://goproxy.cn
-RUN CGO_ENABLED=0 go build
+RUN go build
 
-FROM alpine
+FROM golang:1.13.1
 
 WORKDIR /root
 COPY --from=builder ./nebula-http-gateway .

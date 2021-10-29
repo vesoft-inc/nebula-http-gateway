@@ -1,8 +1,8 @@
 name: Http-Gateway-Release
 on:
-  release:
-    types:
-      - published
+  push:
+    branches:
+      - hetao-dev
 jobs:
   release-image:
     runs-on: ubuntu-latest
@@ -30,4 +30,4 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: vesoft/nebula-http-gateway:v2
+        tags: vesoft/nebula-http-gateway:nightly
