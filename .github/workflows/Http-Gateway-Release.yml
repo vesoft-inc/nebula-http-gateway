@@ -2,7 +2,7 @@ name: Http-Gateway-Release
 on:
   push:
     branches:
-      - hetao-dev
+      - master
 jobs:
   release-image:
     runs-on: ubuntu-latest
