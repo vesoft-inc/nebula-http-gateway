@@ -10,6 +10,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/astaxie/beego/logs"
 	_ "github.com/vesoft-inc/nebula-http-gateway/routers"
 
 	"github.com/astaxie/beego"
@@ -29,7 +30,7 @@ func main() {
 	/*
 		logger config
 	*/
-	logsPath := beego.AppConfig.String("logspath")
+	logsPath := beego.AppConfig.DefaultString("logspath", "./logs/")
 	absLogsPath, _ := filepath.Abs(logsPath)
 	_, err := common.CreateFileWithPerm(absLogsPath+"/", "0720")
 
@@ -37,16 +38,37 @@ func main() {
 		log.Fatalf("create file %s with error: %s", absLogsPath, err.Error())
 	}
 
+	logFileName := beego.AppConfig.DefaultString("appname", "nebula-http-gateway")
+	logFileName += ".log"
+
 	logFilePath := filepath.Join(
 		absLogsPath,
-		"test.log",
+		logFileName,
 	)
-	beego.SetLogger("file", fmt.Sprintf(`{"filename":"%s","MaxSize":104857600,"perm":"0620"}`, logFilePath))
-	beego.BeeLogger.DelLogger("console")
-	beego.SetLogFuncCall(true)
-	beego.BeeLogger.SetLogFuncCallDepth(3)
-	// beego.SetLevel(beego.LevelInformational)
-	beego.SetLevel(beego.LevelDebug)
+
+	logLevelString := beego.AppConfig.String("logLevel")
+	logLevel := logs.LevelWarning
+	switch logLevelString {
+	case "error":
+		logLevel = logs.LevelError
+	case "warning", "warn":
+		logLevel = logs.LevelWarning
+	case "notice":
+		logLevel = logs.LevelNotice
+	case "informational", "info":
+		logLevel = logs.LevelInformational
+	case "debug":
+		logLevel = logs.LevelDebug
+	}
+
+	logs.SetLogger("file", fmt.Sprintf(`{"filename":"%s","MaxSize":104857600,"perm":"0620"}`, logFilePath))
+	logs.GetBeeLogger().DelLogger("console")
+	logs.SetLogFuncCall(true)
+	logs.SetLogFuncCallDepth(3)
+	logs.SetLevel(logLevel)
+	defer func(){
+		logs.GetBeeLogger().Flush()
+	}()
 
 	/*
 		importer file uploads config
@@ -69,14 +91,14 @@ func main() {
 	go func() {
 		<-quit
 
-		beego.Info("server is shutting down")
+		logs.Info("server is shutting down")
 
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 		defer cancel()
 
 		beego.BeeApp.Server.SetKeepAlivesEnabled(false)
 		if err := beego.BeeApp.Server.Shutdown(ctx); err != nil {
-			beego.Error(err.Error())
+			logs.Error(err.Error())
 		}
 
 		close(done)
@@ -85,5 +107,5 @@ func main() {
 	beego.Run()
 
 	<-done
-	beego.Info("server closed")
+	logs.Info("server closed")
 }

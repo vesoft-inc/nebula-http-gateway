@@ -1,9 +1,10 @@
 package common
 
 import (
-	"log"
 	"net/http"
 	"runtime"
+
+	"github.com/astaxie/beego/logs"
 )
 
 func LogPanic(r interface{}) {
@@ -17,8 +18,8 @@ func LogPanic(r interface{}) {
 	stacktrace := make([]byte, size)
 	stacktrace = stacktrace[:runtime.Stack(stacktrace, false)]
 	if _, ok := r.(string); ok {
-		log.Printf("Observed a panic: %s\n%s", r, stacktrace)
+		logs.Warn("Observed a panic: %s\n%s", r, stacktrace)
 	} else {
-		log.Printf("Observed a panic: %#v (%v)\n%s", r, r, stacktrace)
+		logs.Warn("Observed a panic: %#v (%v)\n%s", r, r, stacktrace)
 	}
 }

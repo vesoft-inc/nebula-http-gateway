@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/vesoft-inc/nebula-importer/pkg/cmd"
 )
@@ -154,7 +155,7 @@ func initDB() {
 	_db, err := sql.Open("sqlite3", dbFilePath)
 
 	if err != nil {
-		beego.Emergency(err.Error())
+		logs.Emergency(err.Error())
 		log.Panic(err)
 	}
 
@@ -167,7 +168,7 @@ func initDB() {
 	_, err = GetTaskMgr().db.Exec(sqlStmt)
 
 	if err != nil {
-		beego.Emergency(fmt.Sprintf("%q: %s\n", err, sqlStmt))
+		logs.Emergency(fmt.Sprintf("%q: %s\n", err, sqlStmt))
 		log.Panicf("%q: %s\n", err, sqlStmt)
 	}
 
