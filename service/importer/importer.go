@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/vesoft-inc/nebula-importer/pkg/config"
 	importerErrors "github.com/vesoft-inc/nebula-importer/pkg/errors"
 )
@@ -28,7 +29,7 @@ type ActionResult struct {
 
 func Import(taskID string, configPath string, configBody *config.YAMLConfig) (err error) {
 
-	beego.Debug(fmt.Sprintf("Start a import task: `%s`", taskID))
+	logs.Debug(fmt.Sprintf("Start a import task: `%s`", taskID))
 
 	var conf *config.YAMLConfig
 
@@ -41,7 +42,7 @@ func Import(taskID string, configPath string, configBody *config.YAMLConfig) (er
 		)
 
 		if err != nil {
-			beego.Error(err.(importerErrors.ImporterError))
+			logs.Error(err.(importerErrors.ImporterError))
 			return err.(importerErrors.ImporterError)
 		}
 	} else {
@@ -73,21 +74,21 @@ func Import(taskID string, configPath string, configBody *config.YAMLConfig) (er
 			result.ErrorResult.ErrorCode = err.ErrCode
 			result.ErrorResult.ErrorMsg = err.ErrMsg.Error()
 
-			beego.Error(fmt.Sprintf("Failed to finish a import task: `%s`, task result: `%v`", taskID, result))
+			logs.Error(fmt.Sprintf("Failed to finish a import task: `%s`, task result: `%v`", taskID, result))
 		} else {
 			task.TaskStatus = StatusFinished.String()
 
 			result.FailedRows = task.GetRunner().NumFailed
 			GetTaskMgr().DelTask(taskID)
 
-			beego.Debug(fmt.Sprintf("Success to finish a import task: `%s`, task result: `%v`", taskID, result))
+			logs.Debug(fmt.Sprintf("Success to finish a import task: `%s`, task result: `%v`", taskID, result))
 		}
 	}()
 	return nil
 }
 
 func ImportAction(taskID string, taskAction TaskAction) (result ActionResult, err error) {
-	beego.Debug(fmt.Sprintf("Start a import task action: `%s` for task: `%s`", taskAction.String(), taskID))
+	logs.Debug(fmt.Sprintf("Start a import task action: `%s` for task: `%s`", taskAction.String(), taskID))
 
 	result = ActionResult{}
 
@@ -104,7 +105,7 @@ func ImportAction(taskID string, taskAction TaskAction) (result ActionResult, er
 		err = errors.New("unknown task action")
 	}
 
-	beego.Debug(fmt.Sprintf("The import task action: `%s` for task: `%s` finished, action result: `%v`", taskAction.String(), taskID, result))
+	logs.Debug(fmt.Sprintf("The import task action: `%s` for task: `%s` finished, action result: `%v`", taskAction.String(), taskID, result))
 
 	return result, err
 }

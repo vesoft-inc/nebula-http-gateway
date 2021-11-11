@@ -2,8 +2,8 @@ package dao
 
 import (
 	"errors"
-	"log"
 
+	"github.com/astaxie/beego/logs"
 	"github.com/vesoft-inc/nebula-http-gateway/common"
 	"github.com/vesoft-inc/nebula-http-gateway/service/pool"
 
@@ -328,7 +328,7 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 	}
 
 	if !resp.IsSucceed() {
-		log.Printf("ErrorCode: %v, ErrorMsg: %s", resp.GetErrorCode(), resp.GetErrorMsg())
+		logs.Info("ErrorCode: %v, ErrorMsg: %s", resp.GetErrorCode(), resp.GetErrorMsg())
 		return result, errors.New(string(resp.GetErrorMsg()))
 	}
 	if !resp.IsEmpty() {

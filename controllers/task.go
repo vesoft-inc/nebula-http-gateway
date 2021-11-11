@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/vesoft-inc/nebula-http-gateway/service/importer"
 	"github.com/vesoft-inc/nebula-importer/pkg/config"
 
@@ -47,7 +48,7 @@ func (this *TaskController) Import() {
 	if err != nil {
 		// task err: import task not start err handle
 		task.TaskStatus = importer.StatusAborted.String()
-		beego.Error(fmt.Sprintf("Failed to start a import task: `%s`, task result: `%v`", taskID, err))
+		logs.Error(fmt.Sprintf("Failed to start a import task: `%s`, task result: `%v`", taskID, err))
 
 		res.Code = -1
 		res.Message = err.Error()
