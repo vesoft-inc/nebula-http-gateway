@@ -43,7 +43,7 @@ func shortId(id string) string {
 
 func truncateId(id string) string {
 	if len(id) >= 8 {
-		id = strings.ToLower(id[len(id)-8:])
+		id = id[len(id)-8:]
 	}
 	return id
 }
