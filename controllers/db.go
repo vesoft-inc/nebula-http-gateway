@@ -42,8 +42,8 @@ func (this *DatabaseController) Connect() {
 		m["nsid"] = nsid
 		res.Data = nsid
 		this.Ctx.SetCookie("Secure", "true")
-		this.Ctx.SetCookie("SameSite", "None")
-		this.SetSession("nsid", nsid)
+		this.Ctx.SetCookie("SameSite", "Strict")
+		this.SetSession(beego.AppConfig.String("sessionkey"), nsid)
 
 		res.Message = "Login successfully"
 	} else {
@@ -65,7 +65,7 @@ func (this *DatabaseController) Home() {
 
 func (this *DatabaseController) Disconnect() {
 	var res Response
-	nsid := this.GetSession("nsid")
+	nsid := this.GetSession(beego.AppConfig.String("sessionkey"))
 	if nsid != nil {
 		dao.Disconnect(nsid.(string))
 	}
@@ -78,7 +78,7 @@ func (this *DatabaseController) Disconnect() {
 func (this *DatabaseController) Execute() {
 	var res Response
 	var params ExecuteRequest
-	nsid := this.GetSession("nsid")
+	nsid := this.GetSession(beego.AppConfig.String("sessionkey"))
 	if nsid == nil {
 		res.Code = -1
 		res.Message = "connection refused for lack of session"
