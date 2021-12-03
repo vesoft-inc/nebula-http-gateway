@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
+	"os"
+	"strconv"
 
 	"github.com/astaxie/beego"
 	"github.com/vesoft-inc/nebula-http-gateway/common"
@@ -35,7 +37,20 @@ func (this *DatabaseController) Connect() {
 	var res Response
 	var params Request
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
-	nsid, err := dao.Connect(params.Address, params.Port, params.Username, params.Password)
+
+	var nsid string
+	var err error
+	clusterId := os.Getenv("CLUSTER_ID")
+	graphPort := os.Getenv("GRAPH_PORT")
+	if graphPort == "" {
+		graphPort = "9669"
+	}
+	port, _ := strconv.Atoi(graphPort)
+	if clusterId != "" {
+		nsid, err = dao.Connect(common.GetConnectAddress(clusterId), port, params.Username, params.Password)
+	} else {
+		nsid, err = dao.Connect(params.Address, params.Port, params.Username, params.Password)
+	}
 	if err == nil {
 		res.Code = 0
 		m := make(map[string]common.Any)

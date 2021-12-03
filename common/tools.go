@@ -6,6 +6,7 @@ import (
 	"path"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"syscall"
 )
 
@@ -28,4 +29,21 @@ func CreateFileWithPerm(filePath string, permCode string) (*os.File, error) {
 		os.Chmod(filePath, os.FileMode(perm))
 	}
 	return fd, err
+}
+
+func GetConnectAddress(id string) string {
+	ns := shortId(id)
+	return id + "-graphd-svc" + "." + ns
+}
+
+func shortId(id string) string {
+	id = truncateId(id)
+	return strings.ToLower(id)
+}
+
+func truncateId(id string) string {
+	if len(id) >= 8 {
+		id = strings.ToLower(id[len(id)-8:])
+	}
+	return id
 }
