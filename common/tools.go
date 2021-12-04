@@ -29,3 +29,7 @@ func CreateFileWithPerm(filePath string, permCode string) (*os.File, error) {
 	}
 	return fd, err
 }
+
+func GetConnectAddress(id string) string {
+	return id + "-graphd-svc"
+}
