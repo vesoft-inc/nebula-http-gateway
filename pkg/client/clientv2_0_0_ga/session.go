@@ -1,8 +1,10 @@
-package clientv2_6_0
+package clientv2_0_0_ga
 
 import (
+	"errors"
+
 	nebula "github.com/vesoft-inc/nebula-go/v2"
-	"github.com/vesoft-inc/nebula-http-gateway/pkg/types"
+	"github.com/vesoft-inc/nebula-http-gateway/pkg/client/types"
 )
 
 type Session struct {
@@ -22,9 +24,5 @@ func (s *Session) Execute(stmt string) (types.ResultSet, error) {
 }
 
 func (s *Session) ExecuteJson(stmt string) ([]byte, error) {
-	resultAsBytes, err := s.session.ExecuteJson(stmt)
-	if err != nil {
-		return nil, err
-	}
-	return resultAsBytes, nil
+	return nil, errors.New("execute json not support")
 }

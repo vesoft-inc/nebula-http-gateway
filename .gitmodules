@@ -1,0 +1,4 @@
+[submodule "pkg/client/clientv2_5_1/nebula-go"]
+	path = pkg/client/clientv2_5_1/nebula-go
+	url = https://github.com/vesoft-inc/nebula-go.git
+	branch = v2.5.1

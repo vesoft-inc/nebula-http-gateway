@@ -1,11 +1,12 @@
-package clientv2_0_0_ga
+package clientv2_5_1
 
 import (
+	"errors"
 	"time"
 
 	nebula "github.com/vesoft-inc/nebula-go/v2"
-	"github.com/vesoft-inc/nebula-http-gateway/pkg/logger"
-	"github.com/vesoft-inc/nebula-http-gateway/pkg/types"
+	"github.com/vesoft-inc/nebula-http-gateway/pkg/client/logger"
+	"github.com/vesoft-inc/nebula-http-gateway/pkg/client/types"
 )
 
 type Client struct {
@@ -15,6 +16,9 @@ type Client struct {
 }
 
 func NewClient(addresses []types.HostAddress, config types.ClientConfig, logger logger.Logger) (types.Client, error) {
+	if config.SslConfig != nil {
+		return nil, errors.New("ssl client not support")
+	}
 	pool, err := nebula.NewConnectionPool(hostsWrapper(addresses), configWrapper(config), logger)
 	if err != nil {
 		return nil, err

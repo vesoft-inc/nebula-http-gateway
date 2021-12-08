@@ -4,8 +4,8 @@ import (
 	"time"
 
 	nebula "github.com/vesoft-inc/nebula-go/v2"
-	"github.com/vesoft-inc/nebula-http-gateway/pkg/logger"
-	"github.com/vesoft-inc/nebula-http-gateway/pkg/types"
+	"github.com/vesoft-inc/nebula-http-gateway/pkg/client/logger"
+	"github.com/vesoft-inc/nebula-http-gateway/pkg/client/types"
 )
 
 type Client struct {

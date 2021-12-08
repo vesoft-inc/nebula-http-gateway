@@ -1,10 +1,10 @@
-package clientv2_0_0_ga
+package clientv2_5_1
 
 import (
 	"errors"
 
 	nebula "github.com/vesoft-inc/nebula-go/v2"
-	"github.com/vesoft-inc/nebula-http-gateway/pkg/types"
+	"github.com/vesoft-inc/nebula-http-gateway/pkg/client/types"
 )
 
 type Session struct {
