@@ -45,7 +45,19 @@ type (
 	}
 
 	ExecutionResponse interface {
-		TODO() // TODO: add more function to handle response
+		GetErrorCode() nerrors.ErrorCode
+		GetLatencyInUs() int32
+		GetData() DataSet
+		GetSpaceName() []byte
+		GetErrorMsg() []byte
+		GetPlanDesc() PlanDescription
+		GetComment() []byte
+		IsSetData() bool
+		IsSetSpaceName() bool
+		IsSetErrorMsg() bool
+		IsSetPlanDesc() bool
+		IsSetComment() bool
+		String() string
 	}
 )
 
