@@ -24,7 +24,7 @@ func main() {
 	*/
 	beego.BConfig.WebConfig.Session.SessionCookieLifeTime = 0
 	beego.BConfig.WebConfig.Session.SessionGCMaxLifetime = 60 * 60 * 24
-	beego.BConfig.WebConfig.Session.SessionName = "nsid"
+	beego.BConfig.WebConfig.Session.SessionName = beego.AppConfig.String("sessionkey")
 	beego.BConfig.WebConfig.Session.SessionOn = true
 
 	/*
@@ -66,7 +66,7 @@ func main() {
 	logs.SetLogFuncCall(true)
 	logs.SetLogFuncCallDepth(3)
 	logs.SetLevel(logLevel)
-	defer func(){
+	defer func() {
 		logs.GetBeeLogger().Flush()
 	}()
 
