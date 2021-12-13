@@ -65,7 +65,7 @@ HTTP/1.1 200 OK
 Content-Length: 100
 Content-Type: application/json; charset=utf-8
 Server: beegoServer:1.12.3
-Set-Cookie: nsid=bec2e665ba62a13554b617d70de8b9b9; Path=/; HttpOnly
+Set-Cookie: common-nsid=bec2e665ba62a13554b617d70de8b9b9; Path=/; HttpOnly
 Set-Cookie: Secure=true; Path=/
 Set-Cookie: SameSite=None; Path=/
 Date: Fri, 02 Apr 2021 08:49:18 GMT
@@ -98,8 +98,7 @@ The requested json body
 
 ```bash
 $ curl -X POST \
-    -H "Cookie: SameSite=None; nsid=bec2e665ba62a13554b617d70de8b9b9" \
-    -H "nsid: bec2e665ba62a13554b617d70de8b9b9" \
+    -H "Cookie: SameSite=None; common-nsid=bec2e665ba62a13554b617d70de8b9b9" \
     -d '{"gql": "show spaces;"}' \
     http://127.0.0.1:8080/api/db/exec
 ```
