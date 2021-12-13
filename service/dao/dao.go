@@ -52,6 +52,14 @@ func getBasicValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
 			return "BAD_DATA", err
 		case nebulaType.NullType_BAD_TYPE:
 			return "BAD_TYPE", err
+		case nebulaType.NullType_OUT_OF_RANGE:
+			return "OUT_OF_RANGE", err
+		case nebulaType.NullType_DIV_BY_ZERO:
+			return "DIV_BY_ZERO", err
+		case nebulaType.NullType_UNKNOWN_PROP:
+			return "UNKNOWN_PROP", err
+		case nebulaType.NullType_ERR_OVERFLOW:
+			return "ERR_OVERFLOW", err
 		}
 		return "NULL", err
 	} else if valType == "bool" {
