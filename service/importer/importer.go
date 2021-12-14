@@ -70,10 +70,9 @@ func Import(taskID string, configPath string, configBody *config.YAMLConfig) (er
 			task.TaskStatus = StatusAborted.String()
 
 			err, _ := rerr.(importerErrors.ImporterError)
-
 			result.ErrorResult.ErrorCode = err.ErrCode
 			result.ErrorResult.ErrorMsg = err.ErrMsg.Error()
-
+			task.TaskMessage = err.ErrMsg.Error()
 			logs.Error(fmt.Sprintf("Failed to finish a import task: `%s`, task result: `%v`", taskID, result))
 		} else {
 			task.TaskStatus = StatusFinished.String()
@@ -113,10 +112,10 @@ func ImportAction(taskID string, taskAction TaskAction) (result ActionResult, er
 func actionQuery(taskID string, result *ActionResult) {
 	// a temp task obj for response
 	task := Task{}
-
 	if t, ok := GetTaskMgr().GetTask(taskID); ok {
 		task.TaskID = t.TaskID
 		task.TaskStatus = t.TaskStatus
+		task.TaskMessage = t.TaskMessage
 		result.Results = append(result.Results, task)
 		result.Msg = "Task query successfully"
 	} else {

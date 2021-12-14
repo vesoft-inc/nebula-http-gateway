@@ -33,8 +33,9 @@ type TaskMgr struct {
 type Task struct {
 	runner *cmd.Runner
 
-	TaskID     string `json:"taskID"`
-	TaskStatus string `json:"taskStatus"`
+	TaskID      string `json:"taskID"`
+	TaskStatus  string `json:"taskStatus"`
+	TaskMessage string `json:"taskMessage"`
 }
 
 func init() {
@@ -162,7 +163,7 @@ func initDB() {
 	GetTaskMgr().db = _db
 
 	sqlStmt := `
-		create table tasks (taskID integer not null primary key, taskStatus text);
+		create table tasks (taskID integer not null primary key, taskStatus text, taskMessage text);
 		delete from tasks;
 	`
 	_, err = GetTaskMgr().db.Exec(sqlStmt)
