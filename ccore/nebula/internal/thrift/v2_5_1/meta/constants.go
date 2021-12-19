@@ -7,11 +7,10 @@ package meta
 import (
 	"bytes"
 	"context"
-	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	nebula0 "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5_1"
-
+	"sync"
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -26,4 +25,3 @@ var const_lit_vid_type_type_length int16 = 8
 
 func init() {
 }
-

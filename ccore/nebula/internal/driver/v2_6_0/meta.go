@@ -26,7 +26,7 @@ func (c *defaultMetaClient) Open() error {
 	return c.meta.Open()
 }
 
-func (c *defaultMetaClient) Close() error{
+func (c *defaultMetaClient) Close() error {
 	if c.meta != nil {
 		if err := c.meta.Close(); err != nil {
 			return err

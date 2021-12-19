@@ -26,4 +26,3 @@ var const_lit_vid_type_type_length int16 = 8
 
 func init() {
 }
-

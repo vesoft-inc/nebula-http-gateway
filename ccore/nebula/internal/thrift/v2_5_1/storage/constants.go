@@ -7,12 +7,11 @@ package storage
 import (
 	"bytes"
 	"context"
-	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	nebula0 "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5_1"
 	meta1 "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5_1/meta"
-
+	"sync"
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -27,4 +26,3 @@ var _ = meta1.GoUnusedProtection__
 
 func init() {
 }
-

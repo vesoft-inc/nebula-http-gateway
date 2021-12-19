@@ -12,6 +12,7 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18 // indirect
 	github.com/vesoft-inc/nebula-go/v2 v2.6.0
+	github.com/vesoft-inc/nebula-http-gateway/ccore v0.0.0
 	github.com/vesoft-inc/nebula-importer v1.0.1-0.20211026100810-43234f36fe2d
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
@@ -21,3 +22,5 @@ require (
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+replace github.com/vesoft-inc/nebula-http-gateway/ccore v0.0.0 => ./ccore

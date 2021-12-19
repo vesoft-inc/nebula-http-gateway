@@ -6,9 +6,9 @@ package nebula
 
 import (
 	"bytes"
-	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	"sync"
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -17,7 +17,5 @@ var _ = fmt.Printf
 var _ = sync.Mutex{}
 var _ = bytes.Equal
 
-
 func init() {
 }
-

@@ -9,7 +9,7 @@ type (
 	defaultMetaClient defaultClient
 )
 
-func NewMetaClient(endpoints []string,  opts ...Option) (MetaClient, error) {
+func NewMetaClient(endpoints []string, opts ...Option) (MetaClient, error) {
 	c, err := NewClient(ConnectionInfo{
 		MetaEndpoints: endpoints,
 	}, opts...)

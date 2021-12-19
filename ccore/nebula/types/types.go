@@ -36,6 +36,7 @@ type Value interface {
 	GetGgVal() Geography
 	CountSetFieldsValue() int
 	IsSetNVal() bool
+	IsSetIVal() bool
 	IsSetBVal() bool
 	IsSetFVal() bool
 	IsSetSVal() bool

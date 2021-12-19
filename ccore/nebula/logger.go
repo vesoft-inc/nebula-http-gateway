@@ -20,11 +20,11 @@ type (
 // noOpLogger is used as a placeholder for the default logger
 type noOpLogger struct{}
 
-func (noOpLogger) Info(...interface{}) {}
-func (noOpLogger) Infof(string, ...interface{}) {}
-func (noOpLogger) Warn(...interface{}) {}
-func (noOpLogger) Warnf(string, ...interface{}) {}
-func (noOpLogger) Error(...interface{}) {}
+func (noOpLogger) Info(...interface{})           {}
+func (noOpLogger) Infof(string, ...interface{})  {}
+func (noOpLogger) Warn(...interface{})           {}
+func (noOpLogger) Warnf(string, ...interface{})  {}
+func (noOpLogger) Error(...interface{})          {}
 func (noOpLogger) Errorf(string, ...interface{}) {}
-func (noOpLogger) Fatal(...interface{}) {}
+func (noOpLogger) Fatal(...interface{})          {}
 func (noOpLogger) Fatalf(string, ...interface{}) {}
