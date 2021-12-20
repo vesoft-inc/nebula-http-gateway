@@ -10,6 +10,10 @@ import (
 	"strings"
 )
 
+/*
+	copy from nebula-go/result_set.go, and fit with ccore/nebula/types
+*/
+
 type ResultSet struct {
 	resp            types.ExecutionResponse
 	columnNames     []string

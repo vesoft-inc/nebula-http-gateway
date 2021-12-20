@@ -14,6 +14,10 @@ import (
 	"strings"
 )
 
+/*
+	copy from nebula-go/value_wrapper.go, and fit with ccore/nebula/types
+*/
+
 type ValueWrapper struct {
 	value types.Value
 }

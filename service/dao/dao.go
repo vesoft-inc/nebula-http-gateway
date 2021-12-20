@@ -5,9 +5,9 @@ import (
 	"github.com/astaxie/beego/logs"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
-	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/wrapper"
 	"github.com/vesoft-inc/nebula-http-gateway/common"
 	"github.com/vesoft-inc/nebula-http-gateway/service/pool"
+	"github.com/vesoft-inc/nebula-http-gateway/service/wrapper"
 )
 
 type ExecuteResult struct {
@@ -306,7 +306,6 @@ func Execute(nsid string, gql string) (ExecuteResult, error) {
 		return result, response.Error
 	}
 	res := response.Result
-
 	if res.IsSetPlanDesc() {
 		format := string(res.GetPlanDesc().GetFormat())
 		if format == "row" {
@@ -339,6 +338,7 @@ func Execute(nsid string, gql string) (ExecuteResult, error) {
 		logs.Info("ErrorCode: %v, ErrorMsg: %s", res.GetErrorCode(), res.GetErrorMsg())
 		return result, errors.New(string(res.GetErrorMsg()))
 	}
+
 	if !res.IsEmpty() {
 		rowSize := res.GetRowSize()
 		colSize := res.GetColSize()

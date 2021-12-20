@@ -15,6 +15,9 @@ func (d defaultDataSet) GetRows() []types.Row {
 }
 
 func dataSetWrapper(ds *nebula.DataSet) types.DataSet {
+	if ds == nil {
+		return nil
+	}
 	return defaultDataSet{ds}
 }
 
@@ -27,6 +30,9 @@ func (d defaultRow) GetValues() []types.Value {
 }
 
 func rowWrapper(r *nebula.Row) types.Row {
+	if r == nil {
+		return nil
+	}
 	return defaultRow{r}
 }
 
@@ -106,6 +112,9 @@ func (d defaultValue) IsSetGgVal() bool {
 }
 
 func valueWrapper(v *nebula.Value) types.Value {
+	if v == nil {
+		return nil
+	}
 	return defaultValue{v}
 }
 
@@ -119,6 +128,9 @@ func vaulesWrapper(vs []*nebula.Value) []types.Value {
 }
 
 func nullTypeWrapper(nt *nebula.NullType) types.NullType {
+	if nt == nil {
+		return types.NullTypeToValue["NullType___NULL__"]
+	}
 	return types.NullTypeToValue[nt.String()]
 }
 
@@ -127,6 +139,9 @@ type defaultDate struct {
 }
 
 func dateWrapper(d *nebula.Date) types.Date {
+	if d == nil {
+		return nil
+	}
 	return defaultDate{d}
 }
 
@@ -135,6 +150,9 @@ type defaultTime struct {
 }
 
 func timeWrapper(t *nebula.Time) types.Time {
+	if t == nil {
+		return nil
+	}
 	return defaultTime{t}
 }
 
@@ -143,6 +161,9 @@ type defaultDateTime struct {
 }
 
 func dateTimeWrapper(dt *nebula.DateTime) types.DateTime {
+	if dt == nil {
+		return nil
+	}
 	return defaultDateTime{dt}
 }
 
@@ -160,6 +181,9 @@ func (d defaultVertex) GetTags() []types.Tag {
 }
 
 func vertexWrapper(v *nebula.Vertex) types.Vertex {
+	if v == nil {
+		return nil
+	}
 	return defaultVertex{v}
 }
 
@@ -195,6 +219,9 @@ func (d defaultEdge) GetProps() map[string]types.Value {
 }
 
 func edgeWrapper(e *nebula.Edge) types.Edge {
+	if e == nil {
+		return nil
+	}
 	return defaultEdge{e}
 }
 
@@ -219,6 +246,9 @@ func (d defaultPath) GetSteps() []types.Step {
 }
 
 func pathWrapper(p *nebula.Path) types.Path {
+	if p == nil {
+		return nil
+	}
 	return defaultPath{p}
 }
 
@@ -231,6 +261,9 @@ func (d defaultNList) GetValues() []types.Value {
 }
 
 func nlistWrapper(nl *nebula.NList) types.NList {
+	if nl == nil {
+		return nil
+	}
 	return defaultNList{nl}
 }
 
@@ -248,6 +281,9 @@ func (d defaultNMap) GetKvs() map[string]types.Value {
 }
 
 func nmapWrapper(nm *nebula.NMap) types.NMap {
+	if nm == nil {
+		return nil
+	}
 	return defaultNMap{nm}
 }
 
@@ -260,6 +296,9 @@ func (d defaultNSet) GetValues() []types.Value {
 }
 
 func nsetWrapper(ns *nebula.NSet) types.NSet {
+	if ns == nil {
+		return nil
+	}
 	return defaultNSet{ns}
 }
 
@@ -277,6 +316,9 @@ func (d defaultTag) GetProps() map[string]types.Value {
 }
 
 func tagWrapper(t *nebula.Tag) types.Tag {
+	if t == nil {
+		return nil
+	}
 	return defaultTag{t}
 }
 
@@ -316,6 +358,9 @@ func (d defaultStep) GetProps() map[string]types.Value {
 }
 
 func stepWrapper(s *nebula.Step) types.Step {
+	if s == nil {
+		return nil
+	}
 	return defaultStep{s}
 }
 
@@ -337,6 +382,9 @@ func (d defaultPlanDescription) GetPlanNodeDescs() []types.PlanNodeDescription {
 }
 
 func planDescriptionWrapper(pd *graph.PlanDescription) types.PlanDescription {
+	if pd == nil {
+		return nil
+	}
 	return defaultPlanDescription{pd}
 }
 
@@ -357,6 +405,9 @@ func (d defaultPlanNodeDescription) GetBranchInfo() types.PlanNodeBranchInfo {
 }
 
 func planNodeDescriptionWrapper(pnd *graph.PlanNodeDescription) types.PlanNodeDescription {
+	if pnd == nil {
+		return nil
+	}
 	return defaultPlanNodeDescription{pnd}
 }
 
@@ -373,6 +424,9 @@ type defaultPair struct {
 }
 
 func pairWrapper(p *graph.Pair) types.Pair {
+	if p == nil {
+		return nil
+	}
 	return defaultPair{p}
 }
 
@@ -389,6 +443,9 @@ type defaultProfilingStats struct {
 }
 
 func profilingStatsWrapper(ps *graph.ProfilingStats) types.ProfilingStats {
+	if ps == nil {
+		return nil
+	}
 	return defaultProfilingStats{ps}
 }
 
@@ -405,5 +462,8 @@ type defaultPlanNodeBranchInfo struct {
 }
 
 func planNodeBranchInfoWrapper(pnb *graph.PlanNodeBranchInfo) types.PlanNodeBranchInfo {
+	if pnb == nil {
+		return nil
+	}
 	return defaultPlanNodeBranchInfo{pnb}
 }
