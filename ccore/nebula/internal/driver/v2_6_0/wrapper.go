@@ -37,6 +37,9 @@ func rowWrapper(r *nebula.Row) types.Row {
 }
 
 func rowsWrapper(rs []*nebula.Row) []types.Row {
+	if rs == nil {
+		return nil
+	}
 	rows := make([]types.Row, len(rs))
 	for i := range rows {
 		row := rowWrapper(rs[i])
@@ -49,7 +52,7 @@ type defaultValue struct {
 	*nebula.Value
 }
 
-func (d defaultValue) GetNVal() types.NullType {
+func (d defaultValue) GetNVal() *types.NullType {
 	return nullTypeWrapper(d.NVal)
 }
 
@@ -104,7 +107,7 @@ func (d defaultValue) GetGVal() types.DataSet {
 }
 
 func (d defaultValue) GetGgVal() types.Geography {
-	panic("method not support")
+	return geographyWrapper(d.GgVal)
 }
 
 func (d defaultValue) IsSetGgVal() bool {
@@ -119,6 +122,9 @@ func valueWrapper(v *nebula.Value) types.Value {
 }
 
 func vaulesWrapper(vs []*nebula.Value) []types.Value {
+	if vs == nil {
+		return nil
+	}
 	values := make([]types.Value, len(vs))
 	for i := range values {
 		value := valueWrapper(vs[i])
@@ -127,11 +133,11 @@ func vaulesWrapper(vs []*nebula.Value) []types.Value {
 	return values
 }
 
-func nullTypeWrapper(nt *nebula.NullType) types.NullType {
+func nullTypeWrapper(nt *nebula.NullType) *types.NullType {
 	if nt == nil {
-		return types.NullTypeToValue["NullType___NULL__"]
+		return nil
 	}
-	return types.NullTypeToValue[nt.String()]
+	return types.NullTypePtr(types.NullTypeToValue[nt.String()])
 }
 
 type defaultDate struct {
@@ -226,11 +232,11 @@ func edgeWrapper(e *nebula.Edge) types.Edge {
 }
 
 func edgeTypeWrapper(et nebula.EdgeType) types.EdgeType {
-	return types.EdgeType(int32(et))
+	return et
 }
 
 func edgeRankingWrapper(et nebula.EdgeRanking) types.EdgeRanking {
-	return types.EdgeRanking(int64(et))
+	return et
 }
 
 type defaultPath struct {
@@ -344,6 +350,9 @@ func tagWrapper(t *nebula.Tag) types.Tag {
 }
 
 func tagsWrapper(ts []*nebula.Tag) []types.Tag {
+	if ts == nil {
+		return nil
+	}
 	tags := make([]types.Tag, len(ts))
 	for i := range ts {
 		tag := tagWrapper(ts[i])
@@ -386,6 +395,9 @@ func stepWrapper(s *nebula.Step) types.Step {
 }
 
 func stepsWrapper(ss []*nebula.Step) []types.Step {
+	if ss == nil {
+		return nil
+	}
 	steps := make([]types.Step, len(ss))
 	for i := range ss {
 		step := stepWrapper(ss[i])
@@ -451,6 +463,9 @@ func coordinateWrapper(c *nebula.Coordinate) types.Coordinate {
 }
 
 func coordinatesWrapper(cs []*nebula.Coordinate) []types.Coordinate {
+	if cs == nil {
+		return nil
+	}
 	coords := make([]types.Coordinate, len(cs))
 	for i := range cs {
 		coords[i] = coordinateWrapper(cs[i])
@@ -459,6 +474,9 @@ func coordinatesWrapper(cs []*nebula.Coordinate) []types.Coordinate {
 }
 
 func coordinatessWrapper(css [][]*nebula.Coordinate) [][]types.Coordinate {
+	if css == nil {
+		return nil
+	}
 	coordss := make([][]types.Coordinate, len(css))
 	for i := range css {
 		coordss[i] = coordinatesWrapper(css[i])
@@ -505,6 +523,9 @@ func planNodeDescriptionWrapper(pnd *graph.PlanNodeDescription) types.PlanNodeDe
 }
 
 func planNodeDescriptionsWrapper(pnds []*graph.PlanNodeDescription) []types.PlanNodeDescription {
+	if pnds == nil {
+		return nil
+	}
 	planNodeDescriptions := make([]types.PlanNodeDescription, len(pnds))
 	for i := range pnds {
 		planNodeDescriptions[i] = planNodeDescriptionWrapper(pnds[i])
@@ -524,6 +545,9 @@ func pairWrapper(p *graph.Pair) types.Pair {
 }
 
 func pairsWrapper(ps []*graph.Pair) []types.Pair {
+	if ps == nil {
+		return nil
+	}
 	pairs := make([]types.Pair, len(ps))
 	for i := range ps {
 		pairs[i] = pairWrapper(ps[i])
@@ -543,6 +567,9 @@ func profilingStatsWrapper(ps *graph.ProfilingStats) types.ProfilingStats {
 }
 
 func profilingStatssWrapper(pss []*graph.ProfilingStats) []types.ProfilingStats {
+	if pss == nil {
+		return nil
+	}
 	profilingStatss := make([]types.ProfilingStats, len(pss))
 	for i := range pss {
 		profilingStatss[i] = profilingStatsWrapper(pss[i])

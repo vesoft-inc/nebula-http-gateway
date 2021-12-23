@@ -61,143 +61,366 @@ type DateTimeWrapper struct {
 	dateTime types.DateTime
 }
 
-func GenDateTimeWrapper(datetime types.DateTime) (*DateTimeWrapper, error) {
-	if datetime == nil {
-		return nil, fmt.Errorf("failed to generate datetime: invalid datetime")
+func GenResultSet(resp types.ExecutionResponse) (*ResultSet, error) {
+	var colNames []string
+	var colNameIndexMap = make(map[string]int)
+
+	if resp.GetData() == nil { // if resp.Data != nil then resp.Data.row and resp.Data.colNames wont be nil
+		return &ResultSet{
+			resp:            resp,
+			columnNames:     colNames,
+			colNameIndexMap: colNameIndexMap,
+		}, nil
 	}
-	return &DateTimeWrapper{
-		dateTime: datetime,
+	for i, name := range resp.GetData().GetColumnNames() {
+		colNames = append(colNames, string(name))
+		colNameIndexMap[string(name)] = i
+	}
+
+	return &ResultSet{
+		resp:            resp,
+		columnNames:     colNames,
+		colNameIndexMap: colNameIndexMap,
 	}, nil
 }
 
-func (dt DateTimeWrapper) getYear() int16 {
-	return dt.dateTime.GetYear()
-}
-
-func (dt DateTimeWrapper) getMonth() int8 {
-	return dt.dateTime.GetMonth()
-}
-
-func (dt DateTimeWrapper) getDay() int8 {
-	return dt.dateTime.GetDay()
-}
-
-func (dt DateTimeWrapper) getHour() int8 {
-	return dt.dateTime.GetHour()
-}
-
-func (dt DateTimeWrapper) getMinute() int8 {
-	return dt.dateTime.GetMinute()
-}
-
-func (dt DateTimeWrapper) getSecond() int8 {
-	return dt.dateTime.GetSec()
-}
-
-func (dt DateTimeWrapper) getMicrosec() int32 {
-	return dt.dateTime.GetMicrosec()
-}
-
-func (dt1 DateTimeWrapper) IsEqualTo(dt2 DateTimeWrapper) bool {
-	return dt1.getYear() == dt2.getYear() &&
-		dt1.getMonth() == dt2.getMonth() &&
-		dt1.getDay() == dt2.getDay() &&
-		dt1.getHour() == dt2.getHour() &&
-		dt1.getSecond() == dt2.getSecond() &&
-		dt1.getSecond() == dt2.getSecond() &&
-		dt1.getMicrosec() == dt2.getMicrosec()
-}
-
-// getRawDateTime returns a types.DateTime object representing local dateTime in UTC.
-func (dt DateTimeWrapper) getRawDateTime() types.DateTime {
-	return dt.dateTime
-}
-
-func GenTimeWrapper(time types.Time) (*TimeWrapper, error) {
-	if time == nil {
-		return nil, fmt.Errorf("failed to generate Time: invalid Time")
-	}
-
-	return &TimeWrapper{
-		time: time,
-	}, nil
-}
-
-// getHour returns the hour in UTC
-func (t TimeWrapper) getHour() int8 {
-	return t.time.GetHour()
-}
-
-// getHour returns the minute in UTC
-func (t TimeWrapper) getMinute() int8 {
-	return t.time.GetMinute()
-}
-
-// getHour returns the second in UTC
-func (t TimeWrapper) getSecond() int8 {
-	return t.time.GetSec()
-}
-
-func (t TimeWrapper) getMicrosec() int32 {
-	return t.time.GetMicrosec()
-}
-
-// getRawTime returns a types.Time object in UTC.
-func (t TimeWrapper) getRawTime() types.Time {
-	return t.getRawTime()
-}
-
-func (t1 TimeWrapper) IsEqualTo(t2 TimeWrapper) bool {
-	return t1.getHour() == t2.getHour() &&
-		t1.getSecond() == t2.getSecond() &&
-		t1.getSecond() == t2.getSecond() &&
-		t1.getMicrosec() == t2.getMicrosec()
-}
-
-func GenDateWrapper(date types.Date) (*DateWrapper, error) {
-	if date == nil {
-		return nil, fmt.Errorf("failed to generate date: invalid date")
-	}
-	return &DateWrapper{
-		date: date,
-	}, nil
-}
-
-func (d DateWrapper) getYear() int16 {
-	return d.date.GetYear()
-}
-
-func (d DateWrapper) getMonth() int8 {
-	return d.date.GetMonth()
-}
-
-func (d DateWrapper) getDay() int8 {
-	return d.date.GetDay()
-}
-
-// getRawDate returns a types.Date object in UTC.
-func (d DateWrapper) getRawDate() types.Date {
-	return d.getRawDate()
-}
-
-func (d1 DateWrapper) IsEqualTo(d2 DateWrapper) bool {
-	return d1.getYear() == d2.getYear() &&
-		d1.getMonth() == d2.getMonth() &&
-		d1.getDay() == d2.getDay()
-}
-
-func GenValWraps(row types.Row) ([]*ValueWrapper, error) {
-	if row == nil {
-		return nil, fmt.Errorf("failed to generate valueWrapper: invalid row")
-	}
-	var valWraps []*ValueWrapper
-	for _, val := range row.GetValues() {
-		if val == nil {
-			return nil, fmt.Errorf("failed to generate valueWrapper: value is nil")
+// Returns a 2D array of strings representing the query result
+// If resultSet.resp.data is nil, returns an empty 2D array
+func (res ResultSet) AsStringTable() [][]string {
+	var resTable [][]string
+	colNames := res.GetColNames()
+	resTable = append(resTable, colNames)
+	rows := res.GetRows()
+	for _, row := range rows {
+		var tempRow []string
+		for _, val := range row.GetValues() {
+			tempRow = append(tempRow, ValueWrapper{val}.String())
 		}
-		valWraps = append(valWraps, &ValueWrapper{val})
+		resTable = append(resTable, tempRow)
 	}
-	return valWraps, nil
+	return resTable
+}
+
+// Returns all values in the given column
+func (res ResultSet) GetValuesByColName(colName string) ([]*ValueWrapper, error) {
+	if !res.hasColName(colName) {
+		return nil, fmt.Errorf("failed to get values, given column name '%s' does not exist", colName)
+	}
+	// Get index
+	index := res.colNameIndexMap[colName]
+	var valList []*ValueWrapper
+	for _, row := range res.resp.GetData().GetRows() {
+		valList = append(valList, &ValueWrapper{row.GetValues()[index]})
+	}
+	return valList, nil
+}
+
+// Returns all values in the row at given index
+func (res ResultSet) GetRowValuesByIndex(index int) (*Record, error) {
+	if err := checkIndex(index, res.resp.GetData().GetRows()); err != nil {
+		return nil, err
+	}
+	valWrap, err := GenValWraps(res.resp.GetData().GetRows()[index])
+	if err != nil {
+		return nil, err
+	}
+	return &Record{
+		columnNames:     &res.columnNames,
+		_record:         valWrap,
+		colNameIndexMap: &res.colNameIndexMap,
+	}, nil
+}
+
+// Returns the number of total rows
+func (res ResultSet) GetRowSize() int {
+	if res.resp.GetData() == nil {
+		return 0
+	}
+	return len(res.resp.GetData().GetRows())
+}
+
+// Returns the number of total columns
+func (res ResultSet) GetColSize() int {
+	if res.resp.GetData() == nil {
+		return 0
+	}
+	return len(res.resp.GetData().GetColumnNames())
+}
+
+// Returns all rows
+func (res ResultSet) GetRows() []types.Row {
+	if res.resp.GetData() == nil {
+		var empty []types.Row
+		return empty
+	}
+	return res.resp.GetData().GetRows()
+}
+
+func (res ResultSet) GetColNames() []string {
+	return res.columnNames
+}
+
+// Returns an integer representing an error type
+// 0    ErrorCode_SUCCEEDED
+// -1   ErrorCode_E_DISCONNECTED
+// -2   ErrorCode_E_FAIL_TO_CONNECT
+// -3   ErrorCode_E_RPC_FAILURE
+// -4   ErrorCode_E_BAD_USERNAME_PASSWORD
+// -5   ErrorCode_E_SESSION_INVALID
+// -6   ErrorCode_E_SESSION_TIMEOUT
+// -7   ErrorCode_E_SYNTAX_ERROR
+// -8   ErrorCode_E_EXECUTION_ERROR
+// -9   ErrorCode_E_STATEMENT_EMPTY
+// -10  ErrorCode_E_USER_NOT_FOUND
+// -11  ErrorCode_E_BAD_PERMISSION
+// -12  ErrorCode_E_SEMANTIC_ERROR
+func (res ResultSet) GetErrorCode() cErrors.ErrorCode {
+	return res.resp.GetErrorCode()
+}
+
+func (res ResultSet) GetLatency() int32 {
+	return res.resp.GetLatencyInUs()
+}
+
+func (res ResultSet) GetSpaceName() string {
+	if res.resp.GetSpaceName() == nil {
+		return ""
+	}
+	return string(res.resp.GetSpaceName())
+}
+
+func (res ResultSet) GetErrorMsg() string {
+	if res.resp.GetErrorMsg() == nil {
+		return ""
+	}
+	return string(res.resp.GetErrorMsg())
+}
+
+func (res ResultSet) IsSetPlanDesc() bool {
+	return res.resp.GetPlanDesc() != nil
+}
+
+func (res ResultSet) GetPlanDesc() types.PlanDescription {
+	return res.resp.GetPlanDesc()
+}
+
+func (res ResultSet) IsSetComment() bool {
+	return res.resp.GetComment() != nil
+}
+
+func (res ResultSet) GetComment() string {
+	if res.resp.GetComment() == nil {
+		return ""
+	}
+	return string(res.resp.GetComment())
+}
+
+func (res ResultSet) IsSetData() bool {
+	return res.resp.GetData() != nil
+}
+
+func (res ResultSet) IsEmpty() bool {
+	if !res.IsSetData() || len(res.resp.GetData().GetRows()) == 0 {
+		return true
+	}
+	return false
+}
+
+func (res ResultSet) IsSucceed() bool {
+	return res.GetErrorCode() == cErrors.ErrorCode_SUCCEEDED
+}
+
+func (res ResultSet) IsPartialSucceed() bool {
+	return res.GetErrorCode() == cErrors.ErrorCode_E_PARTIAL_SUCCEEDED
+}
+
+func (res ResultSet) hasColName(colName string) bool {
+	if _, ok := res.colNameIndexMap[colName]; ok {
+		return true
+	}
+	return false
+}
+
+// explain/profile format="dot"
+func (res ResultSet) MakeDotGraph() string {
+	p := res.GetPlanDesc()
+	planNodeDescs := p.GetPlanNodeDescs()
+	var builder strings.Builder
+	builder.WriteString("digraph exec_plan {\n")
+	builder.WriteString("\trankdir=BT;\n")
+	for _, planNodeDesc := range planNodeDescs {
+		planNodeName := name(planNodeDesc)
+		switch strings.ToLower(string(planNodeDesc.GetName())) {
+		case "select":
+			builder.WriteString(conditionalNodeString(planNodeName))
+			dep := nodeById(p, planNodeDesc.GetDependencies()[0])
+			// then branch
+			thenNodeId := findBranchEndNode(p, planNodeDesc.GetId(), true)
+			builder.WriteString(edgeString(name(nodeById(p, thenNodeId)), name(dep)))
+			thenStartId := findFirstStartNodeFrom(p, thenNodeId)
+			builder.WriteString(conditionalEdgeString(name(planNodeDesc), name(nodeById(p, thenStartId)), "Y"))
+			// else branch
+			elseNodeId := findBranchEndNode(p, planNodeDesc.GetId(), false)
+			builder.WriteString(edgeString(name(nodeById(p, elseNodeId)), name(dep)))
+			elseStartId := findFirstStartNodeFrom(p, elseNodeId)
+			builder.WriteString(conditionalEdgeString(name(planNodeDesc), name(nodeById(p, elseStartId)), "N"))
+			// dep
+			builder.WriteString(edgeString(name(dep), planNodeName))
+		case "loop":
+			builder.WriteString(conditionalNodeString(planNodeName))
+			dep := nodeById(p, planNodeDesc.GetDependencies()[0])
+			// do branch
+			doNodeId := findBranchEndNode(p, planNodeDesc.GetId(), true)
+			builder.WriteString(edgeString(name(nodeById(p, doNodeId)), name(planNodeDesc)))
+			doStartId := findFirstStartNodeFrom(p, doNodeId)
+			builder.WriteString(conditionalEdgeString(name(planNodeDesc), name(nodeById(p, doStartId)), "Do"))
+			// dep
+			builder.WriteString(edgeString(name(dep), planNodeName))
+		default:
+			builder.WriteString(nodeString(planNodeDesc, planNodeName))
+			if planNodeDesc.IsSetDependencies() {
+				for _, depId := range planNodeDesc.GetDependencies() {
+					builder.WriteString(edgeString(name(nodeById(p, depId)), planNodeName))
+				}
+			}
+		}
+	}
+	builder.WriteString("}")
+	return builder.String()
+}
+
+// explain/profile format="dot:struct"
+func (res ResultSet) MakeDotGraphByStruct() string {
+	p := res.GetPlanDesc()
+	planNodeDescs := p.GetPlanNodeDescs()
+	var builder strings.Builder
+	builder.WriteString("digraph exec_plan {\n")
+	builder.WriteString("\trankdir=BT;\n")
+	for _, planNodeDesc := range planNodeDescs {
+		planNodeName := name(planNodeDesc)
+		switch strings.ToLower(string(planNodeDesc.GetName())) {
+		case "select":
+			builder.WriteString(conditionalNodeString(planNodeName))
+		case "loop":
+			builder.WriteString(conditionalNodeString(planNodeName))
+		default:
+			builder.WriteString(nodeString(planNodeDesc, planNodeName))
+		}
+
+		if planNodeDesc.IsSetDependencies() {
+			for _, depId := range planNodeDesc.GetDependencies() {
+				dep := nodeById(p, depId)
+				builder.WriteString(edgeString(name(dep), planNodeName))
+			}
+		}
+
+		if planNodeDesc.IsSetBranchInfo() {
+			branchInfo := planNodeDesc.GetBranchInfo()
+			condNode := nodeById(p, branchInfo.GetConditionNodeID())
+			label := condEdgeLabel(condNode, branchInfo.GetIsDoBranch())
+			builder.WriteString(conditionalEdgeString(planNodeName, name(condNode), label))
+		}
+	}
+	builder.WriteString("}")
+	return builder.String()
+}
+
+// explain/profile format="row"
+func (res ResultSet) MakePlanByRow() [][]interface{} {
+	p := res.GetPlanDesc()
+	planNodeDescs := p.GetPlanNodeDescs()
+	var rows [][]interface{}
+	for _, planNodeDesc := range planNodeDescs {
+		var row []interface{}
+		row = append(row, planNodeDesc.GetId(), string(planNodeDesc.GetName()))
+
+		if planNodeDesc.IsSetDependencies() {
+			var deps []string
+			for _, dep := range planNodeDesc.GetDependencies() {
+				deps = append(deps, fmt.Sprintf("%d", dep))
+			}
+			row = append(row, strings.Join(deps, ","))
+		} else {
+			row = append(row, "")
+		}
+
+		if planNodeDesc.IsSetProfiles() {
+			var strArr []string
+			for i, profile := range planNodeDesc.GetProfiles() {
+				otherStats := profile.GetOtherStats()
+				if otherStats != nil {
+					strArr = append(strArr, "{")
+				}
+				s := fmt.Sprintf("ver: %d, rows: %d, execTime: %dus, totalTime: %dus",
+					i, profile.GetRows(), profile.GetExecDurationInUs(), profile.GetTotalDurationInUs())
+				strArr = append(strArr, s)
+
+				for k, v := range otherStats {
+					strArr = append(strArr, fmt.Sprintf("%s: %s", k, v))
+				}
+				if otherStats != nil {
+					strArr = append(strArr, "}")
+				}
+			}
+			row = append(row, strings.Join(strArr, "\n"))
+		} else {
+			row = append(row, "")
+		}
+
+		var columnInfo []string
+		if planNodeDesc.IsSetBranchInfo() {
+			branchInfo := planNodeDesc.GetBranchInfo()
+			columnInfo = append(columnInfo, fmt.Sprintf("branch: %t, nodeId: %d\n",
+				branchInfo.GetIsDoBranch(), branchInfo.GetConditionNodeID()))
+		}
+
+		outputVar := fmt.Sprintf("outputVar: %s", prettyFormatJsonString(planNodeDesc.GetOutputVar()))
+		columnInfo = append(columnInfo, outputVar)
+
+		if planNodeDesc.IsSetDescription() {
+			desc := planNodeDesc.GetDescription()
+			for _, pair := range desc {
+				value := prettyFormatJsonString(pair.GetValue())
+				columnInfo = append(columnInfo, fmt.Sprintf("%s: %s", string(pair.GetKey()), value))
+			}
+		}
+		row = append(row, strings.Join(columnInfo, "\n"))
+		rows = append(rows, row)
+	}
+	return rows
+}
+
+// Returns value in the record at given column index
+func (record Record) GetValueByIndex(index int) (*ValueWrapper, error) {
+	if err := checkIndex(index, record._record); err != nil {
+		return nil, err
+	}
+	return record._record[index], nil
+}
+
+// Returns value in the record at given column name
+func (record Record) GetValueByColName(colName string) (*ValueWrapper, error) {
+	if !record.hasColName(colName) {
+		return nil, fmt.Errorf("failed to get values, given column name '%s' does not exist", colName)
+	}
+	// Get index
+	index := (*record.colNameIndexMap)[colName]
+	return record._record[index], nil
+}
+
+func (record Record) String() string {
+	var strList []string
+	for _, val := range record._record {
+		strList = append(strList, val.String())
+	}
+	return strings.Join(strList, ", ")
+}
+
+func (record Record) hasColName(colName string) bool {
+	if _, ok := (*record.colNameIndexMap)[colName]; ok {
+		return true
+	}
+	return false
 }
 
 func GenNode(vertex types.Vertex) (*Node, error) {
@@ -631,366 +854,143 @@ func (p1 *PathWrapper) IsEqualTo(p2 *PathWrapper) bool {
 	return true
 }
 
-// Returns value in the record at given column index
-func (record Record) GetValueByIndex(index int) (*ValueWrapper, error) {
-	if err := checkIndex(index, record._record); err != nil {
-		return nil, err
-	}
-	return record._record[index], nil
-}
-
-// Returns value in the record at given column name
-func (record Record) GetValueByColName(colName string) (*ValueWrapper, error) {
-	if !record.hasColName(colName) {
-		return nil, fmt.Errorf("failed to get values, given column name '%s' does not exist", colName)
-	}
-	// Get index
-	index := (*record.colNameIndexMap)[colName]
-	return record._record[index], nil
-}
-
-func (record Record) String() string {
-	var strList []string
-	for _, val := range record._record {
-		strList = append(strList, val.String())
-	}
-	return strings.Join(strList, ", ")
-}
-
-func (record Record) hasColName(colName string) bool {
-	if _, ok := (*record.colNameIndexMap)[colName]; ok {
-		return true
-	}
-	return false
-}
-
-func GenResultSet(resp types.ExecutionResponse) (*ResultSet, error) {
-	var colNames []string
-	var colNameIndexMap = make(map[string]int)
-
-	if resp.GetData() == nil { // if resp.Data != nil then resp.Data.row and resp.Data.colNames wont be nil
-		return &ResultSet{
-			resp:            resp,
-			columnNames:     colNames,
-			colNameIndexMap: colNameIndexMap,
-		}, nil
-	}
-	for i, name := range resp.GetData().GetColumnNames() {
-		colNames = append(colNames, string(name))
-		colNameIndexMap[string(name)] = i
+func GenTimeWrapper(time types.Time) (*TimeWrapper, error) {
+	if time == nil {
+		return nil, fmt.Errorf("failed to generate Time: invalid Time")
 	}
 
-	return &ResultSet{
-		resp:            resp,
-		columnNames:     colNames,
-		colNameIndexMap: colNameIndexMap,
+	return &TimeWrapper{
+		time: time,
 	}, nil
 }
 
-// Returns a 2D array of strings representing the query result
-// If resultSet.resp.data is nil, returns an empty 2D array
-func (res ResultSet) AsStringTable() [][]string {
-	var resTable [][]string
-	colNames := res.GetColNames()
-	resTable = append(resTable, colNames)
-	rows := res.GetRows()
-	for _, row := range rows {
-		var tempRow []string
-		for _, val := range row.GetValues() {
-			tempRow = append(tempRow, ValueWrapper{val}.String())
-		}
-		resTable = append(resTable, tempRow)
-	}
-	return resTable
+// getHour returns the hour in UTC
+func (t TimeWrapper) getHour() int8 {
+	return t.time.GetHour()
 }
 
-// Returns all values in the given column
-func (res ResultSet) GetValuesByColName(colName string) ([]*ValueWrapper, error) {
-	if !res.hasColName(colName) {
-		return nil, fmt.Errorf("failed to get values, given column name '%s' does not exist", colName)
-	}
-	// Get index
-	index := res.colNameIndexMap[colName]
-	var valList []*ValueWrapper
-	for _, row := range res.resp.GetData().GetRows() {
-		valList = append(valList, &ValueWrapper{row.GetValues()[index]})
-	}
-	return valList, nil
+// getHour returns the minute in UTC
+func (t TimeWrapper) getMinute() int8 {
+	return t.time.GetMinute()
 }
 
-// Returns all values in the row at given index
-func (res ResultSet) GetRowValuesByIndex(index int) (*Record, error) {
-	if err := checkIndex(index, res.resp.GetData().GetRows()); err != nil {
-		return nil, err
+// getHour returns the second in UTC
+func (t TimeWrapper) getSecond() int8 {
+	return t.time.GetSec()
+}
+
+func (t TimeWrapper) getMicrosec() int32 {
+	return t.time.GetMicrosec()
+}
+
+// getRawTime returns a types.Time object in UTC.
+func (t TimeWrapper) getRawTime() types.Time {
+	return t.getRawTime()
+}
+
+func (t1 TimeWrapper) IsEqualTo(t2 TimeWrapper) bool {
+	return t1.getHour() == t2.getHour() &&
+		t1.getSecond() == t2.getSecond() &&
+		t1.getSecond() == t2.getSecond() &&
+		t1.getMicrosec() == t2.getMicrosec()
+}
+
+func GenDateWrapper(date types.Date) (*DateWrapper, error) {
+	if date == nil {
+		return nil, fmt.Errorf("failed to generate date: invalid date")
 	}
-	valWrap, err := GenValWraps(res.resp.GetData().GetRows()[index])
-	if err != nil {
-		return nil, err
-	}
-	return &Record{
-		columnNames:     &res.columnNames,
-		_record:         valWrap,
-		colNameIndexMap: &res.colNameIndexMap,
+	return &DateWrapper{
+		date: date,
 	}, nil
 }
 
-// Returns the number of total rows
-func (res ResultSet) GetRowSize() int {
-	if res.resp.GetData() == nil {
-		return 0
+func (d DateWrapper) getYear() int16 {
+	return d.date.GetYear()
+}
+
+func (d DateWrapper) getMonth() int8 {
+	return d.date.GetMonth()
+}
+
+func (d DateWrapper) getDay() int8 {
+	return d.date.GetDay()
+}
+
+// getRawDate returns a types.Date object in UTC.
+func (d DateWrapper) getRawDate() types.Date {
+	return d.getRawDate()
+}
+
+func (d1 DateWrapper) IsEqualTo(d2 DateWrapper) bool {
+	return d1.getYear() == d2.getYear() &&
+		d1.getMonth() == d2.getMonth() &&
+		d1.getDay() == d2.getDay()
+}
+
+func GenDateTimeWrapper(datetime types.DateTime) (*DateTimeWrapper, error) {
+	if datetime == nil {
+		return nil, fmt.Errorf("failed to generate datetime: invalid datetime")
 	}
-	return len(res.resp.GetData().GetRows())
+	return &DateTimeWrapper{
+		dateTime: datetime,
+	}, nil
 }
 
-// Returns the number of total columns
-func (res ResultSet) GetColSize() int {
-	if res.resp.GetData() == nil {
-		return 0
+func (dt DateTimeWrapper) getYear() int16 {
+	return dt.dateTime.GetYear()
+}
+
+func (dt DateTimeWrapper) getMonth() int8 {
+	return dt.dateTime.GetMonth()
+}
+
+func (dt DateTimeWrapper) getDay() int8 {
+	return dt.dateTime.GetDay()
+}
+
+func (dt DateTimeWrapper) getHour() int8 {
+	return dt.dateTime.GetHour()
+}
+
+func (dt DateTimeWrapper) getMinute() int8 {
+	return dt.dateTime.GetMinute()
+}
+
+func (dt DateTimeWrapper) getSecond() int8 {
+	return dt.dateTime.GetSec()
+}
+
+func (dt DateTimeWrapper) getMicrosec() int32 {
+	return dt.dateTime.GetMicrosec()
+}
+
+func (dt1 DateTimeWrapper) IsEqualTo(dt2 DateTimeWrapper) bool {
+	return dt1.getYear() == dt2.getYear() &&
+		dt1.getMonth() == dt2.getMonth() &&
+		dt1.getDay() == dt2.getDay() &&
+		dt1.getHour() == dt2.getHour() &&
+		dt1.getSecond() == dt2.getSecond() &&
+		dt1.getSecond() == dt2.getSecond() &&
+		dt1.getMicrosec() == dt2.getMicrosec()
+}
+
+// getRawDateTime returns a types.DateTime object representing local dateTime in UTC.
+func (dt DateTimeWrapper) getRawDateTime() types.DateTime {
+	return dt.dateTime
+}
+
+func GenValWraps(row types.Row) ([]*ValueWrapper, error) {
+	if row == nil {
+		return nil, fmt.Errorf("failed to generate valueWrapper: invalid row")
 	}
-	return len(res.resp.GetData().GetColumnNames())
-}
-
-// Returns all rows
-func (res ResultSet) GetRows() []types.Row {
-	if res.resp.GetData() == nil {
-		var empty []types.Row
-		return empty
-	}
-	return res.resp.GetData().GetRows()
-}
-
-func (res ResultSet) GetColNames() []string {
-	return res.columnNames
-}
-
-// Returns an integer representing an error type
-// 0    ErrorCode_SUCCEEDED
-// -1   ErrorCode_E_DISCONNECTED
-// -2   ErrorCode_E_FAIL_TO_CONNECT
-// -3   ErrorCode_E_RPC_FAILURE
-// -4   ErrorCode_E_BAD_USERNAME_PASSWORD
-// -5   ErrorCode_E_SESSION_INVALID
-// -6   ErrorCode_E_SESSION_TIMEOUT
-// -7   ErrorCode_E_SYNTAX_ERROR
-// -8   ErrorCode_E_EXECUTION_ERROR
-// -9   ErrorCode_E_STATEMENT_EMPTY
-// -10  ErrorCode_E_USER_NOT_FOUND
-// -11  ErrorCode_E_BAD_PERMISSION
-// -12  ErrorCode_E_SEMANTIC_ERROR
-func (res ResultSet) GetErrorCode() cErrors.ErrorCode {
-	return res.resp.GetErrorCode()
-}
-
-func (res ResultSet) GetLatency() int32 {
-	return res.resp.GetLatencyInUs()
-}
-
-func (res ResultSet) GetSpaceName() string {
-	if res.resp.GetSpaceName() == nil {
-		return ""
-	}
-	return string(res.resp.GetSpaceName())
-}
-
-func (res ResultSet) GetErrorMsg() string {
-	if res.resp.GetErrorMsg() == nil {
-		return ""
-	}
-	return string(res.resp.GetErrorMsg())
-}
-
-func (res ResultSet) IsSetPlanDesc() bool {
-	return res.resp.GetPlanDesc() != nil
-}
-
-func (res ResultSet) GetPlanDesc() types.PlanDescription {
-	return res.resp.GetPlanDesc()
-}
-
-func (res ResultSet) IsSetComment() bool {
-	return res.resp.GetComment() != nil
-}
-
-func (res ResultSet) GetComment() string {
-	if res.resp.GetComment() == nil {
-		return ""
-	}
-	return string(res.resp.GetComment())
-}
-
-func (res ResultSet) IsSetData() bool {
-	return res.resp.GetData() != nil
-}
-
-func (res ResultSet) IsEmpty() bool {
-	if !res.IsSetData() || len(res.resp.GetData().GetRows()) == 0 {
-		return true
-	}
-	return false
-}
-
-func (res ResultSet) IsSucceed() bool {
-	return res.GetErrorCode() == cErrors.ErrorCode_SUCCEEDED
-}
-
-func (res ResultSet) IsPartialSucceed() bool {
-	return res.GetErrorCode() == cErrors.ErrorCode_E_PARTIAL_SUCCEEDED
-}
-
-func (res ResultSet) hasColName(colName string) bool {
-	if _, ok := res.colNameIndexMap[colName]; ok {
-		return true
-	}
-	return false
-}
-
-// explain/profile format="dot"
-func (res ResultSet) MakeDotGraph() string {
-	p := res.GetPlanDesc()
-	planNodeDescs := p.GetPlanNodeDescs()
-	var builder strings.Builder
-	builder.WriteString("digraph exec_plan {\n")
-	builder.WriteString("\trankdir=BT;\n")
-	for _, planNodeDesc := range planNodeDescs {
-		planNodeName := name(planNodeDesc)
-		switch strings.ToLower(string(planNodeDesc.GetName())) {
-		case "select":
-			builder.WriteString(conditionalNodeString(planNodeName))
-			dep := nodeById(p, planNodeDesc.GetDependencies()[0])
-			// then branch
-			thenNodeId := findBranchEndNode(p, planNodeDesc.GetId(), true)
-			builder.WriteString(edgeString(name(nodeById(p, thenNodeId)), name(dep)))
-			thenStartId := findFirstStartNodeFrom(p, thenNodeId)
-			builder.WriteString(conditionalEdgeString(name(planNodeDesc), name(nodeById(p, thenStartId)), "Y"))
-			// else branch
-			elseNodeId := findBranchEndNode(p, planNodeDesc.GetId(), false)
-			builder.WriteString(edgeString(name(nodeById(p, elseNodeId)), name(dep)))
-			elseStartId := findFirstStartNodeFrom(p, elseNodeId)
-			builder.WriteString(conditionalEdgeString(name(planNodeDesc), name(nodeById(p, elseStartId)), "N"))
-			// dep
-			builder.WriteString(edgeString(name(dep), planNodeName))
-		case "loop":
-			builder.WriteString(conditionalNodeString(planNodeName))
-			dep := nodeById(p, planNodeDesc.GetDependencies()[0])
-			// do branch
-			doNodeId := findBranchEndNode(p, planNodeDesc.GetId(), true)
-			builder.WriteString(edgeString(name(nodeById(p, doNodeId)), name(planNodeDesc)))
-			doStartId := findFirstStartNodeFrom(p, doNodeId)
-			builder.WriteString(conditionalEdgeString(name(planNodeDesc), name(nodeById(p, doStartId)), "Do"))
-			// dep
-			builder.WriteString(edgeString(name(dep), planNodeName))
-		default:
-			builder.WriteString(nodeString(planNodeDesc, planNodeName))
-			if planNodeDesc.IsSetDependencies() {
-				for _, depId := range planNodeDesc.GetDependencies() {
-					builder.WriteString(edgeString(name(nodeById(p, depId)), planNodeName))
-				}
-			}
+	var valWraps []*ValueWrapper
+	for _, val := range row.GetValues() {
+		if val == nil {
+			return nil, fmt.Errorf("failed to generate valueWrapper: value is nil")
 		}
+		valWraps = append(valWraps, &ValueWrapper{val})
 	}
-	builder.WriteString("}")
-	return builder.String()
-}
-
-// explain/profile format="dot:struct"
-func (res ResultSet) MakeDotGraphByStruct() string {
-	p := res.GetPlanDesc()
-	planNodeDescs := p.GetPlanNodeDescs()
-	var builder strings.Builder
-	builder.WriteString("digraph exec_plan {\n")
-	builder.WriteString("\trankdir=BT;\n")
-	for _, planNodeDesc := range planNodeDescs {
-		planNodeName := name(planNodeDesc)
-		switch strings.ToLower(string(planNodeDesc.GetName())) {
-		case "select":
-			builder.WriteString(conditionalNodeString(planNodeName))
-		case "loop":
-			builder.WriteString(conditionalNodeString(planNodeName))
-		default:
-			builder.WriteString(nodeString(planNodeDesc, planNodeName))
-		}
-
-		if planNodeDesc.IsSetDependencies() {
-			for _, depId := range planNodeDesc.GetDependencies() {
-				dep := nodeById(p, depId)
-				builder.WriteString(edgeString(name(dep), planNodeName))
-			}
-		}
-
-		if planNodeDesc.IsSetBranchInfo() {
-			branchInfo := planNodeDesc.GetBranchInfo()
-			condNode := nodeById(p, branchInfo.GetConditionNodeID())
-			label := condEdgeLabel(condNode, branchInfo.GetIsDoBranch())
-			builder.WriteString(conditionalEdgeString(planNodeName, name(condNode), label))
-		}
-	}
-	builder.WriteString("}")
-	return builder.String()
-}
-
-// explain/profile format="row"
-func (res ResultSet) MakePlanByRow() [][]interface{} {
-	p := res.GetPlanDesc()
-	planNodeDescs := p.GetPlanNodeDescs()
-	var rows [][]interface{}
-	for _, planNodeDesc := range planNodeDescs {
-		var row []interface{}
-		row = append(row, planNodeDesc.GetId(), string(planNodeDesc.GetName()))
-
-		if planNodeDesc.IsSetDependencies() {
-			var deps []string
-			for _, dep := range planNodeDesc.GetDependencies() {
-				deps = append(deps, fmt.Sprintf("%d", dep))
-			}
-			row = append(row, strings.Join(deps, ","))
-		} else {
-			row = append(row, "")
-		}
-
-		if planNodeDesc.IsSetProfiles() {
-			var strArr []string
-			for i, profile := range planNodeDesc.GetProfiles() {
-				otherStats := profile.GetOtherStats()
-				if otherStats != nil {
-					strArr = append(strArr, "{")
-				}
-				s := fmt.Sprintf("ver: %d, rows: %d, execTime: %dus, totalTime: %dus",
-					i, profile.GetRows(), profile.GetExecDurationInUs(), profile.GetTotalDurationInUs())
-				strArr = append(strArr, s)
-
-				for k, v := range otherStats {
-					strArr = append(strArr, fmt.Sprintf("%s: %s", k, v))
-				}
-				if otherStats != nil {
-					strArr = append(strArr, "}")
-				}
-			}
-			row = append(row, strings.Join(strArr, "\n"))
-		} else {
-			row = append(row, "")
-		}
-
-		var columnInfo []string
-		if planNodeDesc.IsSetBranchInfo() {
-			branchInfo := planNodeDesc.GetBranchInfo()
-			columnInfo = append(columnInfo, fmt.Sprintf("branch: %t, nodeId: %d\n",
-				branchInfo.GetIsDoBranch(), branchInfo.GetConditionNodeID()))
-		}
-
-		outputVar := fmt.Sprintf("outputVar: %s", prettyFormatJsonString(planNodeDesc.GetOutputVar()))
-		columnInfo = append(columnInfo, outputVar)
-
-		if planNodeDesc.IsSetDescription() {
-			desc := planNodeDesc.GetDescription()
-			for _, pair := range desc {
-				value := prettyFormatJsonString(pair.GetValue())
-				columnInfo = append(columnInfo, fmt.Sprintf("%s: %s", string(pair.GetKey()), value))
-			}
-		}
-		row = append(row, strings.Join(columnInfo, "\n"))
-		rows = append(rows, row)
-	}
-	return rows
+	return valWraps, nil
 }
 
 func checkIndex(index int, list interface{}) error {

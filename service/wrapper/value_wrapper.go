@@ -89,7 +89,7 @@ func (valWrap ValueWrapper) IsGeography() bool {
 // AsNull converts the ValueWrapper to types.NullType
 func (valWrap ValueWrapper) AsNull() (types.NullType, error) {
 	if valWrap.value.IsSetNVal() {
-		return valWrap.value.GetNVal(), nil
+		return *valWrap.value.GetNVal(), nil
 	}
 	return -1, fmt.Errorf("failed to convert value %s to Null", valWrap.GetType())
 }

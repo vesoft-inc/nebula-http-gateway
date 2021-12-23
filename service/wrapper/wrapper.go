@@ -10,7 +10,7 @@ import (
 */
 
 type defaultValue struct {
-	NVal  types.NullType  `thrift:"nVal,1" db:"nVal" json:"nVal,omitempty"`
+	NVal  *types.NullType `thrift:"nVal,1" db:"nVal" json:"nVal,omitempty"`
 	BVal  *bool           `thrift:"bVal,2" db:"bVal" json:"bVal,omitempty"`
 	IVal  *int64          `thrift:"iVal,3" db:"iVal" json:"iVal,omitempty"`
 	FVal  *float64        `thrift:"fVal,4" db:"fVal" json:"fVal,omitempty"`
@@ -34,9 +34,9 @@ func NewValue(vval types.Vertex) types.Value {
 
 var Value_NVal_DEFAULT types.NullType
 
-func (p *defaultValue) GetNVal() types.NullType {
+func (p *defaultValue) GetNVal() *types.NullType {
 	if !p.IsSetNVal() {
-		return Value_NVal_DEFAULT
+		return types.NullTypePtr(Value_NVal_DEFAULT)
 	}
 	return p.NVal
 }
@@ -227,7 +227,7 @@ func (p *defaultValue) CountSetFieldsValue() int {
 }
 
 func (p *defaultValue) IsSetNVal() bool {
-	return p != nil && p.NVal != types.NullTypeToValue["__NULL__"]
+	return p != nil && p.NVal != nil
 }
 
 func (p *defaultValue) IsSetBVal() bool {
@@ -296,7 +296,7 @@ func (p *defaultValue) String() string {
 	}
 
 	var nValVal string
-	if p.NVal == types.NullTypeToValue["__NULL__"] {
+	if p.NVal == nil {
 		nValVal = "<nil>"
 	} else {
 		nValVal = fmt.Sprintf("%v", p.NVal)

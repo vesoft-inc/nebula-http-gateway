@@ -2,6 +2,10 @@ package types
 
 import "fmt"
 
+/*
+	define the interfaces to fit internal/<ver>/thrift/ttypes and  internal/<ver>/thrift/graph/ttypes
+*/
+
 type EdgeType = int32
 
 type EdgeRanking = int64
@@ -18,7 +22,7 @@ type Row interface {
 }
 
 type Value interface {
-	GetNVal() NullType
+	GetNVal() *NullType
 	GetBVal() bool
 	GetIVal() int64
 	GetFVal() float64
