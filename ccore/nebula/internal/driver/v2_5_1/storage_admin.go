@@ -26,7 +26,7 @@ func (c *defaultStorageAdminClient) Open() error {
 	return c.storageAdmin.Open()
 }
 
-func (c *defaultStorageAdminClient) Close() error{
+func (c *defaultStorageAdminClient) Close() error {
 	if c.storageAdmin != nil {
 		if err := c.storageAdmin.Close(); err != nil {
 			return err

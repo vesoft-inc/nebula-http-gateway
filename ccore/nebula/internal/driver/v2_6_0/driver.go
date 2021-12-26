@@ -10,10 +10,10 @@ var (
 )
 
 type (
-	defaultDriver struct {}
+	defaultDriver struct{}
 )
 
-func init(){
+func init() {
 	types.Register(types.V2_6_0, &defaultDriver{})
 }
 

@@ -81,6 +81,56 @@ func (r *authResponse) SessionID() *int64 {
 	return r.AuthResponse.SessionID
 }
 
-func (r *executionResponse) TODO() {
-	// TODO: the others
+func (r *executionResponse) GetErrorCode() nerrors.ErrorCode {
+	return nerrors.ErrorCode(r.ExecutionResponse.GetErrorCode())
+}
+
+func (r *executionResponse) GetLatencyInUs() int32 {
+	return r.ExecutionResponse.GetLatencyInUs()
+}
+
+func (r *executionResponse) GetData() types.DataSet {
+	dataset := dataSetWrapper(r.ExecutionResponse.GetData())
+	return dataset
+}
+
+func (r *executionResponse) GetSpaceName() []byte {
+	return r.ExecutionResponse.GetSpaceName()
+}
+
+func (r *executionResponse) GetErrorMsg() []byte {
+	return r.ExecutionResponse.GetErrorMsg()
+}
+
+func (r *executionResponse) GetPlanDesc() types.PlanDescription {
+	planDesc := planDescriptionWrapper(r.PlanDesc)
+	return planDesc
+}
+
+func (r *executionResponse) GetComment() []byte {
+	return r.ExecutionResponse.GetComment()
+}
+
+func (r *executionResponse) IsSetData() bool {
+	return r.ExecutionResponse.IsSetData()
+}
+
+func (r *executionResponse) IsSetSpaceName() bool {
+	return r.ExecutionResponse.IsSetSpaceName()
+}
+
+func (r *executionResponse) IsSetErrorMsg() bool {
+	return r.ExecutionResponse.IsSetErrorMsg()
+}
+
+func (r *executionResponse) IsSetPlanDesc() bool {
+	return r.ExecutionResponse.IsSetPlanDesc()
+}
+
+func (r *executionResponse) IsSetComment() bool {
+	return r.ExecutionResponse.IsSetComment()
+}
+
+func (r *executionResponse) String() string {
+	return r.ExecutionResponse.String()
 }

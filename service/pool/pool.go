@@ -2,16 +2,14 @@ package pool
 
 import (
 	"errors"
+	uuid "github.com/satori/go.uuid"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
+	"github.com/vesoft-inc/nebula-http-gateway/common"
+	"github.com/vesoft-inc/nebula-http-gateway/service/wrapper"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
-
-	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
-	"github.com/vesoft-inc/nebula-http-gateway/common"
-	"github.com/vesoft-inc/nebula-http-gateway/service/logger"
-
-	uuid "github.com/satori/go.uuid"
-	nebula "github.com/vesoft-inc/nebula-go/v2"
 )
 
 var (
@@ -25,7 +23,7 @@ type Account struct {
 }
 
 type ChannelResponse struct {
-	Result *nebula.ResultSet
+	Result *wrapper.ResultSet
 	Error  error
 }
 
@@ -34,138 +32,114 @@ type ChannelRequest struct {
 	ResponseChannel chan ChannelResponse
 }
 
-type Connection struct {
+type Client struct {
+	graphClient    nebula.GraphClient
 	RequestChannel chan ChannelRequest
 	CloseChannel   chan bool
 	updateTime     int64
 	account        *Account
-	session        *nebula.Session
 }
 
-var connectionPool = make(map[string]*Connection)
-var currentConnectionNum = 0
-var connectLock sync.Mutex
+var (
+	clientPool       = make(map[string]*Client)
+	currentClientNum = 0
+	clientMux        sync.Mutex
 
-func isThriftProtoError(err error) bool {
-	protoErr, ok := err.(thrift.ProtocolException)
-	if !ok {
-		return false
-	}
-	if protoErr.TypeID() != thrift.UNKNOWN_PROTOCOL_EXCEPTION {
-		return false
-	}
-	errPrefix := []string{"wsasend", "wsarecv", "write:"}
-	errStr := protoErr.Error()
-	for _, e := range errPrefix {
-		if strings.Contains(errStr, e) {
-			return true
-		}
-	}
-	return false
-}
+	ClientNotExistedError = errors.New("get client error: client not existed")
+)
 
-func isThriftTransportError(err error) bool {
-	if transErr, ok := err.(thrift.TransportException); ok {
-		typeId := transErr.TypeID()
-		if typeId == thrift.UNKNOWN_TRANSPORT_EXCEPTION || typeId == thrift.TIMED_OUT {
-			if strings.Contains(transErr.Error(), "read:") {
-				return true
-			}
-		}
-	}
-	return false
-}
+func NewClient(address string, port int, username string, password string, version nebula.Version) (ncid string, err error) {
+	clientMux.Lock()
+	defer clientMux.Unlock()
 
-func NewConnection(address string, port int, username string, password string) (nsid string, err error) {
-	connectLock.Lock()
-	defer connectLock.Unlock()
-	// Initialize logger
-	var httpgatewayLog = logger.HttpGatewayLogger{}
-	hostAddress := nebula.HostAddress{Host: address, Port: port}
-	hostList := []nebula.HostAddress{hostAddress}
-	poolConfig := nebula.GetDefaultConf()
-	// Initialize connectin pool
-	pool, err := nebula.NewConnectionPool(hostList, poolConfig, httpgatewayLog)
+	host := strings.Join([]string{address, strconv.Itoa(port)}, ":")
+	c, err := nebula.NewGraphClient([]string{host}, username, password, nebula.WithVersion(version))
 	if err != nil {
 		return "", err
 	}
-	err = pool.Ping(hostList[0], 5000*time.Millisecond)
-	if err != nil {
+	if err := c.Open(); err != nil {
 		return "", err
 	}
 
-	// Create session
-	session, err := pool.GetSession(username, password)
-	if err == nil {
-		nsid = uuid.NewV4().String()
-		connectionPool[nsid] = &Connection{
-			RequestChannel: make(chan ChannelRequest),
-			CloseChannel:   make(chan bool),
-			updateTime:     time.Now().Unix(),
-			session:        session,
-			account: &Account{
-				username: username,
-				password: password,
-			},
-		}
-		currentConnectionNum++
+	ncid = uuid.NewV4().String()
 
-		// Make a goroutine to deal with concurrent requests from each connection
-		go func() {
-			connection := connectionPool[nsid]
-			for {
-				select {
-				case request := <-connection.RequestChannel:
-					func() {
-						defer func() {
-							if err := recover(); err != nil {
-								common.LogPanic(err)
-								request.ResponseChannel <- ChannelResponse{
-									Result: nil,
-									Error:  SessionLostError,
-								}
+	client := &Client{
+		graphClient:    c,
+		RequestChannel: make(chan ChannelRequest),
+		CloseChannel:   make(chan bool),
+		updateTime:     time.Now().Unix(),
+		account: &Account{
+			username: username,
+			password: password,
+		},
+	}
+	clientPool[ncid] = client
+	currentClientNum++
+
+	// Make a goroutine to deal with concurrent requests from each connection
+	go func() {
+		client := clientPool[ncid]
+		for {
+			select {
+			case request := <-client.RequestChannel:
+				func() {
+					defer func() {
+						if err := recover(); err != nil {
+							common.LogPanic(err)
+							request.ResponseChannel <- ChannelResponse{
+								Result: nil,
+								Error:  SessionLostError,
 							}
-						}()
-						response, err := connection.session.Execute(request.Gql)
-						if err != nil && (isThriftProtoError(err) || isThriftTransportError(err)) {
-							err = ConnectionClosedError
-						}
-						request.ResponseChannel <- ChannelResponse{
-							Result: response,
-							Error:  err,
 						}
 					}()
-				case <-connection.CloseChannel:
-					connection.session.Release()
-					connectLock.Lock()
-					delete(connectionPool, nsid)
-					currentConnectionNum--
-					connectLock.Unlock()
-					// Exit loop
-					return
-				}
+					response, err := client.graphClient.Execute([]byte(request.Gql))
+					if err != nil {
+						err = ConnectionClosedError
+					}
+					res, err := wrapper.GenResultSet(response)
+					if err != nil {
+						err = ConnectionClosedError
+					}
+					request.ResponseChannel <- ChannelResponse{
+						Result: res,
+						Error:  err,
+					}
+				}()
+			case <-client.CloseChannel:
+				clientMux.Lock()
+				_ = client.graphClient.Close()
+				currentClientNum--
+				delete(clientPool, ncid)
+				clientMux.Unlock()
+				return // Exit loop
 			}
-		}()
-		return nsid, err
-	}
-	return "", err
+		}
+	}()
+	return ncid, err
 }
 
-func Disconnect(nsid string) {
-	connection := connectionPool[nsid]
-	if connection != nil {
-		connection.session.Release()
-		delete(connectionPool, nsid)
+func Close(ncid string) {
+	clientMux.Lock()
+	defer clientMux.Unlock()
+
+	if client, ok := clientPool[ncid]; ok {
+		_ = client.graphClient.Close()
+		currentClientNum--
+		delete(clientPool, ncid)
 	}
 }
 
-func GetConnection(nsid string) (connection *Connection, err error) {
-	connectLock.Lock()
-	defer connectLock.Unlock()
+func GetClient(ncid string) (*Client, error) {
+	clientMux.Lock()
+	defer clientMux.Unlock()
 
-	if connection, ok := connectionPool[nsid]; ok {
-		connection.updateTime = time.Now().Unix()
-		return connection, nil
+	if client, ok := clientPool[ncid]; ok {
+		return client, nil
 	}
-	return nil, errors.New("connection refused for being released")
+
+	return nil, ClientNotExistedError
+}
+
+func (c *Client) Execute(gql string) (nebula.ExecutionResponse, error) {
+	return c.graphClient.Execute([]byte(gql))
 }

@@ -23,6 +23,7 @@ type Request struct {
 	Password string `json:"password"`
 	Address  string `json:"address"`
 	Port     int    `json:"port"`
+	Version  string `json:"version"`
 }
 
 type ExecuteRequest struct {
@@ -35,7 +36,7 @@ func (this *DatabaseController) Connect() {
 	var res Response
 	var params Request
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
-	nsid, err := dao.Connect(params.Address, params.Port, params.Username, params.Password)
+	nsid, err := dao.Connect(params.Address, params.Port, params.Username, params.Password, params.Version)
 	if err == nil {
 		res.Code = 0
 		m := make(map[string]common.Any)

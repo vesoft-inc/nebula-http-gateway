@@ -2,24 +2,23 @@ package dao
 
 import (
 	"errors"
-
 	"github.com/astaxie/beego/logs"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 	"github.com/vesoft-inc/nebula-http-gateway/common"
 	"github.com/vesoft-inc/nebula-http-gateway/service/pool"
-
-	nebula "github.com/vesoft-inc/nebula-go/v2"
-	nebulaType "github.com/vesoft-inc/nebula-go/v2/nebula"
+	"github.com/vesoft-inc/nebula-http-gateway/service/wrapper"
 )
 
 type ExecuteResult struct {
 	Headers  []string                `json:"headers"`
 	Tables   []map[string]common.Any `json:"tables"`
-	TimeCost int64                   `json:"timeCost"`
+	TimeCost int32                   `json:"timeCost"`
 }
 
 type list []common.Any
 
-func getID(idWarp nebula.ValueWrapper) common.Any {
+func getID(idWarp wrapper.ValueWrapper) common.Any {
 	idType := idWarp.GetType()
 	var vid common.Any
 	if idType == "string" {
@@ -30,7 +29,7 @@ func getID(idWarp nebula.ValueWrapper) common.Any {
 	return vid
 }
 
-func getValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
+func getValue(valWarp *wrapper.ValueWrapper) (common.Any, error) {
 	switch valWarp.GetType() {
 	case "vertex", "edge", "path", "list", "map", "set":
 		return valWarp.String(), nil
@@ -39,26 +38,26 @@ func getValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
 	}
 }
 
-func getBasicValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
+func getBasicValue(valWarp *wrapper.ValueWrapper) (common.Any, error) {
 	var valType = valWarp.GetType()
 	if valType == "null" {
 		value, err := valWarp.AsNull()
 		switch value {
-		case nebulaType.NullType___NULL__:
+		case types.NullType___NULL__:
 			return "NULL", err
-		case nebulaType.NullType_NaN:
+		case types.NullType_NaN:
 			return "NaN", err
-		case nebulaType.NullType_BAD_DATA:
+		case types.NullType_BAD_DATA:
 			return "BAD_DATA", err
-		case nebulaType.NullType_BAD_TYPE:
+		case types.NullType_BAD_TYPE:
 			return "BAD_TYPE", err
-		case nebulaType.NullType_OUT_OF_RANGE:
+		case types.NullType_OUT_OF_RANGE:
 			return "OUT_OF_RANGE", err
-		case nebulaType.NullType_DIV_BY_ZERO:
+		case types.NullType_DIV_BY_ZERO:
 			return "DIV_BY_ZERO", err
-		case nebulaType.NullType_UNKNOWN_PROP:
+		case types.NullType_UNKNOWN_PROP:
 			return "UNKNOWN_PROP", err
-		case nebulaType.NullType_ERR_OVERFLOW:
+		case types.NullType_ERR_OVERFLOW:
 			return "ERR_OVERFLOW", err
 		}
 		return "NULL", err
@@ -84,7 +83,7 @@ func getBasicValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
 	return "", nil
 }
 
-func getVertexInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (map[string]common.Any, error) {
+func getVertexInfo(valWarp *wrapper.ValueWrapper, data map[string]common.Any) (map[string]common.Any, error) {
 	node, err := valWarp.AsNode()
 	if err != nil {
 		return nil, err
@@ -114,7 +113,7 @@ func getVertexInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (ma
 	return data, nil
 }
 
-func getEdgeInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (map[string]common.Any, error) {
+func getEdgeInfo(valWarp *wrapper.ValueWrapper, data map[string]common.Any) (map[string]common.Any, error) {
 	relationship, err := valWarp.AsRelationship()
 	if err != nil {
 		return nil, err
@@ -140,7 +139,7 @@ func getEdgeInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (map[
 	return data, nil
 }
 
-func getPathInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (map[string]common.Any, error) {
+func getPathInfo(valWarp *wrapper.ValueWrapper, data map[string]common.Any) (map[string]common.Any, error) {
 	path, err := valWarp.AsPath()
 	if err != nil {
 		return nil, err
@@ -163,8 +162,8 @@ func getPathInfo(valWarp *nebula.ValueWrapper, data map[string]common.Any) (map[
 	return data, nil
 }
 
-func getListInfo(valWarp *nebula.ValueWrapper, listType string, _verticesParsedList *list, _edgesParsedList *list, _pathsParsedList *list) error {
-	var valueList []nebula.ValueWrapper
+func getListInfo(valWarp *wrapper.ValueWrapper, listType string, _verticesParsedList *list, _edgesParsedList *list, _pathsParsedList *list) error {
+	var valueList []wrapper.ValueWrapper
 	var err error
 	if listType == "list" {
 		valueList, err = valWarp.AsList()
@@ -221,7 +220,7 @@ func getListInfo(valWarp *nebula.ValueWrapper, listType string, _verticesParsedL
 	return nil
 }
 
-func getMapInfo(valWarp *nebula.ValueWrapper, _verticesParsedList *list, _edgesParsedList *list, _pathsParsedList *list) error {
+func getMapInfo(valWarp *wrapper.ValueWrapper, _verticesParsedList *list, _edgesParsedList *list, _pathsParsedList *list) error {
 	valueMap, err := valWarp.AsMap()
 	if err != nil {
 		return err
@@ -275,30 +274,30 @@ func getMapInfo(valWarp *nebula.ValueWrapper, _verticesParsedList *list, _edgesP
 }
 
 // Connect return if the nebula connect succeed
-func Connect(address string, port int, username string, password string) (nsid string, err error) {
-	nsid, err = pool.NewConnection(address, port, username, password)
+func Connect(address string, port int, username string, password string, version string) (nsid string, err error) {
+	nsid, err = pool.NewClient(address, port, username, password, nebula.Version(version))
 	if err != nil {
 		return "", err
 	}
-	return nsid, err
+	return
 }
 
 func Disconnect(nsid string) {
-	pool.Disconnect(nsid)
+	pool.Close(nsid)
 }
 
-func Execute(nsid string, gql string) (result ExecuteResult, err error) {
-	result = ExecuteResult{
+func Execute(nsid string, gql string) (ExecuteResult, error) {
+	result := ExecuteResult{
 		Headers: make([]string, 0),
 		Tables:  make([]map[string]common.Any, 0),
 	}
-	connection, err := pool.GetConnection(nsid)
+	client, err := pool.GetClient(nsid)
 	if err != nil {
 		return result, err
 	}
 
 	responseChannel := make(chan pool.ChannelResponse)
-	connection.RequestChannel <- pool.ChannelRequest{
+	client.RequestChannel <- pool.ChannelRequest{
 		Gql:             gql,
 		ResponseChannel: responseChannel,
 	}
@@ -306,12 +305,12 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 	if response.Error != nil {
 		return result, response.Error
 	}
-	resp := response.Result
-	if resp.IsSetPlanDesc() {
-		format := string(resp.GetPlanDesc().GetFormat())
+	res := response.Result
+	if res.IsSetPlanDesc() {
+		format := string(res.GetPlanDesc().GetFormat())
 		if format == "row" {
 			result.Headers = []string{"id", "name", "dependencies", "profiling data", "operator info"}
-			rows := resp.MakePlanByRow()
+			rows := res.MakePlanByRow()
 			for i := 0; i < len(rows); i++ {
 				var rowValue = make(map[string]common.Any)
 				rowValue["id"] = rows[i][0]
@@ -326,27 +325,28 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 			var rowValue = make(map[string]common.Any)
 			result.Headers = append(result.Headers, "format")
 			if format == "dot" {
-				rowValue["format"] = resp.MakeDotGraph()
+				rowValue["format"] = res.MakeDotGraph()
 			} else if format == "dot:struct" {
-				rowValue["format"] = resp.MakeDotGraphByStruct()
+				rowValue["format"] = res.MakeDotGraphByStruct()
 			}
 			result.Tables = append(result.Tables, rowValue)
 			return result, err
 		}
 	}
 
-	if !resp.IsSucceed() {
-		logs.Info("ErrorCode: %v, ErrorMsg: %s", resp.GetErrorCode(), resp.GetErrorMsg())
-		return result, errors.New(string(resp.GetErrorMsg()))
+	if !res.IsSucceed() {
+		logs.Info("ErrorCode: %v, ErrorMsg: %s", res.GetErrorCode(), res.GetErrorMsg())
+		return result, errors.New(string(res.GetErrorMsg()))
 	}
-	if !resp.IsEmpty() {
-		rowSize := resp.GetRowSize()
-		colSize := resp.GetColSize()
-		colNames := resp.GetColNames()
+
+	if !res.IsEmpty() {
+		rowSize := res.GetRowSize()
+		colSize := res.GetColSize()
+		colNames := res.GetColNames()
 		result.Headers = colNames
 		for i := 0; i < rowSize; i++ {
 			var rowValue = make(map[string]common.Any)
-			record, err := resp.GetRowValuesByIndex(i)
+			record, err := res.GetRowValuesByIndex(i)
 			var _verticesParsedList = make(list, 0)
 			var _edgesParsedList = make(list, 0)
 			var _pathsParsedList = make(list, 0)
@@ -402,6 +402,6 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 			result.Tables = append(result.Tables, rowValue)
 		}
 	}
-	result.TimeCost = resp.GetLatency()
+	result.TimeCost = res.GetLatency()
 	return result, nil
 }
