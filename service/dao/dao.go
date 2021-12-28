@@ -13,7 +13,7 @@ import (
 type ExecuteResult struct {
 	Headers  []string                `json:"headers"`
 	Tables   []map[string]common.Any `json:"tables"`
-	TimeCost int32                   `json:"timeCost"`
+	TimeCost int64                   `json:"timeCost"`
 }
 
 type list []common.Any

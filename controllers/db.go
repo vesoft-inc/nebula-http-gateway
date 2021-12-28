@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
-
 	"github.com/astaxie/beego"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
 	"github.com/vesoft-inc/nebula-http-gateway/common"
 	"github.com/vesoft-inc/nebula-http-gateway/service/dao"
 )
@@ -16,6 +16,12 @@ type Response struct {
 	Code    int        `json:"code"`
 	Data    common.Any `json:"data"`
 	Message string     `json:"message"`
+
+	/*
+		if the request version field is "",
+		the response will return the `types.VersionHelper()` result for checking
+	*/
+	Version string `json:"version"`
 }
 
 type Request struct {
@@ -23,7 +29,12 @@ type Request struct {
 	Password string `json:"password"`
 	Address  string `json:"address"`
 	Port     int    `json:"port"`
-	Version  string `json:"version"`
+
+	/*
+		if the request version field is "",
+		will use `types.VersionHelper()` to infer a version
+	*/
+	Version string `json:"version"`
 }
 
 type ExecuteRequest struct {
@@ -33,9 +44,23 @@ type ExecuteRequest struct {
 type Data map[string]interface{}
 
 func (this *DatabaseController) Connect() {
-	var res Response
-	var params Request
+	var (
+		res    Response
+		params Request
+	)
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
+
+	if params.Version == "" {
+		version, err := nebula.VersionHelper(params.Address, params.Port, params.Username, params.Password)
+		if err != nil {
+			res.Code = -1
+			res.Message = err.Error()
+			this.Data["json"] = &res
+			this.ServeJSON()
+		}
+
+		params.Version = string(version)
+	}
 	nsid, err := dao.Connect(params.Address, params.Port, params.Username, params.Password, params.Version)
 	if err == nil {
 		res.Code = 0
@@ -51,6 +76,8 @@ func (this *DatabaseController) Connect() {
 		res.Code = -1
 		res.Message = err.Error()
 	}
+	res.Version = params.Version
+
 	this.Data["json"] = &res
 	this.ServeJSON()
 }
