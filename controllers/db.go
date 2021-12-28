@@ -16,12 +16,6 @@ type Response struct {
 	Code    int        `json:"code"`
 	Data    common.Any `json:"data"`
 	Message string     `json:"message"`
-
-	/*
-		if the request version field is "",
-		the response will return the `types.VersionHelper()` result for checking
-	*/
-	Version string `json:"version"`
 }
 
 type Request struct {
@@ -76,7 +70,6 @@ func (this *DatabaseController) Connect() {
 		res.Code = -1
 		res.Message = err.Error()
 	}
-	res.Version = params.Version
 
 	this.Data["json"] = &res
 	this.ServeJSON()
