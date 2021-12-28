@@ -178,7 +178,7 @@ func (res ResultSet) GetErrorCode() cErrors.ErrorCode {
 	return res.resp.GetErrorCode()
 }
 
-func (res ResultSet) GetLatency() int32 {
+func (res ResultSet) GetLatency() int64 {
 	return res.resp.GetLatencyInUs()
 }
 

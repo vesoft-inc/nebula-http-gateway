@@ -11,8 +11,7 @@ type (
 )
 
 var (
-	V2_0_0 = types.V2_0_0
-	V2_5_0 = types.V2_5_0
-	V2_5_1 = types.V2_5_1
-	V2_6_0 = types.V2_6_0
+	V2_5 = types.V2_5
+	V2_6 = types.V2_6
+	V3_0 = types.V3_0
 )

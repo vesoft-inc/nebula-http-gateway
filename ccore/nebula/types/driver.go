@@ -46,7 +46,7 @@ type (
 
 	ExecutionResponse interface {
 		GetErrorCode() nerrors.ErrorCode
-		GetLatencyInUs() int32
+		GetLatencyInUs() int64
 		GetData() DataSet
 		GetSpaceName() []byte
 		GetErrorMsg() []byte

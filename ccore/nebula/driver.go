@@ -5,10 +5,9 @@ import (
 
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	nerrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
-	_ "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/driver/v2_0_0"
-	_ "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/driver/v2_5_0"
-	_ "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/driver/v2_5_1"
-	_ "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/driver/v2_6_0"
+	_ "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/driver/v2_5"
+	_ "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/driver/v2_6"
+	_ "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/driver/v3_0"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
