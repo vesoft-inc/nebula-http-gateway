@@ -2,25 +2,24 @@ package dao
 
 import (
 	"errors"
-	"github.com/astaxie/beego/logs"
+	"fmt"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
-	"github.com/vesoft-inc/nebula-http-gateway/common"
-	"github.com/vesoft-inc/nebula-http-gateway/service/pool"
-	"github.com/vesoft-inc/nebula-http-gateway/service/wrapper"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/wrapper"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/service/pool"
 )
 
 type ExecuteResult struct {
-	Headers  []string                `json:"headers"`
-	Tables   []map[string]common.Any `json:"tables"`
-	TimeCost int64                   `json:"timeCost"`
+	Headers  []string               `json:"headers"`
+	Tables   []map[string]types.Any `json:"tables"`
+	TimeCost int64                  `json:"timeCost"`
 }
 
-type list []common.Any
+type list []types.Any
 
-func getID(idWarp wrapper.ValueWrapper) common.Any {
+func getID(idWarp wrapper.ValueWrapper) types.Any {
 	idType := idWarp.GetType()
-	var vid common.Any
+	var vid types.Any
 	if idType == "string" {
 		vid, _ = idWarp.AsString()
 	} else if idType == "int" {
@@ -29,7 +28,7 @@ func getID(idWarp wrapper.ValueWrapper) common.Any {
 	return vid
 }
 
-func getValue(valWarp *wrapper.ValueWrapper) (common.Any, error) {
+func getValue(valWarp *wrapper.ValueWrapper) (types.Any, error) {
 	switch valWarp.GetType() {
 	case "vertex", "edge", "path", "list", "map", "set":
 		return valWarp.String(), nil
@@ -38,7 +37,7 @@ func getValue(valWarp *wrapper.ValueWrapper) (common.Any, error) {
 	}
 }
 
-func getBasicValue(valWarp *wrapper.ValueWrapper) (common.Any, error) {
+func getBasicValue(valWarp *wrapper.ValueWrapper) (types.Any, error) {
 	var valType = valWarp.GetType()
 	if valType == "null" {
 		value, err := valWarp.AsNull()
@@ -83,7 +82,7 @@ func getBasicValue(valWarp *wrapper.ValueWrapper) (common.Any, error) {
 	return "", nil
 }
 
-func getVertexInfo(valWarp *wrapper.ValueWrapper, data map[string]common.Any) (map[string]common.Any, error) {
+func getVertexInfo(valWarp *wrapper.ValueWrapper, data map[string]types.Any) (map[string]types.Any, error) {
 	node, err := valWarp.AsNode()
 	if err != nil {
 		return nil, err
@@ -91,14 +90,14 @@ func getVertexInfo(valWarp *wrapper.ValueWrapper, data map[string]common.Any) (m
 	id := node.GetID()
 	data["vid"] = getID(id)
 	tags := make([]string, 0)
-	properties := make(map[string]map[string]common.Any)
+	properties := make(map[string]map[string]types.Any)
 	for _, tagName := range node.GetTags() {
 		tags = append(tags, tagName)
 		props, err := node.Properties(tagName)
 		if err != nil {
 			return nil, err
 		}
-		_props := make(map[string]common.Any)
+		_props := make(map[string]types.Any)
 		for k, v := range props {
 			value, err := getValue(v)
 			if err != nil {
@@ -113,7 +112,7 @@ func getVertexInfo(valWarp *wrapper.ValueWrapper, data map[string]common.Any) (m
 	return data, nil
 }
 
-func getEdgeInfo(valWarp *wrapper.ValueWrapper, data map[string]common.Any) (map[string]common.Any, error) {
+func getEdgeInfo(valWarp *wrapper.ValueWrapper, data map[string]types.Any) (map[string]types.Any, error) {
 	relationship, err := valWarp.AsRelationship()
 	if err != nil {
 		return nil, err
@@ -126,7 +125,7 @@ func getEdgeInfo(valWarp *wrapper.ValueWrapper, data map[string]common.Any) (map
 	data["edgeName"] = edgeName
 	rank := relationship.GetRanking()
 	data["rank"] = rank
-	properties := make(map[string]common.Any)
+	properties := make(map[string]types.Any)
 	props := relationship.Properties()
 	for k, v := range props {
 		value, err := getValue(v)
@@ -139,15 +138,15 @@ func getEdgeInfo(valWarp *wrapper.ValueWrapper, data map[string]common.Any) (map
 	return data, nil
 }
 
-func getPathInfo(valWarp *wrapper.ValueWrapper, data map[string]common.Any) (map[string]common.Any, error) {
+func getPathInfo(valWarp *wrapper.ValueWrapper, data map[string]types.Any) (map[string]types.Any, error) {
 	path, err := valWarp.AsPath()
 	if err != nil {
 		return nil, err
 	}
 	relationships := path.GetRelationships()
-	var _relationships []common.Any
+	var _relationships []types.Any
 	for _, relation := range relationships {
-		_relation := make(map[string]common.Any)
+		_relation := make(map[string]types.Any)
 		srcID := relation.GetSrcVertexID()
 		_relation["srcID"] = getID(srcID)
 		dstID := relation.GetDstVertexID()
@@ -174,7 +173,7 @@ func getListInfo(valWarp *wrapper.ValueWrapper, listType string, _verticesParsed
 		return err
 	}
 	for _, v := range valueList {
-		var props = make(map[string]common.Any)
+		var props = make(map[string]types.Any)
 		vType := v.GetType()
 		props["type"] = vType
 		if vType == "vertex" {
@@ -228,7 +227,7 @@ func getMapInfo(valWarp *wrapper.ValueWrapper, _verticesParsedList *list, _edges
 	for _, v := range valueMap {
 		vType := v.GetType()
 		if vType == "vertex" {
-			var _props map[string]common.Any
+			var _props map[string]types.Any
 			_props, err = getVertexInfo(&v, _props)
 			if err == nil {
 				*_verticesParsedList = append(*_verticesParsedList, _props)
@@ -236,7 +235,7 @@ func getMapInfo(valWarp *wrapper.ValueWrapper, _verticesParsedList *list, _edges
 				return err
 			}
 		} else if vType == "edge" {
-			var _props map[string]common.Any
+			var _props map[string]types.Any
 			_props, err = getEdgeInfo(&v, _props)
 			if err == nil {
 				*_edgesParsedList = append(*_edgesParsedList, _props)
@@ -244,7 +243,7 @@ func getMapInfo(valWarp *wrapper.ValueWrapper, _verticesParsedList *list, _edges
 				return err
 			}
 		} else if vType == "path" {
-			var _props map[string]common.Any
+			var _props map[string]types.Any
 			_props, err = getPathInfo(&v, _props)
 			if err == nil {
 				*_pathsParsedList = append(*_pathsParsedList, _props)
@@ -286,14 +285,14 @@ func Disconnect(nsid string) {
 	pool.Close(nsid)
 }
 
-func Execute(nsid string, gql string) (ExecuteResult, error) {
+func Execute(nsid string, gql string) (ExecuteResult, interface{}, error) {
 	result := ExecuteResult{
 		Headers: make([]string, 0),
-		Tables:  make([]map[string]common.Any, 0),
+		Tables:  make([]map[string]types.Any, 0),
 	}
 	client, err := pool.GetClient(nsid)
 	if err != nil {
-		return result, err
+		return result, nil, err
 	}
 
 	responseChannel := make(chan pool.ChannelResponse)
@@ -303,7 +302,7 @@ func Execute(nsid string, gql string) (ExecuteResult, error) {
 	}
 	response := <-responseChannel
 	if response.Error != nil {
-		return result, response.Error
+		return result, response.Msg, response.Error
 	}
 	res := response.Result
 	if res.IsSetPlanDesc() {
@@ -312,7 +311,7 @@ func Execute(nsid string, gql string) (ExecuteResult, error) {
 			result.Headers = []string{"id", "name", "dependencies", "profiling data", "operator info"}
 			rows := res.MakePlanByRow()
 			for i := 0; i < len(rows); i++ {
-				var rowValue = make(map[string]common.Any)
+				var rowValue = make(map[string]types.Any)
 				rowValue["id"] = rows[i][0]
 				rowValue["name"] = rows[i][1]
 				rowValue["dependencies"] = rows[i][2]
@@ -320,9 +319,9 @@ func Execute(nsid string, gql string) (ExecuteResult, error) {
 				rowValue["operator info"] = rows[i][4]
 				result.Tables = append(result.Tables, rowValue)
 			}
-			return result, err
+			return result, nil, err
 		} else {
-			var rowValue = make(map[string]common.Any)
+			var rowValue = make(map[string]types.Any)
 			result.Headers = append(result.Headers, "format")
 			if format == "dot" {
 				rowValue["format"] = res.MakeDotGraph()
@@ -330,13 +329,12 @@ func Execute(nsid string, gql string) (ExecuteResult, error) {
 				rowValue["format"] = res.MakeDotGraphByStruct()
 			}
 			result.Tables = append(result.Tables, rowValue)
-			return result, err
+			return result, nil, err
 		}
 	}
 
 	if !res.IsSucceed() {
-		logs.Info("ErrorCode: %v, ErrorMsg: %s", res.GetErrorCode(), res.GetErrorMsg())
-		return result, errors.New(string(res.GetErrorMsg()))
+		return result, fmt.Sprintf("ErrorCode: %v, ErrorMsg: %s", res.GetErrorCode(), res.GetErrorMsg()), errors.New(string(res.GetErrorMsg()))
 	}
 
 	if !res.IsEmpty() {
@@ -345,37 +343,37 @@ func Execute(nsid string, gql string) (ExecuteResult, error) {
 		colNames := res.GetColNames()
 		result.Headers = colNames
 		for i := 0; i < rowSize; i++ {
-			var rowValue = make(map[string]common.Any)
+			var rowValue = make(map[string]types.Any)
 			record, err := res.GetRowValuesByIndex(i)
 			var _verticesParsedList = make(list, 0)
 			var _edgesParsedList = make(list, 0)
 			var _pathsParsedList = make(list, 0)
 			if err != nil {
-				return result, err
+				return result, nil, err
 			}
 			for j := 0; j < colSize; j++ {
 				rowData, err := record.GetValueByIndex(j)
 				if err != nil {
-					return result, err
+					return result, nil, err
 				}
 				value, err := getValue(rowData)
 				if err != nil {
-					return result, err
+					return result, nil, err
 				}
 				rowValue[result.Headers[j]] = value
 				valueType := rowData.GetType()
 				if valueType == "vertex" {
-					var parseValue = make(map[string]common.Any)
+					var parseValue = make(map[string]types.Any)
 					parseValue, err = getVertexInfo(rowData, parseValue)
 					parseValue["type"] = "vertex"
 					_verticesParsedList = append(_verticesParsedList, parseValue)
 				} else if valueType == "edge" {
-					var parseValue = make(map[string]common.Any)
+					var parseValue = make(map[string]types.Any)
 					parseValue, err = getEdgeInfo(rowData, parseValue)
 					parseValue["type"] = "edge"
 					_edgesParsedList = append(_edgesParsedList, parseValue)
 				} else if valueType == "path" {
-					var parseValue = make(map[string]common.Any)
+					var parseValue = make(map[string]types.Any)
 					parseValue, err = getPathInfo(rowData, parseValue)
 					parseValue["type"] = "path"
 					_pathsParsedList = append(_pathsParsedList, parseValue)
@@ -396,12 +394,12 @@ func Execute(nsid string, gql string) (ExecuteResult, error) {
 					rowValue["_pathsParsedList"] = _pathsParsedList
 				}
 				if err != nil {
-					return result, err
+					return result, nil, err
 				}
 			}
 			result.Tables = append(result.Tables, rowValue)
 		}
 	}
 	result.TimeCost = res.GetLatency()
-	return result, nil
+	return result, nil, nil
 }

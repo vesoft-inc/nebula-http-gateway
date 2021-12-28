@@ -2,14 +2,14 @@ package pool
 
 import (
 	"errors"
-	uuid "github.com/satori/go.uuid"
-	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
-	"github.com/vesoft-inc/nebula-http-gateway/common"
-	"github.com/vesoft-inc/nebula-http-gateway/service/wrapper"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	uuid "github.com/satori/go.uuid"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/wrapper"
 )
 
 var (
@@ -24,6 +24,7 @@ type Account struct {
 
 type ChannelResponse struct {
 	Result *wrapper.ResultSet
+	Msg    interface{}
 	Error  error
 }
 
@@ -77,45 +78,48 @@ func NewClient(address string, port int, username string, password string, versi
 	currentClientNum++
 
 	// Make a goroutine to deal with concurrent requests from each connection
-	go func() {
-		client := clientPool[ncid]
-		for {
-			select {
-			case request := <-client.RequestChannel:
-				func() {
-					defer func() {
-						if err := recover(); err != nil {
-							common.LogPanic(err)
-							request.ResponseChannel <- ChannelResponse{
-								Result: nil,
-								Error:  SessionLostError,
-							}
+	go handleRequest(ncid)
+
+	return ncid, err
+}
+
+func handleRequest(ncid string) {
+	client := clientPool[ncid]
+	for {
+		select {
+		case request := <-client.RequestChannel:
+			func() {
+				defer func() {
+					if err := recover(); err != nil {
+						request.ResponseChannel <- ChannelResponse{
+							Result: nil,
+							Msg:    err,
+							Error:  SessionLostError,
 						}
-					}()
-					response, err := client.graphClient.Execute([]byte(request.Gql))
-					if err != nil {
-						err = ConnectionClosedError
-					}
-					res, err := wrapper.GenResultSet(response)
-					if err != nil {
-						err = ConnectionClosedError
-					}
-					request.ResponseChannel <- ChannelResponse{
-						Result: res,
-						Error:  err,
 					}
 				}()
-			case <-client.CloseChannel:
-				clientMux.Lock()
-				_ = client.graphClient.Close()
-				currentClientNum--
-				delete(clientPool, ncid)
-				clientMux.Unlock()
-				return // Exit loop
-			}
+				response, err := client.graphClient.Execute([]byte(request.Gql))
+				if err != nil {
+					err = ConnectionClosedError
+				}
+				res, err := wrapper.GenResultSet(response)
+				if err != nil {
+					err = ConnectionClosedError
+				}
+				request.ResponseChannel <- ChannelResponse{
+					Result: res,
+					Error:  err,
+				}
+			}()
+		case <-client.CloseChannel:
+			clientMux.Lock()
+			_ = client.graphClient.Close()
+			currentClientNum--
+			delete(clientPool, ncid)
+			clientMux.Unlock()
+			return // Exit loop
 		}
-	}()
-	return ncid, err
+	}
 }
 
 func Close(ncid string) {

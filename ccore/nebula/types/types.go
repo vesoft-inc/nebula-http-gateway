@@ -2,6 +2,8 @@ package types
 
 import "fmt"
 
+type Any = interface{}
+
 /*
 	define the interfaces to fit internal/<ver>/thrift/ttypes and  internal/<ver>/thrift/graph/ttypes
 */

@@ -2,10 +2,14 @@ package controllers
 
 import (
 	"encoding/json"
+	"github.com/astaxie/beego/logs"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/service/pool"
+
 	"github.com/astaxie/beego"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/service/dao"
 	"github.com/vesoft-inc/nebula-http-gateway/common"
-	"github.com/vesoft-inc/nebula-http-gateway/service/dao"
 )
 
 type DatabaseController struct {
@@ -13,9 +17,9 @@ type DatabaseController struct {
 }
 
 type Response struct {
-	Code    int        `json:"code"`
-	Data    common.Any `json:"data"`
-	Message string     `json:"message"`
+	Code    int       `json:"code"`
+	Data    types.Any `json:"data"`
+	Message string    `json:"message"`
 }
 
 type Request struct {
@@ -55,10 +59,11 @@ func (this *DatabaseController) Connect() {
 
 		params.Version = string(version)
 	}
+
 	nsid, err := dao.Connect(params.Address, params.Port, params.Username, params.Password, params.Version)
 	if err == nil {
 		res.Code = 0
-		m := make(map[string]common.Any)
+		m := make(map[string]types.Any)
 		m["nsid"] = nsid
 		res.Data = nsid
 		this.Ctx.SetCookie("Secure", "true")
@@ -105,7 +110,15 @@ func (this *DatabaseController) Execute() {
 		res.Message = "connection refused for lack of session"
 	} else {
 		json.Unmarshal(this.Ctx.Input.RequestBody, &params)
-		result, err := dao.Execute(nsid.(string), params.Gql)
+		result, msg, err := dao.Execute(nsid.(string), params.Gql)
+		if msg != nil {
+			if err == pool.SessionLostError {
+				common.LogPanic(msg)
+			} else {
+				logs.Error(msg)
+			}
+		}
+
 		if err == nil {
 			res.Code = 0
 			res.Data = &result

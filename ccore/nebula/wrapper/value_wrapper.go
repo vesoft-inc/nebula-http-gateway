@@ -8,10 +8,11 @@ package wrapper
 
 import (
 	"fmt"
-	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
 /*

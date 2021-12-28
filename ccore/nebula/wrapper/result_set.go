@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	cErrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
-	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 	"sort"
 	"strings"
+
+	cErrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
 /*
