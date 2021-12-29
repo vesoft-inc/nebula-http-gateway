@@ -194,6 +194,7 @@ func isCmd(query string) (isLocal bool, localCmd int, args []string) {
 }
 
 func executeCmd(parameterList common.ParameterList, parameterMap *common.ParameterMap) (showMap common.ParameterMap, err error) {
+	tempMap := make(common.ParameterMap)
 	for _, v := range parameterList {
 		// convert interface{} to nebula.Value
 		if isLocal, cmd, args := isCmd(v); isLocal {
@@ -207,7 +208,7 @@ func executeCmd(parameterList common.ParameterList, parameterMap *common.Paramet
 				}
 			case Params:
 				if len(args) == 1 {
-					showMap, err = ListParams(args[0], parameterMap)
+					err = ListParams(args[0], &tempMap, parameterMap)
 				}
 				if err != nil {
 					return nil, err
@@ -215,12 +216,12 @@ func executeCmd(parameterList common.ParameterList, parameterMap *common.Paramet
 			}
 		}
 	}
-	return showMap, nil
+	return tempMap, nil
 }
 
 func defineParams(args string, parameterMap *common.ParameterMap) (err error) {
 	argsRewritten := strings.Replace(args, "'", "\"", -1)
-	reg := regexp.MustCompile(`^\s*:param\s+(\S+)\s*=>(.*)$`)
+	reg := regexp.MustCompile(`(?i)^\s*:param\s+(\S+)\s*=>(.*)$`)
 	if reg == nil {
 		err = errors.New("invalid regular expression")
 		return
@@ -252,9 +253,8 @@ func defineParams(args string, parameterMap *common.ParameterMap) (err error) {
 	return nil
 }
 
-func ListParams(args string, parameterMap *common.ParameterMap) (showMap common.ParameterMap, err error) {
-	reg := regexp.MustCompile(`^\s*:params\s*(\S*)\s*$`)
-	paramsWithGoType := make(common.ParameterMap)
+func ListParams(args string, tmpParameter *common.ParameterMap, sessionMap *common.ParameterMap) (err error) {
+	reg := regexp.MustCompile(`(?i)^\s*:params\s*(\S*)\s*$`)
 	if reg == nil {
 		err = errors.New("invalid regular expression")
 		return
@@ -274,18 +274,18 @@ func ListParams(args string, parameterMap *common.ParameterMap) (showMap common.
 	} else {
 		paramKey := matchResult[0][1]
 		if len(paramKey) == 0 {
-			for k, v := range *parameterMap {
-				paramsWithGoType[k] = v
+			for k, v := range *sessionMap {
+				(*tmpParameter)[k] = v
 			}
 		} else {
-			if paramValue, ok := (*parameterMap)[paramKey]; ok {
-				paramsWithGoType[paramKey] = paramValue
+			if paramValue, ok := (*sessionMap)[paramKey]; ok {
+				(*tmpParameter)[paramKey] = paramValue
 			} else {
 				err = errors.New("Unknown parameter: " + paramKey)
 			}
 		}
 	}
-	return paramsWithGoType, nil
+	return nil
 }
 
 func NewConnection(address string, port int, username string, password string) (nsid string, err error) {

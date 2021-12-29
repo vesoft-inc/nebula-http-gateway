@@ -13,10 +13,9 @@ type DatabaseController struct {
 }
 
 type Response struct {
-	Code    int                 `json:"code"`
-	Data    common.Any          `json:"data"`
-	Message string              `json:"message"`
-	Params  common.ParameterMap `json:"params"`
+	Code    int        `json:"code"`
+	Data    common.Any `json:"data"`
+	Message string     `json:"message"`
 }
 
 type Request struct {
@@ -86,18 +85,13 @@ func (this *DatabaseController) Execute() {
 		res.Message = "connection refused for lack of session"
 	} else {
 		json.Unmarshal(this.Ctx.Input.RequestBody, &params)
-		result, paramsMap, err := dao.Execute(nsid.(string), params.Gql, params.ParamList)
+		result, err := dao.Execute(nsid.(string), params.Gql, params.ParamList)
 		if err == nil {
 			res.Code = 0
 			res.Data = &result
 		} else {
 			res.Code = -1
 			res.Message = err.Error()
-		}
-		if len(paramsMap) == 0 {
-			res.Params = nil
-		} else {
-			res.Params = paramsMap
 		}
 	}
 	this.Data["json"] = &res

@@ -12,9 +12,10 @@ import (
 )
 
 type ExecuteResult struct {
-	Headers  []string                `json:"headers"`
-	Tables   []map[string]common.Any `json:"tables"`
-	TimeCost int64                   `json:"timeCost"`
+	Headers     []string                `json:"headers"`
+	Tables      []map[string]common.Any `json:"tables"`
+	TimeCost    int64                   `json:"timeCost"`
+	LocalParams common.ParameterMap     `json:"localParams"`
 }
 
 type list []common.Any
@@ -287,14 +288,15 @@ func Disconnect(nsid string) {
 	pool.Disconnect(nsid)
 }
 
-func Execute(nsid string, gql string, paramList common.ParameterList) (result ExecuteResult, params common.ParameterMap, err error) {
+func Execute(nsid string, gql string, paramList common.ParameterList) (result ExecuteResult, err error) {
 	result = ExecuteResult{
-		Headers: make([]string, 0),
-		Tables:  make([]map[string]common.Any, 0),
+		Headers:     make([]string, 0),
+		Tables:      make([]map[string]common.Any, 0),
+		LocalParams: nil,
 	}
 	connection, err := pool.GetConnection(nsid)
 	if err != nil {
-		return result, nil, err
+		return result, err
 	}
 	responseChannel := make(chan pool.ChannelResponse)
 	connection.RequestChannel <- pool.ChannelRequest{
@@ -304,12 +306,15 @@ func Execute(nsid string, gql string, paramList common.ParameterList) (result Ex
 	}
 	response := <-responseChannel
 	paramsMap := response.Params
+	if len(paramsMap) > 0 {
+		result.LocalParams = paramsMap
+	}
 	if response.Error != nil {
-		return result, paramsMap, response.Error
+		return result, response.Error
 	}
 	resp := response.Result
 	if response.Result == nil {
-		return result, paramsMap, nil
+		return result, nil
 	}
 	if resp.IsSetPlanDesc() {
 		format := string(resp.GetPlanDesc().GetFormat())
@@ -325,7 +330,7 @@ func Execute(nsid string, gql string, paramList common.ParameterList) (result Ex
 				rowValue["operator info"] = rows[i][4]
 				result.Tables = append(result.Tables, rowValue)
 			}
-			return result, paramsMap, err
+			return result, err
 		} else {
 			var rowValue = make(map[string]common.Any)
 			result.Headers = append(result.Headers, "format")
@@ -335,12 +340,12 @@ func Execute(nsid string, gql string, paramList common.ParameterList) (result Ex
 				rowValue["format"] = resp.MakeDotGraphByStruct()
 			}
 			result.Tables = append(result.Tables, rowValue)
-			return result, paramsMap, err
+			return result, err
 		}
 	}
 	if !resp.IsSucceed() {
 		logs.Info("ErrorCode: %v, ErrorMsg: %s", resp.GetErrorCode(), resp.GetErrorMsg())
-		return result, paramsMap, errors.New(string(resp.GetErrorMsg()))
+		return result, errors.New(string(resp.GetErrorMsg()))
 	}
 	if !resp.IsEmpty() {
 		rowSize := resp.GetRowSize()
@@ -354,16 +359,16 @@ func Execute(nsid string, gql string, paramList common.ParameterList) (result Ex
 			var _edgesParsedList = make(list, 0)
 			var _pathsParsedList = make(list, 0)
 			if err != nil {
-				return result, paramsMap, err
+				return result, err
 			}
 			for j := 0; j < colSize; j++ {
 				rowData, err := record.GetValueByIndex(j)
 				if err != nil {
-					return result, paramsMap, err
+					return result, err
 				}
 				value, err := getValue(rowData)
 				if err != nil {
-					return result, paramsMap, err
+					return result, err
 				}
 				rowValue[result.Headers[j]] = value
 				valueType := rowData.GetType()
@@ -399,12 +404,12 @@ func Execute(nsid string, gql string, paramList common.ParameterList) (result Ex
 					rowValue["_pathsParsedList"] = _pathsParsedList
 				}
 				if err != nil {
-					return result, paramsMap, err
+					return result, err
 				}
 			}
 			result.Tables = append(result.Tables, rowValue)
 		}
 	}
 	result.TimeCost = resp.GetLatency()
-	return result, paramsMap, nil
+	return result, nil
 }
