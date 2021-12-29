@@ -3,10 +3,11 @@ package dao
 import (
 	"errors"
 	"fmt"
+
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/gateway/pool"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/wrapper"
-	"github.com/vesoft-inc/nebula-http-gateway/ccore/service/pool"
 )
 
 type ExecuteResult struct {
@@ -285,6 +286,10 @@ func Disconnect(nsid string) {
 	pool.Close(nsid)
 }
 
+/*
+	executes the gql based on nsid,
+	and returns result, the runtime panic error and the result error.
+*/
 func Execute(nsid string, gql string) (ExecuteResult, interface{}, error) {
 	result := ExecuteResult{
 		Headers: make([]string, 0),

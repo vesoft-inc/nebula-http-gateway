@@ -69,6 +69,12 @@ func (c *defaultGraphClient) Close() error {
 	return nil
 }
 
+func (c *defaultGraphClient) VerifyClientVersion() (*types.VerifyClientVersionResp, error) {
+	return &types.VerifyClientVersionResp{
+		ErrorCode: nerrors.ErrorCode_SUCCEEDED,
+	}, nil
+}
+
 func (r *authResponse) ErrorCode() nerrors.ErrorCode {
 	return nerrors.ErrorCode(r.AuthResponse.ErrorCode)
 }

@@ -1,5 +1,10 @@
 package nebula
 
+import (
+	"fmt"
+	nerrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
+)
+
 type (
 	GraphClient interface {
 		Open() error
@@ -26,7 +31,19 @@ func NewGraphClient(endpoints []string, username, password string, opts ...Optio
 }
 
 func (c *defaultGraphClient) Open() error {
-	return c.graph.open(c.driver)
+	err := c.graph.open(c.driver)
+	if err != nil {
+		return err
+	}
+
+	resp, err := c.graph.VerifyClientVersion()
+	if err != nil {
+		return fmt.Errorf("failed to verify client version: %s", err.Error())
+	}
+	if resp != nil && resp.ErrorCode != nerrors.ErrorCode_SUCCEEDED {
+		return fmt.Errorf("incompatible version between client and server: %s", string(resp.ErrorMsg))
+	}
+	return nil
 }
 
 func (c *defaultGraphClient) Execute(stmt []byte) (ExecutionResponse, error) {

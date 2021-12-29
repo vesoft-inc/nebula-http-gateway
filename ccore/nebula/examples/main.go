@@ -14,7 +14,7 @@ func main() {
 	} {
 		{ // use nebula.NewClient
 			c, err := nebula.NewClient(nebula.ConnectionInfo{
-				GraphEndpoints: []string{"192.168.8.169:9669"},
+				GraphEndpoints: []string{"192.168.8.167:9669"},
 				GraphAccount: nebula.Account{
 					Username: "root",
 					Password: "123",

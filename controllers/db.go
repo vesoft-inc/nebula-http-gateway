@@ -2,13 +2,13 @@ package controllers
 
 import (
 	"encoding/json"
-	"github.com/astaxie/beego/logs"
-	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
-	"github.com/vesoft-inc/nebula-http-gateway/ccore/service/pool"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
-	"github.com/vesoft-inc/nebula-http-gateway/ccore/service/dao"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/gateway/dao"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/gateway/pool"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 	"github.com/vesoft-inc/nebula-http-gateway/common"
 )
 
