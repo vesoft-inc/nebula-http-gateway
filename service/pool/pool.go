@@ -15,7 +15,7 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 	nebula "github.com/vesoft-inc/nebula-go/v2"
-	nebulaType "github.com/vesoft-inc/nebula-go/v2/nebula"
+	nebulatype "github.com/vesoft-inc/nebula-go/v2/nebula"
 )
 
 var (
@@ -92,9 +92,9 @@ func isThriftTransportError(err error) bool {
 }
 
 // construct Slice to nebula.NList
-func Slice2Nlist(list []interface{}) (*nebulaType.NList, error) {
-	sv := []*nebulaType.Value{}
-	var ret nebulaType.NList
+func Slice2Nlist(list []interface{}) (*nebulatype.NList, error) {
+	sv := []*nebulatype.Value{}
+	var ret nebulatype.NList
 	for _, item := range list {
 		nv, er := Base2Value(item)
 		if er != nil {
@@ -107,9 +107,9 @@ func Slice2Nlist(list []interface{}) (*nebulaType.NList, error) {
 }
 
 // construct map to nebula.NMap
-func Map2Nmap(m map[string]interface{}) (*nebulaType.NMap, error) {
-	var ret nebulaType.NMap
-	kvs := map[string]*nebulaType.Value{}
+func Map2Nmap(m map[string]interface{}) (*nebulatype.NMap, error) {
+	var ret nebulatype.NMap
+	kvs := map[string]*nebulatype.Value{}
 	for k, v := range m {
 		nv, err := Base2Value(v)
 		if err != nil {
@@ -122,8 +122,8 @@ func Map2Nmap(m map[string]interface{}) (*nebulaType.NMap, error) {
 }
 
 // construct go-type to nebula.Value
-func Base2Value(any interface{}) (value *nebulaType.Value, err error) {
-	value = nebulaType.NewValue()
+func Base2Value(any interface{}) (value *nebulatype.Value, err error) {
+	value = nebulatype.NewValue()
 	if v, ok := any.(bool); ok {
 		value.BVal = &v
 	} else if v, ok := any.(int); ok {
@@ -147,7 +147,7 @@ func Base2Value(any interface{}) (value *nebulaType.Value, err error) {
 	} else if v, ok := any.(string); ok {
 		value.SVal = []byte(v)
 	} else if any == nil {
-		nval := nebulaType.NullType___NULL__
+		nval := nebulatype.NullType___NULL__
 		value.NVal = &nval
 	} else if v, ok := any.([]interface{}); ok {
 		nv, er := Slice2Nlist([]interface{}(v))
@@ -180,15 +180,11 @@ func isCmd(query string) (isLocal bool, localCmd int, args []string) {
 	localCmdName := words[0]
 	switch strings.ToLower(localCmdName) {
 	case "param":
-		{
-			localCmd = Param
-			args = []string{plain}
-		}
+		localCmd = Param
+		args = []string{plain}
 	case "params":
-		{
-			localCmd = Params
-			args = []string{plain}
-		}
+		localCmd = Params
+		args = []string{plain}
 	}
 	return
 }
@@ -222,10 +218,6 @@ func executeCmd(parameterList common.ParameterList, parameterMap *common.Paramet
 func defineParams(args string, parameterMap *common.ParameterMap) (err error) {
 	argsRewritten := strings.Replace(args, "'", "\"", -1)
 	reg := regexp.MustCompile(`(?i)^\s*:param\s+(\S+)\s*=>(.*)$`)
-	if reg == nil {
-		err = errors.New("invalid regular expression")
-		return
-	}
 	matchResult := reg.FindAllStringSubmatch(argsRewritten, -1)
 	if len(matchResult) != 1 || len(matchResult[0]) != 3 {
 		err = errors.New("Set params failed. Wrong local command format (" + reg.String() + ") ")
@@ -255,10 +247,6 @@ func defineParams(args string, parameterMap *common.ParameterMap) (err error) {
 
 func ListParams(args string, tmpParameter *common.ParameterMap, sessionMap *common.ParameterMap) (err error) {
 	reg := regexp.MustCompile(`(?i)^\s*:params\s*(\S*)\s*$`)
-	if reg == nil {
-		err = errors.New("invalid regular expression")
-		return
-	}
 	matchResult := reg.FindAllStringSubmatch(args, -1)
 	if len(matchResult) != 1 {
 		err = errors.New("Set params failed. Wrong local command format " + reg.String() + ") ")
@@ -271,18 +259,17 @@ func ListParams(args string, tmpParameter *common.ParameterMap, sessionMap *comm
 	 */
 	if len(res) != 2 {
 		return
+	}
+	paramKey := matchResult[0][1]
+	if len(paramKey) == 0 {
+		for k, v := range *sessionMap {
+			(*tmpParameter)[k] = v
+		}
 	} else {
-		paramKey := matchResult[0][1]
-		if len(paramKey) == 0 {
-			for k, v := range *sessionMap {
-				(*tmpParameter)[k] = v
-			}
+		if paramValue, ok := (*sessionMap)[paramKey]; ok {
+			(*tmpParameter)[paramKey] = paramValue
 		} else {
-			if paramValue, ok := (*sessionMap)[paramKey]; ok {
-				(*tmpParameter)[paramKey] = paramValue
-			} else {
-				err = errors.New("Unknown parameter: " + paramKey)
-			}
+			err = errors.New("Unknown parameter: " + paramKey)
 		}
 	}
 	return nil
@@ -356,7 +343,7 @@ func NewConnection(address string, port int, username string, password string) (
 						}
 
 						if len(request.Gql) > 0 {
-							params := make(map[string]*nebulaType.Value)
+							params := make(map[string]*nebulatype.Value)
 							for k, v := range connection.parameterMap {
 								value, paramError := Base2Value(v)
 								if paramError != nil {

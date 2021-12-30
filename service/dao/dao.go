@@ -8,7 +8,7 @@ import (
 	"github.com/vesoft-inc/nebula-http-gateway/service/pool"
 
 	nebula "github.com/vesoft-inc/nebula-go/v2"
-	nebulaType "github.com/vesoft-inc/nebula-go/v2/nebula"
+	nebulatype "github.com/vesoft-inc/nebula-go/v2/nebula"
 )
 
 type ExecuteResult struct {
@@ -45,21 +45,21 @@ func getBasicValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
 	if valType == "null" {
 		value, err := valWarp.AsNull()
 		switch value {
-		case nebulaType.NullType___NULL__:
+		case nebulatype.NullType___NULL__:
 			return "NULL", err
-		case nebulaType.NullType_NaN:
+		case nebulatype.NullType_NaN:
 			return "NaN", err
-		case nebulaType.NullType_BAD_DATA:
+		case nebulatype.NullType_BAD_DATA:
 			return "BAD_DATA", err
-		case nebulaType.NullType_BAD_TYPE:
+		case nebulatype.NullType_BAD_TYPE:
 			return "BAD_TYPE", err
-		case nebulaType.NullType_OUT_OF_RANGE:
+		case nebulatype.NullType_OUT_OF_RANGE:
 			return "OUT_OF_RANGE", err
-		case nebulaType.NullType_DIV_BY_ZERO:
+		case nebulatype.NullType_DIV_BY_ZERO:
 			return "DIV_BY_ZERO", err
-		case nebulaType.NullType_UNKNOWN_PROP:
+		case nebulatype.NullType_UNKNOWN_PROP:
 			return "UNKNOWN_PROP", err
-		case nebulaType.NullType_ERR_OVERFLOW:
+		case nebulatype.NullType_ERR_OVERFLOW:
 			return "ERR_OVERFLOW", err
 		}
 		return "NULL", err
