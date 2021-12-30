@@ -8,13 +8,14 @@ import (
 	"github.com/vesoft-inc/nebula-http-gateway/service/pool"
 
 	nebula "github.com/vesoft-inc/nebula-go/v2"
-	nebulaType "github.com/vesoft-inc/nebula-go/v2/nebula"
+	nebulatype "github.com/vesoft-inc/nebula-go/v2/nebula"
 )
 
 type ExecuteResult struct {
-	Headers  []string                `json:"headers"`
-	Tables   []map[string]common.Any `json:"tables"`
-	TimeCost int64                   `json:"timeCost"`
+	Headers     []string                `json:"headers"`
+	Tables      []map[string]common.Any `json:"tables"`
+	TimeCost    int64                   `json:"timeCost"`
+	LocalParams common.ParameterMap     `json:"localParams"`
 }
 
 type list []common.Any
@@ -44,21 +45,21 @@ func getBasicValue(valWarp *nebula.ValueWrapper) (common.Any, error) {
 	if valType == "null" {
 		value, err := valWarp.AsNull()
 		switch value {
-		case nebulaType.NullType___NULL__:
+		case nebulatype.NullType___NULL__:
 			return "NULL", err
-		case nebulaType.NullType_NaN:
+		case nebulatype.NullType_NaN:
 			return "NaN", err
-		case nebulaType.NullType_BAD_DATA:
+		case nebulatype.NullType_BAD_DATA:
 			return "BAD_DATA", err
-		case nebulaType.NullType_BAD_TYPE:
+		case nebulatype.NullType_BAD_TYPE:
 			return "BAD_TYPE", err
-		case nebulaType.NullType_OUT_OF_RANGE:
+		case nebulatype.NullType_OUT_OF_RANGE:
 			return "OUT_OF_RANGE", err
-		case nebulaType.NullType_DIV_BY_ZERO:
+		case nebulatype.NullType_DIV_BY_ZERO:
 			return "DIV_BY_ZERO", err
-		case nebulaType.NullType_UNKNOWN_PROP:
+		case nebulatype.NullType_UNKNOWN_PROP:
 			return "UNKNOWN_PROP", err
-		case nebulaType.NullType_ERR_OVERFLOW:
+		case nebulatype.NullType_ERR_OVERFLOW:
 			return "ERR_OVERFLOW", err
 		}
 		return "NULL", err
@@ -287,26 +288,34 @@ func Disconnect(nsid string) {
 	pool.Disconnect(nsid)
 }
 
-func Execute(nsid string, gql string) (result ExecuteResult, err error) {
+func Execute(nsid string, gql string, paramList common.ParameterList) (result ExecuteResult, err error) {
 	result = ExecuteResult{
-		Headers: make([]string, 0),
-		Tables:  make([]map[string]common.Any, 0),
+		Headers:     make([]string, 0),
+		Tables:      make([]map[string]common.Any, 0),
+		LocalParams: nil,
 	}
 	connection, err := pool.GetConnection(nsid)
 	if err != nil {
 		return result, err
 	}
-
 	responseChannel := make(chan pool.ChannelResponse)
 	connection.RequestChannel <- pool.ChannelRequest{
 		Gql:             gql,
 		ResponseChannel: responseChannel,
+		ParamList:       paramList,
 	}
 	response := <-responseChannel
+	paramsMap := response.Params
+	if len(paramsMap) > 0 {
+		result.LocalParams = paramsMap
+	}
 	if response.Error != nil {
 		return result, response.Error
 	}
 	resp := response.Result
+	if response.Result == nil {
+		return result, nil
+	}
 	if resp.IsSetPlanDesc() {
 		format := string(resp.GetPlanDesc().GetFormat())
 		if format == "row" {
@@ -334,7 +343,6 @@ func Execute(nsid string, gql string) (result ExecuteResult, err error) {
 			return result, err
 		}
 	}
-
 	if !resp.IsSucceed() {
 		logs.Info("ErrorCode: %v, ErrorMsg: %s", resp.GetErrorCode(), resp.GetErrorMsg())
 		return result, errors.New(string(resp.GetErrorMsg()))
