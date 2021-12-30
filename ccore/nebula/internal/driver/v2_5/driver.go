@@ -14,7 +14,7 @@ type (
 )
 
 func init() {
-	types.Register(types.V2_5, &defaultDriver{})
+	types.Register(types.Version2_5, &defaultDriver{})
 }
 
 func (d *defaultDriver) NewGraphClientDriver(transport thrift.Transport, pf thrift.ProtocolFactory) types.GraphClientDriver {

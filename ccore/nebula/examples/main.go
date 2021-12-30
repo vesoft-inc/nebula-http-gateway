@@ -8,9 +8,9 @@ import (
 
 func main() {
 	for _, version := range []nebula.Version{
-		nebula.V2_5,
-		nebula.V2_6,
-		nebula.V3_0,
+		nebula.Version2_5,
+		nebula.Version2_6,
+		nebula.Version3_0,
 	} {
 		{ // use nebula.NewClient
 			c, err := nebula.NewClient(nebula.ConnectionInfo{

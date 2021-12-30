@@ -9,8 +9,8 @@ import (
 	"context"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
-	nebula0 "github.com/vesoft-inc/nebula-go/v2/nebula"
-	meta1 "github.com/vesoft-inc/nebula-go/v2/nebula/meta"
+	nebula0 "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v3_0"
+	meta1 "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v3_0/meta"
 	"sync"
 )
 

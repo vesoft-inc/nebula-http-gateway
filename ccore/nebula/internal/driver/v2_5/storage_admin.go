@@ -2,7 +2,7 @@ package v2_5
 
 import (
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
-	storage2_5 "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5/storage"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5/storage"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
@@ -12,14 +12,19 @@ var (
 
 type (
 	defaultStorageAdminClient struct {
-		storageAdmin *storage2_5.StorageAdminServiceClient
+		storageAdmin *storage.StorageAdminServiceClient
 	}
 )
 
 func newStorageAdminClient(transport thrift.Transport, pf thrift.ProtocolFactory) types.StorageAdminClientDriver {
 	return &defaultStorageAdminClient{
-		storageAdmin: storage2_5.NewStorageAdminServiceClientFactory(transport, pf),
+		storageAdmin: storage.NewStorageAdminServiceClientFactory(transport, pf),
 	}
+}
+
+func (c *defaultStorageAdminClient) VerifyClientVersion() error {
+	// v2.5 is not support verify client version, and it's the lowest version, so return not error.
+	return nil
 }
 
 func (c *defaultStorageAdminClient) Open() error {

@@ -19,23 +19,19 @@ type (
 		NewStorageClientDriver(thrift.Transport, thrift.ProtocolFactory) StorageAdminClientDriver
 	}
 
-	VerifyClientVersionResp struct {
-		ErrorCode nerrors.ErrorCode
-		ErrorMsg  []byte
-	}
-
 	GraphClientDriver interface {
 		Open() error
+		VerifyClientVersion() error
 		Authenticate(username, password string) (AuthResponse, error)
 		Signout(sessionId int64) (err error)
 		Execute(sessionId int64, stmt []byte) (ExecutionResponse, error)
 		ExecuteJson(sessionId int64, stmt []byte) ([]byte, error)
 		Close() error
-		VerifyClientVersion() (*VerifyClientVersionResp, error)
 	}
 
 	MetaClientDriver interface {
 		Open() error
+		VerifyClientVersion() error
 		Close() error
 	}
 
@@ -45,17 +41,13 @@ type (
 	}
 
 	AuthResponse interface {
-		ErrorCode() nerrors.ErrorCode
-		ErrorMsg() string
 		SessionID() *int64
 	}
 
 	ExecutionResponse interface {
-		GetErrorCode() nerrors.ErrorCode
 		GetLatencyInUs() int64
 		GetData() DataSet
 		GetSpaceName() []byte
-		GetErrorMsg() []byte
 		GetPlanDesc() PlanDescription
 		GetComment() []byte
 		IsSetData() bool

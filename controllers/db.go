@@ -48,19 +48,7 @@ func (this *DatabaseController) Connect() {
 	)
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
 
-	if params.Version == "" {
-		version, err := nebula.VersionHelper(params.Address, params.Port, params.Username, params.Password)
-		if err != nil {
-			res.Code = -1
-			res.Message = err.Error()
-			this.Data["json"] = &res
-			this.ServeJSON()
-		}
-
-		params.Version = string(version)
-	}
-
-	nsid, err := dao.Connect(params.Address, params.Port, params.Username, params.Password, params.Version)
+	nsid, err := dao.Connect(params.Address, params.Port, params.Username, params.Password, nebula.VersionAuto)
 	if err == nil {
 		res.Code = 0
 		m := make(map[string]types.Any)

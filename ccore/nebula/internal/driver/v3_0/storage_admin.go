@@ -2,7 +2,7 @@ package v3_0
 
 import (
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
-	storage3_0 "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_6/storage"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_6/storage"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
@@ -12,13 +12,13 @@ var (
 
 type (
 	defaultStorageAdminClient struct {
-		storageAdmin *storage3_0.StorageAdminServiceClient
+		storageAdmin *storage.StorageAdminServiceClient
 	}
 )
 
 func newStorageAdminClient(transport thrift.Transport, pf thrift.ProtocolFactory) types.StorageAdminClientDriver {
 	return &defaultStorageAdminClient{
-		storageAdmin: storage3_0.NewStorageAdminServiceClientFactory(transport, pf),
+		storageAdmin: storage.NewStorageAdminServiceClientFactory(transport, pf),
 	}
 }
 

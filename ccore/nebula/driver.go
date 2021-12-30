@@ -74,24 +74,28 @@ func (d *driverGraph) open(driver types.Driver) error {
 		return err
 	}
 
-	d.GraphClientDriver = driver.NewGraphClientDriver(transport, pf)
+	graphClientDriver := driver.NewGraphClientDriver(transport, pf)
 
-	if err = d.GraphClientDriver.Open(); err != nil {
+	if err = graphClientDriver.Open(); err != nil {
 		return err
 	}
 
-	resp, err := d.GraphClientDriver.Authenticate(d.username, d.password)
+	if err = graphClientDriver.VerifyClientVersion(); err != nil {
+		return err
+	}
+
+	resp, err := graphClientDriver.Authenticate(d.username, d.password)
 	if err != nil {
 		return err
 	}
-	if errorCode := resp.ErrorCode(); errorCode != nerrors.ErrorCode_SUCCEEDED {
-		return nerrors.NewCodeError(errorCode, resp.ErrorMsg())
-	}
+
 	sessionId := resp.SessionID()
 	if sessionId == nil {
 		panic("sessionId can not be nil after authenticate")
 	}
 	d.sessionId = *sessionId
+
+	d.GraphClientDriver = graphClientDriver
 	return nil
 }
 
@@ -114,7 +118,17 @@ func (d *driverMeta) open(driver types.Driver) error {
 		return err
 	}
 
-	d.MetaClientDriver = driver.NewMetaClientDriver(transport, pf)
+	metaClientDriver := driver.NewMetaClientDriver(transport, pf)
+
+	if err = metaClientDriver.Open(); err != nil {
+		return err
+	}
+
+	if err = metaClientDriver.VerifyClientVersion(); err != nil {
+		return err
+	}
+
+	d.MetaClientDriver = metaClientDriver
 	return nil
 }
 
@@ -137,7 +151,13 @@ func (d *driverStorageAdmin) open(driver types.Driver) error {
 		return err
 	}
 
-	d.StorageAdminClientDriver = driver.NewStorageClientDriver(transport, pf)
+	storageAdminClientDriver := driver.NewStorageClientDriver(transport, pf)
+
+	if err = storageAdminClientDriver.Open(); err != nil {
+		return err
+	}
+
+	d.StorageAdminClientDriver = storageAdminClientDriver
 	return nil
 }
 

@@ -1,490 +1,534 @@
 package v2_5
 
 import (
-	nebula "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5"
+	nthrift "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5/graph"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
-type defaultDataSet struct {
-	*nebula.DataSet
+type authResponseWrapper struct {
+	*graph.AuthResponse
 }
 
-func (d defaultDataSet) GetRows() []types.Row {
-	return rowsWrapper(d.Rows)
+func newAuthResponseWrapper(authResponse *graph.AuthResponse) types.AuthResponse {
+	return authResponseWrapper{authResponse}
 }
 
-func dataSetWrapper(ds *nebula.DataSet) types.DataSet {
-	if ds == nil {
+func (w authResponseWrapper) SessionID() *int64 {
+	return w.AuthResponse.SessionID
+}
+
+type executionResponseWrapper struct {
+	*graph.ExecutionResponse
+}
+
+func newEexecutionResponseWrapper(executionResponse *graph.ExecutionResponse) types.ExecutionResponse {
+	return executionResponseWrapper{executionResponse}
+}
+
+func (w executionResponseWrapper) GetLatencyInUs() int64 {
+	return int64(w.ExecutionResponse.GetLatencyInUs())
+}
+
+func (w executionResponseWrapper) GetData() types.DataSet {
+	return newDataSetWrapper(w.ExecutionResponse.GetData())
+}
+
+func (w executionResponseWrapper) GetSpaceName() []byte {
+	return w.ExecutionResponse.GetSpaceName()
+}
+
+func (w executionResponseWrapper) GetPlanDesc() types.PlanDescription {
+	return newPlanDescriptionWrapper(w.ExecutionResponse.PlanDesc)
+}
+
+func (w executionResponseWrapper) GetComment() []byte {
+	return w.ExecutionResponse.GetComment()
+}
+
+func (w executionResponseWrapper) IsSetData() bool {
+	return w.ExecutionResponse.IsSetData()
+}
+
+func (w executionResponseWrapper) IsSetSpaceName() bool {
+	return w.ExecutionResponse.IsSetSpaceName()
+}
+
+func (w executionResponseWrapper) IsSetErrorMsg() bool {
+	return w.ExecutionResponse.IsSetErrorMsg()
+}
+
+func (w executionResponseWrapper) IsSetPlanDesc() bool {
+	return w.ExecutionResponse.IsSetPlanDesc()
+}
+
+func (w executionResponseWrapper) IsSetComment() bool {
+	return w.ExecutionResponse.IsSetComment()
+}
+
+func (w executionResponseWrapper) String() string {
+	return w.ExecutionResponse.String()
+}
+
+type dataSetWrapper struct {
+	*nthrift.DataSet
+}
+
+func newDataSetWrapper(dataSet *nthrift.DataSet) types.DataSet {
+	if dataSet == nil {
 		return nil
 	}
-	return defaultDataSet{ds}
+	return dataSetWrapper{dataSet}
 }
 
-type defaultRow struct {
-	*nebula.Row
+func (w dataSetWrapper) GetRows() []types.Row {
+	return newRowsWrapper(w.Rows)
 }
 
-func (d defaultRow) GetValues() []types.Value {
-	return vaulesWrapper(d.Values)
+type rowWrapper struct {
+	*nthrift.Row
 }
 
-func rowWrapper(r *nebula.Row) types.Row {
-	if r == nil {
+func newRowWrapper(row *nthrift.Row) types.Row {
+	if row == nil {
 		return nil
 	}
-	return defaultRow{r}
+	return rowWrapper{row}
 }
 
-func rowsWrapper(rs []*nebula.Row) []types.Row {
-	if rs == nil {
+func newRowsWrapper(rows []*nthrift.Row) []types.Row {
+	if rows == nil {
 		return nil
 	}
-	rows := make([]types.Row, len(rs))
+	rs := make([]types.Row, len(rows))
 	for i := range rows {
-		row := rowWrapper(rs[i])
-		rows[i] = row
+		rs[i] = newRowWrapper(rows[i])
 	}
-	return rows
+	return rs
 }
 
-type defaultValue struct {
-	*nebula.Value
+func (w rowWrapper) GetValues() []types.Value {
+	return newVaulesWrapper(w.Values)
 }
 
-func (d defaultValue) GetNVal() *types.NullType {
-	return nullTypeWrapper(d.NVal)
+type valueWrapper struct {
+	*nthrift.Value
 }
 
-func (d defaultValue) GetDVal() types.Date {
-	date := dateWrapper(d.DVal)
-	return date
+func newValueWrapper(value *nthrift.Value) types.Value {
+	if value == nil {
+		return nil
+	}
+	return valueWrapper{value}
 }
 
-func (d defaultValue) GetTVal() types.Time {
-	time := timeWrapper(d.TVal)
-	return time
+func newVaulesWrapper(values []*nthrift.Value) []types.Value {
+	if values == nil {
+		return nil
+	}
+	vs := make([]types.Value, len(values))
+	for i := range values {
+		vs[i] = newValueWrapper(values[i])
+	}
+	return vs
 }
 
-func (d defaultValue) GetDtVal() types.DateTime {
-	dateTime := dateTimeWrapper(d.DtVal)
-	return dateTime
+func (w valueWrapper) GetNVal() *types.NullType {
+	return newNullTypeWrapper(w.NVal)
 }
 
-func (d defaultValue) GetVVal() types.Vertex {
-	vertex := vertexWrapper(d.VVal)
-	return vertex
+func (w valueWrapper) GetDVal() types.Date {
+	return newDateWrapper(w.DVal)
 }
 
-func (d defaultValue) GetEVal() types.Edge {
-	edge := edgeWrapper(d.EVal)
-	return edge
+func (w valueWrapper) GetTVal() types.Time {
+	return newTimeWrapper(w.TVal)
 }
 
-func (d defaultValue) GetPVal() types.Path {
-	path := pathWrapper(d.PVal)
-	return path
+func (w valueWrapper) GetDtVal() types.DateTime {
+	return newDateTimeWrapper(w.DtVal)
 }
 
-func (d defaultValue) GetLVal() types.NList {
-	nlist := nlistWrapper(d.LVal)
-	return nlist
+func (w valueWrapper) GetVVal() types.Vertex {
+	return newVertexWrapper(w.VVal)
 }
 
-func (d defaultValue) GetMVal() types.NMap {
-	nmap := nmapWrapper(d.MVal)
-	return nmap
+func (w valueWrapper) GetEVal() types.Edge {
+	return newEdgeWrapper(w.EVal)
 }
 
-func (d defaultValue) GetUVal() types.NSet {
-	nset := nsetWrapper(d.UVal)
-	return nset
+func (w valueWrapper) GetPVal() types.Path {
+	return newPathWrapper(w.PVal)
 }
 
-func (d defaultValue) GetGVal() types.DataSet {
-	dataset := dataSetWrapper(d.GVal)
-	return dataset
+func (w valueWrapper) GetLVal() types.NList {
+	return newNListWrapper(w.LVal)
 }
 
-func (d defaultValue) GetGgVal() types.Geography {
+func (w valueWrapper) GetMVal() types.NMap {
+	return newNMapWrapper(w.MVal)
+}
+
+func (w valueWrapper) GetUVal() types.NSet {
+	return newNSetWrapper(w.UVal)
+}
+
+func (w valueWrapper) GetGVal() types.DataSet {
+	return newDataSetWrapper(w.GVal)
+}
+
+func (w valueWrapper) GetGgVal() types.Geography {
 	panic("method not support")
 }
 
-func (d defaultValue) IsSetGgVal() bool {
+func (w valueWrapper) IsSetGgVal() bool {
 	return false
 }
 
-func valueWrapper(v *nebula.Value) types.Value {
-	if v == nil {
+func newNullTypeWrapper(nullType *nthrift.NullType) *types.NullType {
+	if nullType == nil {
 		return nil
 	}
-	return defaultValue{v}
+	return types.NullTypePtr(types.NullTypeToValue[nullType.String()])
 }
 
-func vaulesWrapper(vs []*nebula.Value) []types.Value {
-	if vs == nil {
+type dateWrapper struct {
+	*nthrift.Date
+}
+
+func newDateWrapper(date *nthrift.Date) types.Date {
+	if date == nil {
 		return nil
 	}
-	values := make([]types.Value, len(vs))
-	for i := range values {
-		value := valueWrapper(vs[i])
-		values[i] = value
-	}
-	return values
+	return dateWrapper{date}
 }
 
-func nullTypeWrapper(nt *nebula.NullType) *types.NullType {
-	if nt == nil {
+type timeWrapper struct {
+	*nthrift.Time
+}
+
+func newTimeWrapper(time *nthrift.Time) types.Time {
+	if time == nil {
 		return nil
 	}
-	return types.NullTypePtr(types.NullTypeToValue[nt.String()])
+	return timeWrapper{time}
 }
 
-type defaultDate struct {
-	*nebula.Date
+type dateTimeWrapper struct {
+	*nthrift.DateTime
 }
 
-func dateWrapper(d *nebula.Date) types.Date {
-	if d == nil {
+func newDateTimeWrapper(dateTime *nthrift.DateTime) types.DateTime {
+	if dateTime == nil {
 		return nil
 	}
-	return defaultDate{d}
+	return dateTimeWrapper{dateTime}
 }
 
-type defaultTime struct {
-	*nebula.Time
+type vertexWrapper struct {
+	*nthrift.Vertex
 }
 
-func timeWrapper(t *nebula.Time) types.Time {
-	if t == nil {
+func newVertexWrapper(vertex *nthrift.Vertex) types.Vertex {
+	if vertex == nil {
 		return nil
 	}
-	return defaultTime{t}
+	return vertexWrapper{vertex}
 }
 
-type defaultDateTime struct {
-	*nebula.DateTime
+func (w vertexWrapper) GetVid() types.Value {
+	return newValueWrapper(w.Vid)
 }
 
-func dateTimeWrapper(dt *nebula.DateTime) types.DateTime {
-	if dt == nil {
+func (w vertexWrapper) GetTags() []types.Tag {
+	return newTagsWrapper(w.Tags)
+}
+
+type edgeWrapper struct {
+	*nthrift.Edge
+}
+
+func newEdgeWrapper(edge *nthrift.Edge) types.Edge {
+	if edge == nil {
 		return nil
 	}
-	return defaultDateTime{dt}
+	return edgeWrapper{edge}
 }
 
-type defaultVertex struct {
-	*nebula.Vertex
-}
-
-func (d defaultVertex) GetVid() types.Value {
-	value := valueWrapper(d.Vid)
+func (w edgeWrapper) GetSrc() types.Value {
+	value := newValueWrapper(w.Src)
 	return value
 }
 
-func (d defaultVertex) GetTags() []types.Tag {
-	return tagsWrapper(d.Tags)
-}
-
-func vertexWrapper(v *nebula.Vertex) types.Vertex {
-	if v == nil {
-		return nil
-	}
-	return defaultVertex{v}
-}
-
-type defaultEdge struct {
-	*nebula.Edge
-}
-
-func (d defaultEdge) GetSrc() types.Value {
-	value := valueWrapper(d.Src)
+func (w edgeWrapper) GetDst() types.Value {
+	value := newValueWrapper(w.Dst)
 	return value
 }
 
-func (d defaultEdge) GetDst() types.Value {
-	value := valueWrapper(d.Dst)
-	return value
+func (w edgeWrapper) GetType() types.EdgeType {
+	return newEdgeTypeWrapper(w.Type)
 }
 
-func (d defaultEdge) GetType() types.EdgeType {
-	return edgeTypeWrapper(d.Type)
+func (w edgeWrapper) GetRanking() types.EdgeRanking {
+	return newEdgeRankingWrapper(w.Ranking)
 }
 
-func (d defaultEdge) GetRanking() types.EdgeRanking {
-	return edgeRankingWrapper(d.Ranking)
-}
-
-func (d defaultEdge) GetProps() map[string]types.Value {
-	props := make(map[string]types.Value, len(d.Props))
-	for k, v := range d.Props {
-		value := valueWrapper(v)
-		props[k] = value
+func (w edgeWrapper) GetProps() map[string]types.Value {
+	props := make(map[string]types.Value, len(w.Props))
+	for k, v := range w.Props {
+		props[k] = newValueWrapper(v)
 	}
 	return props
 }
 
-func edgeWrapper(e *nebula.Edge) types.Edge {
-	if e == nil {
+func newEdgeTypeWrapper(edgeType nthrift.EdgeType) types.EdgeType {
+	return edgeType
+}
+
+func newEdgeRankingWrapper(edgeRanking nthrift.EdgeRanking) types.EdgeRanking {
+	return edgeRanking
+}
+
+type pathWrapper struct {
+	*nthrift.Path
+}
+
+func newPathWrapper(path *nthrift.Path) types.Path {
+	if path == nil {
 		return nil
 	}
-	return defaultEdge{e}
+	return pathWrapper{path}
 }
 
-func edgeTypeWrapper(et nebula.EdgeType) types.EdgeType {
-	return types.EdgeType(int32(et))
+func (w pathWrapper) GetSrc() types.Vertex {
+	return newVertexWrapper(w.Src)
+}
+func (w pathWrapper) GetSteps() []types.Step {
+	return newStepsWrapper(w.Steps)
 }
 
-func edgeRankingWrapper(et nebula.EdgeRanking) types.EdgeRanking {
-	return types.EdgeRanking(int64(et))
+type nListWrapper struct {
+	*nthrift.NList
 }
 
-type defaultPath struct {
-	*nebula.Path
+func (w nListWrapper) GetValues() []types.Value {
+	return newVaulesWrapper(w.Values)
 }
 
-func (d defaultPath) GetSrc() types.Vertex {
-	src := vertexWrapper(d.Src)
-	return src
-}
-func (d defaultPath) GetSteps() []types.Step {
-	return stepsWrapper(d.Steps)
-}
-
-func pathWrapper(p *nebula.Path) types.Path {
-	if p == nil {
+func newNListWrapper(nList *nthrift.NList) types.NList {
+	if nList == nil {
 		return nil
 	}
-	return defaultPath{p}
+	return nListWrapper{nList}
 }
 
-type defaultNList struct {
-	*nebula.NList
+type nMapWrapper struct {
+	*nthrift.NMap
 }
 
-func (d defaultNList) GetValues() []types.Value {
-	return vaulesWrapper(d.Values)
-}
-
-func nlistWrapper(nl *nebula.NList) types.NList {
-	if nl == nil {
+func newNMapWrapper(nMap *nthrift.NMap) types.NMap {
+	if nMap == nil {
 		return nil
 	}
-	return defaultNList{nl}
+	return nMapWrapper{nMap}
 }
 
-type defaultNMap struct {
-	*nebula.NMap
-}
-
-func (d defaultNMap) GetKvs() map[string]types.Value {
-	kvs := make(map[string]types.Value, len(d.Kvs))
-	for k, v := range d.Kvs {
-		value := valueWrapper(v)
-		kvs[k] = value
+func (w nMapWrapper) GetKvs() map[string]types.Value {
+	kvs := make(map[string]types.Value, len(w.Kvs))
+	for k, v := range w.Kvs {
+		kvs[k] = newValueWrapper(v)
 	}
 	return kvs
 }
 
-func nmapWrapper(nm *nebula.NMap) types.NMap {
-	if nm == nil {
+type nSetWraooer struct {
+	*nthrift.NSet
+}
+
+func newNSetWrapper(nSet *nthrift.NSet) types.NSet {
+	if nSet == nil {
 		return nil
 	}
-	return defaultNMap{nm}
+	return nSetWraooer{nSet}
 }
 
-type defaultNSet struct {
-	*nebula.NSet
+func (w nSetWraooer) GetValues() []types.Value {
+	return newVaulesWrapper(w.Values)
 }
 
-func (d defaultNSet) GetValues() []types.Value {
-	return vaulesWrapper(d.Values)
+type tagWrapper struct {
+	*nthrift.Tag
 }
 
-func nsetWrapper(ns *nebula.NSet) types.NSet {
-	if ns == nil {
+func newTagWrapper(tag *nthrift.Tag) types.Tag {
+	if tag == nil {
 		return nil
 	}
-	return defaultNSet{ns}
+	return tagWrapper{tag}
 }
 
-type defaultTag struct {
-	*nebula.Tag
+func newTagsWrapper(tags []*nthrift.Tag) []types.Tag {
+	if tags == nil {
+		return nil
+	}
+	ts := make([]types.Tag, len(tags))
+	for i := range tags {
+		ts[i] = newTagWrapper(tags[i])
+	}
+	return ts
 }
 
-func (d defaultTag) GetProps() map[string]types.Value {
-	props := make(map[string]types.Value, len(d.Props))
-	for k, v := range d.Props {
-		value := valueWrapper(v)
+func (w tagWrapper) GetProps() map[string]types.Value {
+	props := make(map[string]types.Value, len(w.Props))
+	for k, v := range w.Props {
+		value := newValueWrapper(v)
 		props[k] = value
 	}
 	return props
 }
 
-func tagWrapper(t *nebula.Tag) types.Tag {
-	if t == nil {
+type stepWrapper struct {
+	*nthrift.Step
+}
+
+func newStepWrapper(step *nthrift.Step) types.Step {
+	if step == nil {
 		return nil
 	}
-	return defaultTag{t}
+	return stepWrapper{step}
 }
 
-func tagsWrapper(ts []*nebula.Tag) []types.Tag {
-	if ts == nil {
+func newStepsWrapper(steps []*nthrift.Step) []types.Step {
+	if steps == nil {
 		return nil
 	}
-	tags := make([]types.Tag, len(ts))
-	for i := range ts {
-		tag := tagWrapper(ts[i])
-		tags[i] = tag
+	ss := make([]types.Step, len(steps))
+	for i := range steps {
+		ss[i] = newStepWrapper(steps[i])
 	}
-	return tags
+	return ss
 }
 
-type defaultStep struct {
-	*nebula.Step
+func (w stepWrapper) GetDst() types.Vertex {
+	return newVertexWrapper(w.Dst)
 }
 
-func (d defaultStep) GetDst() types.Vertex {
-	dst := vertexWrapper(d.Dst)
-	return dst
+func (w stepWrapper) GetType() types.EdgeType {
+	return newEdgeTypeWrapper(w.Type)
 }
 
-func (d defaultStep) GetType() types.EdgeType {
-	return edgeTypeWrapper(d.Type)
+func (w stepWrapper) GetRanking() types.EdgeRanking {
+	return newEdgeRankingWrapper(w.Ranking)
 }
 
-func (d defaultStep) GetRanking() types.EdgeRanking {
-	return edgeRankingWrapper(d.Ranking)
-}
-
-func (d defaultStep) GetProps() map[string]types.Value {
-	props := make(map[string]types.Value, len(d.Props))
-	for k, v := range d.Props {
-		value := valueWrapper(v)
-		props[k] = value
+func (w stepWrapper) GetProps() map[string]types.Value {
+	props := make(map[string]types.Value, len(w.Props))
+	for k, v := range w.Props {
+		props[k] = newValueWrapper(v)
 	}
 	return props
 }
 
-func stepWrapper(s *nebula.Step) types.Step {
-	if s == nil {
-		return nil
-	}
-	return defaultStep{s}
-}
-
-func stepsWrapper(ss []*nebula.Step) []types.Step {
-	if ss == nil {
-		return nil
-	}
-	steps := make([]types.Step, len(ss))
-	for i := range ss {
-		step := stepWrapper(ss[i])
-		steps[i] = step
-	}
-	return steps
-}
-
-type defaultPlanDescription struct {
+type planDescriptionWrapper struct {
 	*graph.PlanDescription
 }
 
-func (d defaultPlanDescription) GetPlanNodeDescs() []types.PlanNodeDescription {
-	return planNodeDescriptionsWrapper(d.PlanNodeDescs)
-}
-
-func planDescriptionWrapper(pd *graph.PlanDescription) types.PlanDescription {
-	if pd == nil {
+func newPlanDescriptionWrapper(planDescription *graph.PlanDescription) types.PlanDescription {
+	if planDescription == nil {
 		return nil
 	}
-	return defaultPlanDescription{pd}
+	return planDescriptionWrapper{planDescription}
 }
 
-type defaultPlanNodeDescription struct {
+func (w planDescriptionWrapper) GetPlanNodeDescs() []types.PlanNodeDescription {
+	return planNodeDescriptionsWrapper(w.PlanNodeDescs)
+}
+
+type planNodeDescriptionWrapper struct {
 	*graph.PlanNodeDescription
 }
 
-func (d defaultPlanNodeDescription) GetDescription() []types.Pair {
-	return pairsWrapper(d.Description)
-}
-
-func (d defaultPlanNodeDescription) GetProfiles() []types.ProfilingStats {
-	return profilingStatssWrapper(d.Profiles)
-}
-
-func (d defaultPlanNodeDescription) GetBranchInfo() types.PlanNodeBranchInfo {
-	return planNodeBranchInfoWrapper(d.BranchInfo)
-}
-
-func planNodeDescriptionWrapper(pnd *graph.PlanNodeDescription) types.PlanNodeDescription {
-	if pnd == nil {
+func newPlanNodeDescriptionWrapper(planNodeDescription *graph.PlanNodeDescription) types.PlanNodeDescription {
+	if planNodeDescription == nil {
 		return nil
 	}
-	return defaultPlanNodeDescription{pnd}
+	return planNodeDescriptionWrapper{planNodeDescription}
 }
 
-func planNodeDescriptionsWrapper(pnds []*graph.PlanNodeDescription) []types.PlanNodeDescription {
-	if pnds == nil {
+func (w planNodeDescriptionWrapper) GetDescription() []types.Pair {
+	return newPairsWrapper(w.Description)
+}
+
+func (w planNodeDescriptionWrapper) GetProfiles() []types.ProfilingStats {
+	return newProfilingStatssWrapper(w.Profiles)
+}
+
+func (w planNodeDescriptionWrapper) GetBranchInfo() types.PlanNodeBranchInfo {
+	return newPlanNodeBranchInfoWrapper(w.BranchInfo)
+}
+
+func planNodeDescriptionsWrapper(planNodeDescriptions []*graph.PlanNodeDescription) []types.PlanNodeDescription {
+	if planNodeDescriptions == nil {
 		return nil
 	}
-	planNodeDescriptions := make([]types.PlanNodeDescription, len(pnds))
-	for i := range pnds {
-		planNodeDescriptions[i] = planNodeDescriptionWrapper(pnds[i])
+	descriptions := make([]types.PlanNodeDescription, len(planNodeDescriptions))
+	for i := range planNodeDescriptions {
+		descriptions[i] = newPlanNodeDescriptionWrapper(planNodeDescriptions[i])
 	}
-	return planNodeDescriptions
+	return descriptions
 }
 
-type defaultPair struct {
+type pairWrapper struct {
 	*graph.Pair
 }
 
-func pairWrapper(p *graph.Pair) types.Pair {
-	if p == nil {
+func newPairWrapper(pair *graph.Pair) types.Pair {
+	if pair == nil {
 		return nil
 	}
-	return defaultPair{p}
+	return pairWrapper{pair}
 }
 
-func pairsWrapper(ps []*graph.Pair) []types.Pair {
-	if ps == nil {
+func newPairsWrapper(pairs []*graph.Pair) []types.Pair {
+	if pairs == nil {
 		return nil
 	}
-	pairs := make([]types.Pair, len(ps))
-	for i := range ps {
-		pairs[i] = pairWrapper(ps[i])
+	ps := make([]types.Pair, len(pairs))
+	for i := range pairs {
+		ps[i] = newPairWrapper(pairs[i])
 	}
-	return pairs
+	return ps
 }
 
-type defaultProfilingStats struct {
+type profilingStatsWrapper struct {
 	*graph.ProfilingStats
 }
 
-func profilingStatsWrapper(ps *graph.ProfilingStats) types.ProfilingStats {
-	if ps == nil {
+func newProfilingStatsWrapper(profilingStats *graph.ProfilingStats) types.ProfilingStats {
+	if profilingStats == nil {
 		return nil
 	}
-	return defaultProfilingStats{ps}
+	return profilingStatsWrapper{profilingStats}
 }
 
-func profilingStatssWrapper(pss []*graph.ProfilingStats) []types.ProfilingStats {
-	if pss == nil {
+func newProfilingStatssWrapper(profilingStatsSlice []*graph.ProfilingStats) []types.ProfilingStats {
+	if profilingStatsSlice == nil {
 		return nil
 	}
-	profilingStatss := make([]types.ProfilingStats, len(pss))
-	for i := range pss {
-		profilingStatss[i] = profilingStatsWrapper(pss[i])
+	statsSlice := make([]types.ProfilingStats, len(profilingStatsSlice))
+	for i := range profilingStatsSlice {
+		statsSlice[i] = newProfilingStatsWrapper(profilingStatsSlice[i])
 	}
-	return profilingStatss
+	return statsSlice
 }
 
-type defaultPlanNodeBranchInfo struct {
+type planNodeBranchInfoWarpper struct {
 	*graph.PlanNodeBranchInfo
 }
 
-func planNodeBranchInfoWrapper(pnb *graph.PlanNodeBranchInfo) types.PlanNodeBranchInfo {
-	if pnb == nil {
+func newPlanNodeBranchInfoWrapper(planNodeBranchInfo *graph.PlanNodeBranchInfo) types.PlanNodeBranchInfo {
+	if planNodeBranchInfo == nil {
 		return nil
 	}
-	return defaultPlanNodeBranchInfo{pnb}
+	return planNodeBranchInfoWarpper{planNodeBranchInfo}
 }

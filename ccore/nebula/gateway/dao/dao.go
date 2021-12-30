@@ -1,9 +1,6 @@
 package dao
 
 import (
-	"errors"
-	"fmt"
-
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/gateway/pool"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
@@ -274,8 +271,8 @@ func getMapInfo(valWarp *wrapper.ValueWrapper, _verticesParsedList *list, _edges
 }
 
 // Connect return if the nebula connect succeed
-func Connect(address string, port int, username string, password string, version string) (nsid string, err error) {
-	nsid, err = pool.NewClient(address, port, username, password, nebula.Version(version))
+func Connect(address string, port int, username string, password string, version nebula.Version) (nsid string, err error) {
+	nsid, err = pool.NewClient(address, port, username, password, version)
 	if err != nil {
 		return "", err
 	}
@@ -336,10 +333,6 @@ func Execute(nsid string, gql string) (ExecuteResult, interface{}, error) {
 			result.Tables = append(result.Tables, rowValue)
 			return result, nil, err
 		}
-	}
-
-	if !res.IsSucceed() {
-		return result, fmt.Sprintf("ErrorCode: %v, ErrorMsg: %s", res.GetErrorCode(), res.GetErrorMsg()), errors.New(string(res.GetErrorMsg()))
 	}
 
 	if !res.IsEmpty() {

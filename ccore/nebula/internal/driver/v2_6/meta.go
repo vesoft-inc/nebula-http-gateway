@@ -2,7 +2,7 @@ package v2_6
 
 import (
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
-	meta2_6 "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_6/meta"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_6/meta"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
@@ -12,18 +12,27 @@ var (
 
 type (
 	defaultMetaClient struct {
-		meta *meta2_6.MetaServiceClient
+		meta *meta.MetaServiceClient
 	}
 )
 
 func newMetaClient(transport thrift.Transport, pf thrift.ProtocolFactory) types.MetaClientDriver {
 	return &defaultMetaClient{
-		meta: meta2_6.NewMetaServiceClientFactory(transport, pf),
+		meta: meta.NewMetaServiceClientFactory(transport, pf),
 	}
 }
 
 func (c *defaultMetaClient) Open() error {
 	return c.meta.Open()
+}
+
+func (c *defaultMetaClient) VerifyClientVersion() error {
+	req := meta.NewVerifyClientVersionReq()
+	resp, err := c.meta.VerifyClientVersion(req)
+	if err != nil {
+		return err
+	}
+	return codeErrorIfHappened(resp.Code, resp.ErrorMsg)
 }
 
 func (c *defaultMetaClient) Close() error {

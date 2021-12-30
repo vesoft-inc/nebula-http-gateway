@@ -7,7 +7,6 @@ import (
 	"sort"
 	"strings"
 
-	cErrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
@@ -66,7 +65,7 @@ func GenResultSet(resp types.ExecutionResponse) (*ResultSet, error) {
 	var colNames []string
 	var colNameIndexMap = make(map[string]int)
 
-	if resp.GetData() == nil { // if resp.Data != nil then resp.Data.row and resp.Data.colNames wont be nil
+	if resp == nil || resp.GetData() == nil { // if resp.Data != nil then resp.Data.row and resp.Data.colNames wont be nil
 		return &ResultSet{
 			resp:            resp,
 			columnNames:     colNames,
@@ -161,24 +160,6 @@ func (res ResultSet) GetColNames() []string {
 	return res.columnNames
 }
 
-// Returns an integer representing an error type
-// 0    ErrorCode_SUCCEEDED
-// -1   ErrorCode_E_DISCONNECTED
-// -2   ErrorCode_E_FAIL_TO_CONNECT
-// -3   ErrorCode_E_RPC_FAILURE
-// -4   ErrorCode_E_BAD_USERNAME_PASSWORD
-// -5   ErrorCode_E_SESSION_INVALID
-// -6   ErrorCode_E_SESSION_TIMEOUT
-// -7   ErrorCode_E_SYNTAX_ERROR
-// -8   ErrorCode_E_EXECUTION_ERROR
-// -9   ErrorCode_E_STATEMENT_EMPTY
-// -10  ErrorCode_E_USER_NOT_FOUND
-// -11  ErrorCode_E_BAD_PERMISSION
-// -12  ErrorCode_E_SEMANTIC_ERROR
-func (res ResultSet) GetErrorCode() cErrors.ErrorCode {
-	return res.resp.GetErrorCode()
-}
-
 func (res ResultSet) GetLatency() int64 {
 	return res.resp.GetLatencyInUs()
 }
@@ -188,13 +169,6 @@ func (res ResultSet) GetSpaceName() string {
 		return ""
 	}
 	return string(res.resp.GetSpaceName())
-}
-
-func (res ResultSet) GetErrorMsg() string {
-	if res.resp.GetErrorMsg() == nil {
-		return ""
-	}
-	return string(res.resp.GetErrorMsg())
 }
 
 func (res ResultSet) IsSetPlanDesc() bool {
@@ -225,14 +199,6 @@ func (res ResultSet) IsEmpty() bool {
 		return true
 	}
 	return false
-}
-
-func (res ResultSet) IsSucceed() bool {
-	return res.GetErrorCode() == cErrors.ErrorCode_SUCCEEDED
-}
-
-func (res ResultSet) IsPartialSucceed() bool {
-	return res.GetErrorCode() == cErrors.ErrorCode_E_PARTIAL_SUCCEEDED
 }
 
 func (res ResultSet) hasColName(colName string) bool {

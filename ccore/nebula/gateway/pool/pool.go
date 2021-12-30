@@ -101,6 +101,11 @@ func handleRequest(ncid string) {
 				response, err := client.graphClient.Execute([]byte(request.Gql))
 				if err != nil {
 					err = ConnectionClosedError
+					request.ResponseChannel <- ChannelResponse{
+						Result: nil,
+						Error:  err,
+					}
+					return
 				}
 				res, err := wrapper.GenResultSet(response)
 				if err != nil {

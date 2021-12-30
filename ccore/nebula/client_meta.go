@@ -1,5 +1,7 @@
 package nebula
 
+import "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
+
 type (
 	MetaClient interface {
 		Open() error
@@ -20,9 +22,15 @@ func NewMetaClient(endpoints []string, opts ...Option) (MetaClient, error) {
 }
 
 func (c *defaultMetaClient) Open() error {
-	return c.meta.close()
+	return c.defaultClient().initDriver(func(driver types.Driver) error {
+		return c.meta.open(driver)
+	})
 }
 
 func (c *defaultMetaClient) Close() error {
-	return c.meta.open(c.driver)
+	return c.meta.close()
+}
+
+func (c *defaultMetaClient) defaultClient() *defaultClient {
+	return (*defaultClient)(c)
 }
