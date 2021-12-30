@@ -60,7 +60,7 @@ func (c *defaultGraphClient) Execute(sessionId int64, stmt []byte) (types.Execut
 	if err = codeErrorIfHappened(resp.ErrorCode, resp.ErrorMsg); err != nil {
 		return nil, err
 	}
-	return newEexecutionResponseWrapper(resp), nil
+	return newExecutionResponseWrapper(resp), nil
 }
 
 func (c *defaultGraphClient) ExecuteJson(sessionId int64, stmt []byte) ([]byte, error) {

@@ -22,7 +22,7 @@ type executionResponseWrapper struct {
 	*graph.ExecutionResponse
 }
 
-func newEexecutionResponseWrapper(executionResponse *graph.ExecutionResponse) types.ExecutionResponse {
+func newExecutionResponseWrapper(executionResponse *graph.ExecutionResponse) types.ExecutionResponse {
 	return executionResponseWrapper{executionResponse}
 }
 
