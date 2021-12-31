@@ -46,7 +46,7 @@ var (
 	currentClientNum = 0
 	clientMux        sync.Mutex
 
-	ClientNotExistedError = errors.New("get client error: client not existed")
+	ClientNotExistedError = errors.New("get client error: client not existed, session expired")
 )
 
 func NewClient(address string, port int, username string, password string, version nebula.Version) (ncid string, err error) {
