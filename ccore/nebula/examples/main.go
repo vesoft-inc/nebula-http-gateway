@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 	"log"
 )
 
@@ -34,6 +35,10 @@ func main() {
 			if err := c.Graph().Close(); err != nil {
 				panic(err)
 			}
+
+			log.Println("get factory by client version:")
+			factory, _ := nebula.NewFactory(nebula.WithVersion(c.Version()))
+			factoryExample(factory)
 		}
 		{ // use nebula.NewClient
 			c, err := nebula.NewGraphClient([]string{"192.168.8.169:9669"}, "root", "123", nebula.WithVersion(version))
@@ -51,21 +56,25 @@ func main() {
 			if err := c.Close(); err != nil {
 				panic(err)
 			}
-		}
-		{ // test factory and builder
-			f, err := nebula.NewFactory(nebula.WithVersion(version))
-			if err != nil {
-				log.Fatal(err)
-			}
 
-			s := []byte{1, 2, 3}
-			v1 := f.NewValue()
-			v1.SetSVal(s)
-			v2 := v1.Builder().Emit().SetSVal([]byte{1, 2})
-			i1 := v1.Unwrap()
-			i2 := v2.Unwrap()
-			log.Printf("\n%p, %p;\n%v, %v", i1, i2, v1.GetSVal(), v2.GetSVal())
+			log.Println("get factory by client or graph client:")
+			factoryExample(c.Factory())
+		}
+		{
+			log.Println("get factory by version:")
+			factory, _ := nebula.NewFactory(nebula.WithVersion(nebula.Version3_0))
+			factoryExample(factory)
 		}
 	}
 
+}
+
+func factoryExample(factory types.FactoryDriver) {
+	s := []byte{1, 2, 3}
+	v1 := factory.NewValue()
+	v1.SetSVal(s)
+	v2 := v1.Builder().Emit().SetSVal([]byte{1, 2})
+	i1 := v1.Unwrap()
+	i2 := v2.Unwrap()
+	log.Printf("\n%p, %p;\n%v, %v", i1, i2, v1.GetSVal(), v2.GetSVal())
 }
