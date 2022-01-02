@@ -55,10 +55,10 @@ type GraphStorageService interface {
 	UpdateEdge(ctx context.Context, req *UpdateEdgeRequest) (_r *UpdateResponse, err error)
 	// Parameters:
 	//  - Req
-	ScanVertex(ctx context.Context, req *ScanVertexRequest) (_r *ScanVertexResponse, err error)
+	ScanVertex(ctx context.Context, req *ScanVertexRequest) (_r *ScanResponse, err error)
 	// Parameters:
 	//  - Req
-	ScanEdge(ctx context.Context, req *ScanEdgeRequest) (_r *ScanEdgeResponse, err error)
+	ScanEdge(ctx context.Context, req *ScanEdgeRequest) (_r *ScanResponse, err error)
 	// Parameters:
 	//  - Req
 	GetUUID(ctx context.Context, req *GetUUIDReq) (_r *GetUUIDResp, err error)
@@ -116,10 +116,10 @@ type GraphStorageServiceClientInterface interface {
 	UpdateEdge(req *UpdateEdgeRequest) (_r *UpdateResponse, err error)
 	// Parameters:
 	//  - Req
-	ScanVertex(req *ScanVertexRequest) (_r *ScanVertexResponse, err error)
+	ScanVertex(req *ScanVertexRequest) (_r *ScanResponse, err error)
 	// Parameters:
 	//  - Req
-	ScanEdge(req *ScanEdgeRequest) (_r *ScanEdgeResponse, err error)
+	ScanEdge(req *ScanEdgeRequest) (_r *ScanResponse, err error)
 	// Parameters:
 	//  - Req
 	GetUUID(req *GetUUIDReq) (_r *GetUUIDResp, err error)
@@ -384,7 +384,7 @@ func (p *GraphStorageServiceClient) recvUpdateEdge() (value *UpdateResponse, err
 
 // Parameters:
 //  - Req
-func (p *GraphStorageServiceClient) ScanVertex(req *ScanVertexRequest) (_r *ScanVertexResponse, err error) {
+func (p *GraphStorageServiceClient) ScanVertex(req *ScanVertexRequest) (_r *ScanResponse, err error) {
 	args := GraphStorageServiceScanVertexArgs{
 		Req: req,
 	}
@@ -395,7 +395,7 @@ func (p *GraphStorageServiceClient) ScanVertex(req *ScanVertexRequest) (_r *Scan
 	return p.recvScanVertex()
 }
 
-func (p *GraphStorageServiceClient) recvScanVertex() (value *ScanVertexResponse, err error) {
+func (p *GraphStorageServiceClient) recvScanVertex() (value *ScanResponse, err error) {
 	var result GraphStorageServiceScanVertexResult
 	err = p.CC.RecvMsg("scanVertex", &result)
 	if err != nil {
@@ -407,7 +407,7 @@ func (p *GraphStorageServiceClient) recvScanVertex() (value *ScanVertexResponse,
 
 // Parameters:
 //  - Req
-func (p *GraphStorageServiceClient) ScanEdge(req *ScanEdgeRequest) (_r *ScanEdgeResponse, err error) {
+func (p *GraphStorageServiceClient) ScanEdge(req *ScanEdgeRequest) (_r *ScanResponse, err error) {
 	args := GraphStorageServiceScanEdgeArgs{
 		Req: req,
 	}
@@ -418,7 +418,7 @@ func (p *GraphStorageServiceClient) ScanEdge(req *ScanEdgeRequest) (_r *ScanEdge
 	return p.recvScanEdge()
 }
 
-func (p *GraphStorageServiceClient) recvScanEdge() (value *ScanEdgeResponse, err error) {
+func (p *GraphStorageServiceClient) recvScanEdge() (value *ScanResponse, err error) {
 	var result GraphStorageServiceScanEdgeResult
 	err = p.CC.RecvMsg("scanEdge", &result)
 	if err != nil {
@@ -875,7 +875,7 @@ func (p *GraphStorageServiceThreadsafeClient) recvUpdateEdge() (value *UpdateRes
 
 // Parameters:
 //  - Req
-func (p *GraphStorageServiceThreadsafeClient) ScanVertex(req *ScanVertexRequest) (_r *ScanVertexResponse, err error) {
+func (p *GraphStorageServiceThreadsafeClient) ScanVertex(req *ScanVertexRequest) (_r *ScanResponse, err error) {
 	p.Mu.Lock()
 	defer p.Mu.Unlock()
 	args := GraphStorageServiceScanVertexArgs{
@@ -888,7 +888,7 @@ func (p *GraphStorageServiceThreadsafeClient) ScanVertex(req *ScanVertexRequest)
 	return p.recvScanVertex()
 }
 
-func (p *GraphStorageServiceThreadsafeClient) recvScanVertex() (value *ScanVertexResponse, err error) {
+func (p *GraphStorageServiceThreadsafeClient) recvScanVertex() (value *ScanResponse, err error) {
 	var result GraphStorageServiceScanVertexResult
 	err = p.CC.RecvMsg("scanVertex", &result)
 	if err != nil {
@@ -900,7 +900,7 @@ func (p *GraphStorageServiceThreadsafeClient) recvScanVertex() (value *ScanVerte
 
 // Parameters:
 //  - Req
-func (p *GraphStorageServiceThreadsafeClient) ScanEdge(req *ScanEdgeRequest) (_r *ScanEdgeResponse, err error) {
+func (p *GraphStorageServiceThreadsafeClient) ScanEdge(req *ScanEdgeRequest) (_r *ScanResponse, err error) {
 	p.Mu.Lock()
 	defer p.Mu.Unlock()
 	args := GraphStorageServiceScanEdgeArgs{
@@ -913,7 +913,7 @@ func (p *GraphStorageServiceThreadsafeClient) ScanEdge(req *ScanEdgeRequest) (_r
 	return p.recvScanEdge()
 }
 
-func (p *GraphStorageServiceThreadsafeClient) recvScanEdge() (value *ScanEdgeResponse, err error) {
+func (p *GraphStorageServiceThreadsafeClient) recvScanEdge() (value *ScanResponse, err error) {
 	var result GraphStorageServiceScanEdgeResult
 	err = p.CC.RecvMsg("scanEdge", &result)
 	if err != nil {
@@ -1280,7 +1280,7 @@ func (p *GraphStorageServiceChannelClient) UpdateEdge(ctx context.Context, req *
 
 // Parameters:
 //  - Req
-func (p *GraphStorageServiceChannelClient) ScanVertex(ctx context.Context, req *ScanVertexRequest) (_r *ScanVertexResponse, err error) {
+func (p *GraphStorageServiceChannelClient) ScanVertex(ctx context.Context, req *ScanVertexRequest) (_r *ScanResponse, err error) {
 	args := GraphStorageServiceScanVertexArgs{
 		Req: req,
 	}
@@ -1295,7 +1295,7 @@ func (p *GraphStorageServiceChannelClient) ScanVertex(ctx context.Context, req *
 
 // Parameters:
 //  - Req
-func (p *GraphStorageServiceChannelClient) ScanEdge(ctx context.Context, req *ScanEdgeRequest) (_r *ScanEdgeResponse, err error) {
+func (p *GraphStorageServiceChannelClient) ScanEdge(ctx context.Context, req *ScanEdgeRequest) (_r *ScanResponse, err error) {
 	args := GraphStorageServiceScanEdgeArgs{
 		Req: req,
 	}
@@ -1429,12 +1429,17 @@ func (p *GraphStorageServiceChannelClient) Remove(ctx context.Context, req *KVRe
 }
 
 type GraphStorageServiceProcessor struct {
-	processorMap map[string]thrift.ProcessorFunctionContext
-	handler      GraphStorageService
+	processorMap       map[string]thrift.ProcessorFunctionContext
+	functionServiceMap map[string]string
+	handler            GraphStorageService
 }
 
 func (p *GraphStorageServiceProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunctionContext) {
 	p.processorMap[key] = processor
+}
+
+func (p *GraphStorageServiceProcessor) AddToFunctionServiceMap(key, service string) {
+	p.functionServiceMap[key] = service
 }
 
 func (p *GraphStorageServiceProcessor) GetProcessorFunctionContext(key string) (processor thrift.ProcessorFunctionContext, err error) {
@@ -1448,32 +1453,62 @@ func (p *GraphStorageServiceProcessor) ProcessorMap() map[string]thrift.Processo
 	return p.processorMap
 }
 
+func (p *GraphStorageServiceProcessor) FunctionServiceMap() map[string]string {
+	return p.functionServiceMap
+}
+
 func NewGraphStorageServiceProcessor(handler GraphStorageService) *GraphStorageServiceProcessor {
-	self95 := &GraphStorageServiceProcessor{handler: handler, processorMap: make(map[string]thrift.ProcessorFunctionContext)}
-	self95.processorMap["getNeighbors"] = &graphStorageServiceProcessorGetNeighbors{handler: handler}
-	self95.processorMap["getProps"] = &graphStorageServiceProcessorGetProps{handler: handler}
-	self95.processorMap["addVertices"] = &graphStorageServiceProcessorAddVertices{handler: handler}
-	self95.processorMap["addEdges"] = &graphStorageServiceProcessorAddEdges{handler: handler}
-	self95.processorMap["deleteEdges"] = &graphStorageServiceProcessorDeleteEdges{handler: handler}
-	self95.processorMap["deleteVertices"] = &graphStorageServiceProcessorDeleteVertices{handler: handler}
-	self95.processorMap["deleteTags"] = &graphStorageServiceProcessorDeleteTags{handler: handler}
-	self95.processorMap["updateVertex"] = &graphStorageServiceProcessorUpdateVertex{handler: handler}
-	self95.processorMap["updateEdge"] = &graphStorageServiceProcessorUpdateEdge{handler: handler}
-	self95.processorMap["scanVertex"] = &graphStorageServiceProcessorScanVertex{handler: handler}
-	self95.processorMap["scanEdge"] = &graphStorageServiceProcessorScanEdge{handler: handler}
-	self95.processorMap["getUUID"] = &graphStorageServiceProcessorGetUUID{handler: handler}
-	self95.processorMap["lookupIndex"] = &graphStorageServiceProcessorLookupIndex{handler: handler}
-	self95.processorMap["lookupAndTraverse"] = &graphStorageServiceProcessorLookupAndTraverse{handler: handler}
-	self95.processorMap["chainUpdateEdge"] = &graphStorageServiceProcessorChainUpdateEdge{handler: handler}
-	self95.processorMap["chainAddEdges"] = &graphStorageServiceProcessorChainAddEdges{handler: handler}
-	self95.processorMap["get"] = &graphStorageServiceProcessorGet{handler: handler}
-	self95.processorMap["put"] = &graphStorageServiceProcessorPut{handler: handler}
-	self95.processorMap["remove"] = &graphStorageServiceProcessorRemove{handler: handler}
-	return self95
+	self97 := &GraphStorageServiceProcessor{handler: handler, processorMap: make(map[string]thrift.ProcessorFunctionContext), functionServiceMap: make(map[string]string)}
+	self97.processorMap["getNeighbors"] = &graphStorageServiceProcessorGetNeighbors{handler: handler}
+	self97.processorMap["getProps"] = &graphStorageServiceProcessorGetProps{handler: handler}
+	self97.processorMap["addVertices"] = &graphStorageServiceProcessorAddVertices{handler: handler}
+	self97.processorMap["addEdges"] = &graphStorageServiceProcessorAddEdges{handler: handler}
+	self97.processorMap["deleteEdges"] = &graphStorageServiceProcessorDeleteEdges{handler: handler}
+	self97.processorMap["deleteVertices"] = &graphStorageServiceProcessorDeleteVertices{handler: handler}
+	self97.processorMap["deleteTags"] = &graphStorageServiceProcessorDeleteTags{handler: handler}
+	self97.processorMap["updateVertex"] = &graphStorageServiceProcessorUpdateVertex{handler: handler}
+	self97.processorMap["updateEdge"] = &graphStorageServiceProcessorUpdateEdge{handler: handler}
+	self97.processorMap["scanVertex"] = &graphStorageServiceProcessorScanVertex{handler: handler}
+	self97.processorMap["scanEdge"] = &graphStorageServiceProcessorScanEdge{handler: handler}
+	self97.processorMap["getUUID"] = &graphStorageServiceProcessorGetUUID{handler: handler}
+	self97.processorMap["lookupIndex"] = &graphStorageServiceProcessorLookupIndex{handler: handler}
+	self97.processorMap["lookupAndTraverse"] = &graphStorageServiceProcessorLookupAndTraverse{handler: handler}
+	self97.processorMap["chainUpdateEdge"] = &graphStorageServiceProcessorChainUpdateEdge{handler: handler}
+	self97.processorMap["chainAddEdges"] = &graphStorageServiceProcessorChainAddEdges{handler: handler}
+	self97.processorMap["get"] = &graphStorageServiceProcessorGet{handler: handler}
+	self97.processorMap["put"] = &graphStorageServiceProcessorPut{handler: handler}
+	self97.processorMap["remove"] = &graphStorageServiceProcessorRemove{handler: handler}
+	self97.functionServiceMap["getNeighbors"] = "GraphStorageService"
+	self97.functionServiceMap["getProps"] = "GraphStorageService"
+	self97.functionServiceMap["addVertices"] = "GraphStorageService"
+	self97.functionServiceMap["addEdges"] = "GraphStorageService"
+	self97.functionServiceMap["deleteEdges"] = "GraphStorageService"
+	self97.functionServiceMap["deleteVertices"] = "GraphStorageService"
+	self97.functionServiceMap["deleteTags"] = "GraphStorageService"
+	self97.functionServiceMap["updateVertex"] = "GraphStorageService"
+	self97.functionServiceMap["updateEdge"] = "GraphStorageService"
+	self97.functionServiceMap["scanVertex"] = "GraphStorageService"
+	self97.functionServiceMap["scanEdge"] = "GraphStorageService"
+	self97.functionServiceMap["getUUID"] = "GraphStorageService"
+	self97.functionServiceMap["lookupIndex"] = "GraphStorageService"
+	self97.functionServiceMap["lookupAndTraverse"] = "GraphStorageService"
+	self97.functionServiceMap["chainUpdateEdge"] = "GraphStorageService"
+	self97.functionServiceMap["chainAddEdges"] = "GraphStorageService"
+	self97.functionServiceMap["get"] = "GraphStorageService"
+	self97.functionServiceMap["put"] = "GraphStorageService"
+	self97.functionServiceMap["remove"] = "GraphStorageService"
+	return self97
 }
 
 type graphStorageServiceProcessorGetNeighbors struct {
 	handler GraphStorageService
+}
+
+func (p *GraphStorageServiceGetNeighborsResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
 }
 
 func (p *graphStorageServiceProcessorGetNeighbors) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1526,6 +1561,13 @@ type graphStorageServiceProcessorGetProps struct {
 	handler GraphStorageService
 }
 
+func (p *GraphStorageServiceGetPropsResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
+}
+
 func (p *graphStorageServiceProcessorGetProps) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
 	args := GraphStorageServiceGetPropsArgs{}
 	if err := args.Read(iprot); err != nil {
@@ -1574,6 +1616,13 @@ func (p *graphStorageServiceProcessorGetProps) RunContext(ctx context.Context, a
 
 type graphStorageServiceProcessorAddVertices struct {
 	handler GraphStorageService
+}
+
+func (p *GraphStorageServiceAddVerticesResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
 }
 
 func (p *graphStorageServiceProcessorAddVertices) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1626,6 +1675,13 @@ type graphStorageServiceProcessorAddEdges struct {
 	handler GraphStorageService
 }
 
+func (p *GraphStorageServiceAddEdgesResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
+}
+
 func (p *graphStorageServiceProcessorAddEdges) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
 	args := GraphStorageServiceAddEdgesArgs{}
 	if err := args.Read(iprot); err != nil {
@@ -1674,6 +1730,13 @@ func (p *graphStorageServiceProcessorAddEdges) RunContext(ctx context.Context, a
 
 type graphStorageServiceProcessorDeleteEdges struct {
 	handler GraphStorageService
+}
+
+func (p *GraphStorageServiceDeleteEdgesResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
 }
 
 func (p *graphStorageServiceProcessorDeleteEdges) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1726,6 +1789,13 @@ type graphStorageServiceProcessorDeleteVertices struct {
 	handler GraphStorageService
 }
 
+func (p *GraphStorageServiceDeleteVerticesResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
+}
+
 func (p *graphStorageServiceProcessorDeleteVertices) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
 	args := GraphStorageServiceDeleteVerticesArgs{}
 	if err := args.Read(iprot); err != nil {
@@ -1774,6 +1844,13 @@ func (p *graphStorageServiceProcessorDeleteVertices) RunContext(ctx context.Cont
 
 type graphStorageServiceProcessorDeleteTags struct {
 	handler GraphStorageService
+}
+
+func (p *GraphStorageServiceDeleteTagsResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
 }
 
 func (p *graphStorageServiceProcessorDeleteTags) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1826,6 +1903,13 @@ type graphStorageServiceProcessorUpdateVertex struct {
 	handler GraphStorageService
 }
 
+func (p *GraphStorageServiceUpdateVertexResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
+}
+
 func (p *graphStorageServiceProcessorUpdateVertex) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
 	args := GraphStorageServiceUpdateVertexArgs{}
 	if err := args.Read(iprot); err != nil {
@@ -1874,6 +1958,13 @@ func (p *graphStorageServiceProcessorUpdateVertex) RunContext(ctx context.Contex
 
 type graphStorageServiceProcessorUpdateEdge struct {
 	handler GraphStorageService
+}
+
+func (p *GraphStorageServiceUpdateEdgeResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
 }
 
 func (p *graphStorageServiceProcessorUpdateEdge) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1926,6 +2017,13 @@ type graphStorageServiceProcessorScanVertex struct {
 	handler GraphStorageService
 }
 
+func (p *GraphStorageServiceScanVertexResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
+}
+
 func (p *graphStorageServiceProcessorScanVertex) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
 	args := GraphStorageServiceScanVertexArgs{}
 	if err := args.Read(iprot); err != nil {
@@ -1974,6 +2072,13 @@ func (p *graphStorageServiceProcessorScanVertex) RunContext(ctx context.Context,
 
 type graphStorageServiceProcessorScanEdge struct {
 	handler GraphStorageService
+}
+
+func (p *GraphStorageServiceScanEdgeResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
 }
 
 func (p *graphStorageServiceProcessorScanEdge) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -2026,6 +2131,13 @@ type graphStorageServiceProcessorGetUUID struct {
 	handler GraphStorageService
 }
 
+func (p *GraphStorageServiceGetUUIDResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
+}
+
 func (p *graphStorageServiceProcessorGetUUID) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
 	args := GraphStorageServiceGetUUIDArgs{}
 	if err := args.Read(iprot); err != nil {
@@ -2074,6 +2186,13 @@ func (p *graphStorageServiceProcessorGetUUID) RunContext(ctx context.Context, ar
 
 type graphStorageServiceProcessorLookupIndex struct {
 	handler GraphStorageService
+}
+
+func (p *GraphStorageServiceLookupIndexResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
 }
 
 func (p *graphStorageServiceProcessorLookupIndex) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -2126,6 +2245,13 @@ type graphStorageServiceProcessorLookupAndTraverse struct {
 	handler GraphStorageService
 }
 
+func (p *GraphStorageServiceLookupAndTraverseResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
+}
+
 func (p *graphStorageServiceProcessorLookupAndTraverse) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
 	args := GraphStorageServiceLookupAndTraverseArgs{}
 	if err := args.Read(iprot); err != nil {
@@ -2174,6 +2300,13 @@ func (p *graphStorageServiceProcessorLookupAndTraverse) RunContext(ctx context.C
 
 type graphStorageServiceProcessorChainUpdateEdge struct {
 	handler GraphStorageService
+}
+
+func (p *GraphStorageServiceChainUpdateEdgeResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
 }
 
 func (p *graphStorageServiceProcessorChainUpdateEdge) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -2226,6 +2359,13 @@ type graphStorageServiceProcessorChainAddEdges struct {
 	handler GraphStorageService
 }
 
+func (p *GraphStorageServiceChainAddEdgesResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
+}
+
 func (p *graphStorageServiceProcessorChainAddEdges) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
 	args := GraphStorageServiceChainAddEdgesArgs{}
 	if err := args.Read(iprot); err != nil {
@@ -2274,6 +2414,13 @@ func (p *graphStorageServiceProcessorChainAddEdges) RunContext(ctx context.Conte
 
 type graphStorageServiceProcessorGet struct {
 	handler GraphStorageService
+}
+
+func (p *GraphStorageServiceGetResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
 }
 
 func (p *graphStorageServiceProcessorGet) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -2326,6 +2473,13 @@ type graphStorageServiceProcessorPut struct {
 	handler GraphStorageService
 }
 
+func (p *GraphStorageServicePutResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
+}
+
 func (p *graphStorageServiceProcessorPut) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
 	args := GraphStorageServicePutArgs{}
 	if err := args.Read(iprot); err != nil {
@@ -2374,6 +2528,13 @@ func (p *graphStorageServiceProcessorPut) RunContext(ctx context.Context, argStr
 
 type graphStorageServiceProcessorRemove struct {
 	handler GraphStorageService
+}
+
+func (p *GraphStorageServiceRemoveResult) Exception() thrift.WritableException {
+	if p == nil {
+		return nil
+	}
+	return nil
 }
 
 func (p *graphStorageServiceProcessorRemove) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -2449,6 +2610,32 @@ func (p *GraphStorageServiceGetNeighborsArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceGetNeighborsArgsBuilder struct {
+	obj *GraphStorageServiceGetNeighborsArgs
+}
+
+func NewGraphStorageServiceGetNeighborsArgsBuilder() *GraphStorageServiceGetNeighborsArgsBuilder {
+	return &GraphStorageServiceGetNeighborsArgsBuilder{
+		obj: NewGraphStorageServiceGetNeighborsArgs(),
+	}
+}
+
+func (p GraphStorageServiceGetNeighborsArgsBuilder) Emit() *GraphStorageServiceGetNeighborsArgs {
+	return &GraphStorageServiceGetNeighborsArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceGetNeighborsArgsBuilder) Req(req *GetNeighborsRequest) *GraphStorageServiceGetNeighborsArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceGetNeighborsArgs) SetReq(req *GetNeighborsRequest) *GraphStorageServiceGetNeighborsArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceGetNeighborsArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2460,7 +2647,7 @@ func (p *GraphStorageServiceGetNeighborsArgs) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -2537,7 +2724,7 @@ func (p *GraphStorageServiceGetNeighborsArgs) String() string {
 //  - Success
 type GraphStorageServiceGetNeighborsResult struct {
 	thrift.IResponse
-	Success *GetNeighborsResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *GetNeighborsResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceGetNeighborsResult() *GraphStorageServiceGetNeighborsResult {
@@ -2556,6 +2743,32 @@ func (p *GraphStorageServiceGetNeighborsResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceGetNeighborsResultBuilder struct {
+	obj *GraphStorageServiceGetNeighborsResult
+}
+
+func NewGraphStorageServiceGetNeighborsResultBuilder() *GraphStorageServiceGetNeighborsResultBuilder {
+	return &GraphStorageServiceGetNeighborsResultBuilder{
+		obj: NewGraphStorageServiceGetNeighborsResult(),
+	}
+}
+
+func (p GraphStorageServiceGetNeighborsResultBuilder) Emit() *GraphStorageServiceGetNeighborsResult {
+	return &GraphStorageServiceGetNeighborsResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceGetNeighborsResultBuilder) Success(success *GetNeighborsResponse) *GraphStorageServiceGetNeighborsResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceGetNeighborsResult) SetSuccess(success *GetNeighborsResponse) *GraphStorageServiceGetNeighborsResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceGetNeighborsResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2567,7 +2780,7 @@ func (p *GraphStorageServiceGetNeighborsResult) Read(iprot thrift.Protocol) erro
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -2667,6 +2880,32 @@ func (p *GraphStorageServiceGetPropsArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceGetPropsArgsBuilder struct {
+	obj *GraphStorageServiceGetPropsArgs
+}
+
+func NewGraphStorageServiceGetPropsArgsBuilder() *GraphStorageServiceGetPropsArgsBuilder {
+	return &GraphStorageServiceGetPropsArgsBuilder{
+		obj: NewGraphStorageServiceGetPropsArgs(),
+	}
+}
+
+func (p GraphStorageServiceGetPropsArgsBuilder) Emit() *GraphStorageServiceGetPropsArgs {
+	return &GraphStorageServiceGetPropsArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceGetPropsArgsBuilder) Req(req *GetPropRequest) *GraphStorageServiceGetPropsArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceGetPropsArgs) SetReq(req *GetPropRequest) *GraphStorageServiceGetPropsArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceGetPropsArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2678,7 +2917,7 @@ func (p *GraphStorageServiceGetPropsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -2755,7 +2994,7 @@ func (p *GraphStorageServiceGetPropsArgs) String() string {
 //  - Success
 type GraphStorageServiceGetPropsResult struct {
 	thrift.IResponse
-	Success *GetPropResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *GetPropResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceGetPropsResult() *GraphStorageServiceGetPropsResult {
@@ -2774,6 +3013,32 @@ func (p *GraphStorageServiceGetPropsResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceGetPropsResultBuilder struct {
+	obj *GraphStorageServiceGetPropsResult
+}
+
+func NewGraphStorageServiceGetPropsResultBuilder() *GraphStorageServiceGetPropsResultBuilder {
+	return &GraphStorageServiceGetPropsResultBuilder{
+		obj: NewGraphStorageServiceGetPropsResult(),
+	}
+}
+
+func (p GraphStorageServiceGetPropsResultBuilder) Emit() *GraphStorageServiceGetPropsResult {
+	return &GraphStorageServiceGetPropsResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceGetPropsResultBuilder) Success(success *GetPropResponse) *GraphStorageServiceGetPropsResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceGetPropsResult) SetSuccess(success *GetPropResponse) *GraphStorageServiceGetPropsResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceGetPropsResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2785,7 +3050,7 @@ func (p *GraphStorageServiceGetPropsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -2885,6 +3150,32 @@ func (p *GraphStorageServiceAddVerticesArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceAddVerticesArgsBuilder struct {
+	obj *GraphStorageServiceAddVerticesArgs
+}
+
+func NewGraphStorageServiceAddVerticesArgsBuilder() *GraphStorageServiceAddVerticesArgsBuilder {
+	return &GraphStorageServiceAddVerticesArgsBuilder{
+		obj: NewGraphStorageServiceAddVerticesArgs(),
+	}
+}
+
+func (p GraphStorageServiceAddVerticesArgsBuilder) Emit() *GraphStorageServiceAddVerticesArgs {
+	return &GraphStorageServiceAddVerticesArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceAddVerticesArgsBuilder) Req(req *AddVerticesRequest) *GraphStorageServiceAddVerticesArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceAddVerticesArgs) SetReq(req *AddVerticesRequest) *GraphStorageServiceAddVerticesArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceAddVerticesArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2896,7 +3187,7 @@ func (p *GraphStorageServiceAddVerticesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -2973,7 +3264,7 @@ func (p *GraphStorageServiceAddVerticesArgs) String() string {
 //  - Success
 type GraphStorageServiceAddVerticesResult struct {
 	thrift.IResponse
-	Success *ExecResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *ExecResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceAddVerticesResult() *GraphStorageServiceAddVerticesResult {
@@ -2992,6 +3283,32 @@ func (p *GraphStorageServiceAddVerticesResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceAddVerticesResultBuilder struct {
+	obj *GraphStorageServiceAddVerticesResult
+}
+
+func NewGraphStorageServiceAddVerticesResultBuilder() *GraphStorageServiceAddVerticesResultBuilder {
+	return &GraphStorageServiceAddVerticesResultBuilder{
+		obj: NewGraphStorageServiceAddVerticesResult(),
+	}
+}
+
+func (p GraphStorageServiceAddVerticesResultBuilder) Emit() *GraphStorageServiceAddVerticesResult {
+	return &GraphStorageServiceAddVerticesResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceAddVerticesResultBuilder) Success(success *ExecResponse) *GraphStorageServiceAddVerticesResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceAddVerticesResult) SetSuccess(success *ExecResponse) *GraphStorageServiceAddVerticesResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceAddVerticesResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3003,7 +3320,7 @@ func (p *GraphStorageServiceAddVerticesResult) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -3103,6 +3420,32 @@ func (p *GraphStorageServiceAddEdgesArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceAddEdgesArgsBuilder struct {
+	obj *GraphStorageServiceAddEdgesArgs
+}
+
+func NewGraphStorageServiceAddEdgesArgsBuilder() *GraphStorageServiceAddEdgesArgsBuilder {
+	return &GraphStorageServiceAddEdgesArgsBuilder{
+		obj: NewGraphStorageServiceAddEdgesArgs(),
+	}
+}
+
+func (p GraphStorageServiceAddEdgesArgsBuilder) Emit() *GraphStorageServiceAddEdgesArgs {
+	return &GraphStorageServiceAddEdgesArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceAddEdgesArgsBuilder) Req(req *AddEdgesRequest) *GraphStorageServiceAddEdgesArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceAddEdgesArgs) SetReq(req *AddEdgesRequest) *GraphStorageServiceAddEdgesArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceAddEdgesArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3114,7 +3457,7 @@ func (p *GraphStorageServiceAddEdgesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -3191,7 +3534,7 @@ func (p *GraphStorageServiceAddEdgesArgs) String() string {
 //  - Success
 type GraphStorageServiceAddEdgesResult struct {
 	thrift.IResponse
-	Success *ExecResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *ExecResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceAddEdgesResult() *GraphStorageServiceAddEdgesResult {
@@ -3210,6 +3553,32 @@ func (p *GraphStorageServiceAddEdgesResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceAddEdgesResultBuilder struct {
+	obj *GraphStorageServiceAddEdgesResult
+}
+
+func NewGraphStorageServiceAddEdgesResultBuilder() *GraphStorageServiceAddEdgesResultBuilder {
+	return &GraphStorageServiceAddEdgesResultBuilder{
+		obj: NewGraphStorageServiceAddEdgesResult(),
+	}
+}
+
+func (p GraphStorageServiceAddEdgesResultBuilder) Emit() *GraphStorageServiceAddEdgesResult {
+	return &GraphStorageServiceAddEdgesResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceAddEdgesResultBuilder) Success(success *ExecResponse) *GraphStorageServiceAddEdgesResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceAddEdgesResult) SetSuccess(success *ExecResponse) *GraphStorageServiceAddEdgesResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceAddEdgesResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3221,7 +3590,7 @@ func (p *GraphStorageServiceAddEdgesResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -3321,6 +3690,32 @@ func (p *GraphStorageServiceDeleteEdgesArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceDeleteEdgesArgsBuilder struct {
+	obj *GraphStorageServiceDeleteEdgesArgs
+}
+
+func NewGraphStorageServiceDeleteEdgesArgsBuilder() *GraphStorageServiceDeleteEdgesArgsBuilder {
+	return &GraphStorageServiceDeleteEdgesArgsBuilder{
+		obj: NewGraphStorageServiceDeleteEdgesArgs(),
+	}
+}
+
+func (p GraphStorageServiceDeleteEdgesArgsBuilder) Emit() *GraphStorageServiceDeleteEdgesArgs {
+	return &GraphStorageServiceDeleteEdgesArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceDeleteEdgesArgsBuilder) Req(req *DeleteEdgesRequest) *GraphStorageServiceDeleteEdgesArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceDeleteEdgesArgs) SetReq(req *DeleteEdgesRequest) *GraphStorageServiceDeleteEdgesArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceDeleteEdgesArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3332,7 +3727,7 @@ func (p *GraphStorageServiceDeleteEdgesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -3409,7 +3804,7 @@ func (p *GraphStorageServiceDeleteEdgesArgs) String() string {
 //  - Success
 type GraphStorageServiceDeleteEdgesResult struct {
 	thrift.IResponse
-	Success *ExecResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *ExecResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceDeleteEdgesResult() *GraphStorageServiceDeleteEdgesResult {
@@ -3428,6 +3823,32 @@ func (p *GraphStorageServiceDeleteEdgesResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceDeleteEdgesResultBuilder struct {
+	obj *GraphStorageServiceDeleteEdgesResult
+}
+
+func NewGraphStorageServiceDeleteEdgesResultBuilder() *GraphStorageServiceDeleteEdgesResultBuilder {
+	return &GraphStorageServiceDeleteEdgesResultBuilder{
+		obj: NewGraphStorageServiceDeleteEdgesResult(),
+	}
+}
+
+func (p GraphStorageServiceDeleteEdgesResultBuilder) Emit() *GraphStorageServiceDeleteEdgesResult {
+	return &GraphStorageServiceDeleteEdgesResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceDeleteEdgesResultBuilder) Success(success *ExecResponse) *GraphStorageServiceDeleteEdgesResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceDeleteEdgesResult) SetSuccess(success *ExecResponse) *GraphStorageServiceDeleteEdgesResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceDeleteEdgesResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3439,7 +3860,7 @@ func (p *GraphStorageServiceDeleteEdgesResult) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -3539,6 +3960,32 @@ func (p *GraphStorageServiceDeleteVerticesArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceDeleteVerticesArgsBuilder struct {
+	obj *GraphStorageServiceDeleteVerticesArgs
+}
+
+func NewGraphStorageServiceDeleteVerticesArgsBuilder() *GraphStorageServiceDeleteVerticesArgsBuilder {
+	return &GraphStorageServiceDeleteVerticesArgsBuilder{
+		obj: NewGraphStorageServiceDeleteVerticesArgs(),
+	}
+}
+
+func (p GraphStorageServiceDeleteVerticesArgsBuilder) Emit() *GraphStorageServiceDeleteVerticesArgs {
+	return &GraphStorageServiceDeleteVerticesArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceDeleteVerticesArgsBuilder) Req(req *DeleteVerticesRequest) *GraphStorageServiceDeleteVerticesArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceDeleteVerticesArgs) SetReq(req *DeleteVerticesRequest) *GraphStorageServiceDeleteVerticesArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceDeleteVerticesArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3550,7 +3997,7 @@ func (p *GraphStorageServiceDeleteVerticesArgs) Read(iprot thrift.Protocol) erro
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -3627,7 +4074,7 @@ func (p *GraphStorageServiceDeleteVerticesArgs) String() string {
 //  - Success
 type GraphStorageServiceDeleteVerticesResult struct {
 	thrift.IResponse
-	Success *ExecResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *ExecResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceDeleteVerticesResult() *GraphStorageServiceDeleteVerticesResult {
@@ -3646,6 +4093,32 @@ func (p *GraphStorageServiceDeleteVerticesResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceDeleteVerticesResultBuilder struct {
+	obj *GraphStorageServiceDeleteVerticesResult
+}
+
+func NewGraphStorageServiceDeleteVerticesResultBuilder() *GraphStorageServiceDeleteVerticesResultBuilder {
+	return &GraphStorageServiceDeleteVerticesResultBuilder{
+		obj: NewGraphStorageServiceDeleteVerticesResult(),
+	}
+}
+
+func (p GraphStorageServiceDeleteVerticesResultBuilder) Emit() *GraphStorageServiceDeleteVerticesResult {
+	return &GraphStorageServiceDeleteVerticesResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceDeleteVerticesResultBuilder) Success(success *ExecResponse) *GraphStorageServiceDeleteVerticesResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceDeleteVerticesResult) SetSuccess(success *ExecResponse) *GraphStorageServiceDeleteVerticesResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceDeleteVerticesResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3657,7 +4130,7 @@ func (p *GraphStorageServiceDeleteVerticesResult) Read(iprot thrift.Protocol) er
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -3757,6 +4230,32 @@ func (p *GraphStorageServiceDeleteTagsArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceDeleteTagsArgsBuilder struct {
+	obj *GraphStorageServiceDeleteTagsArgs
+}
+
+func NewGraphStorageServiceDeleteTagsArgsBuilder() *GraphStorageServiceDeleteTagsArgsBuilder {
+	return &GraphStorageServiceDeleteTagsArgsBuilder{
+		obj: NewGraphStorageServiceDeleteTagsArgs(),
+	}
+}
+
+func (p GraphStorageServiceDeleteTagsArgsBuilder) Emit() *GraphStorageServiceDeleteTagsArgs {
+	return &GraphStorageServiceDeleteTagsArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceDeleteTagsArgsBuilder) Req(req *DeleteTagsRequest) *GraphStorageServiceDeleteTagsArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceDeleteTagsArgs) SetReq(req *DeleteTagsRequest) *GraphStorageServiceDeleteTagsArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceDeleteTagsArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3768,7 +4267,7 @@ func (p *GraphStorageServiceDeleteTagsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -3845,7 +4344,7 @@ func (p *GraphStorageServiceDeleteTagsArgs) String() string {
 //  - Success
 type GraphStorageServiceDeleteTagsResult struct {
 	thrift.IResponse
-	Success *ExecResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *ExecResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceDeleteTagsResult() *GraphStorageServiceDeleteTagsResult {
@@ -3864,6 +4363,32 @@ func (p *GraphStorageServiceDeleteTagsResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceDeleteTagsResultBuilder struct {
+	obj *GraphStorageServiceDeleteTagsResult
+}
+
+func NewGraphStorageServiceDeleteTagsResultBuilder() *GraphStorageServiceDeleteTagsResultBuilder {
+	return &GraphStorageServiceDeleteTagsResultBuilder{
+		obj: NewGraphStorageServiceDeleteTagsResult(),
+	}
+}
+
+func (p GraphStorageServiceDeleteTagsResultBuilder) Emit() *GraphStorageServiceDeleteTagsResult {
+	return &GraphStorageServiceDeleteTagsResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceDeleteTagsResultBuilder) Success(success *ExecResponse) *GraphStorageServiceDeleteTagsResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceDeleteTagsResult) SetSuccess(success *ExecResponse) *GraphStorageServiceDeleteTagsResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceDeleteTagsResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3875,7 +4400,7 @@ func (p *GraphStorageServiceDeleteTagsResult) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -3975,6 +4500,32 @@ func (p *GraphStorageServiceUpdateVertexArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceUpdateVertexArgsBuilder struct {
+	obj *GraphStorageServiceUpdateVertexArgs
+}
+
+func NewGraphStorageServiceUpdateVertexArgsBuilder() *GraphStorageServiceUpdateVertexArgsBuilder {
+	return &GraphStorageServiceUpdateVertexArgsBuilder{
+		obj: NewGraphStorageServiceUpdateVertexArgs(),
+	}
+}
+
+func (p GraphStorageServiceUpdateVertexArgsBuilder) Emit() *GraphStorageServiceUpdateVertexArgs {
+	return &GraphStorageServiceUpdateVertexArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceUpdateVertexArgsBuilder) Req(req *UpdateVertexRequest) *GraphStorageServiceUpdateVertexArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceUpdateVertexArgs) SetReq(req *UpdateVertexRequest) *GraphStorageServiceUpdateVertexArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceUpdateVertexArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3986,7 +4537,7 @@ func (p *GraphStorageServiceUpdateVertexArgs) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -4063,7 +4614,7 @@ func (p *GraphStorageServiceUpdateVertexArgs) String() string {
 //  - Success
 type GraphStorageServiceUpdateVertexResult struct {
 	thrift.IResponse
-	Success *UpdateResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *UpdateResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceUpdateVertexResult() *GraphStorageServiceUpdateVertexResult {
@@ -4082,6 +4633,32 @@ func (p *GraphStorageServiceUpdateVertexResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceUpdateVertexResultBuilder struct {
+	obj *GraphStorageServiceUpdateVertexResult
+}
+
+func NewGraphStorageServiceUpdateVertexResultBuilder() *GraphStorageServiceUpdateVertexResultBuilder {
+	return &GraphStorageServiceUpdateVertexResultBuilder{
+		obj: NewGraphStorageServiceUpdateVertexResult(),
+	}
+}
+
+func (p GraphStorageServiceUpdateVertexResultBuilder) Emit() *GraphStorageServiceUpdateVertexResult {
+	return &GraphStorageServiceUpdateVertexResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceUpdateVertexResultBuilder) Success(success *UpdateResponse) *GraphStorageServiceUpdateVertexResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceUpdateVertexResult) SetSuccess(success *UpdateResponse) *GraphStorageServiceUpdateVertexResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceUpdateVertexResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -4093,7 +4670,7 @@ func (p *GraphStorageServiceUpdateVertexResult) Read(iprot thrift.Protocol) erro
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -4193,6 +4770,32 @@ func (p *GraphStorageServiceUpdateEdgeArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceUpdateEdgeArgsBuilder struct {
+	obj *GraphStorageServiceUpdateEdgeArgs
+}
+
+func NewGraphStorageServiceUpdateEdgeArgsBuilder() *GraphStorageServiceUpdateEdgeArgsBuilder {
+	return &GraphStorageServiceUpdateEdgeArgsBuilder{
+		obj: NewGraphStorageServiceUpdateEdgeArgs(),
+	}
+}
+
+func (p GraphStorageServiceUpdateEdgeArgsBuilder) Emit() *GraphStorageServiceUpdateEdgeArgs {
+	return &GraphStorageServiceUpdateEdgeArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceUpdateEdgeArgsBuilder) Req(req *UpdateEdgeRequest) *GraphStorageServiceUpdateEdgeArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceUpdateEdgeArgs) SetReq(req *UpdateEdgeRequest) *GraphStorageServiceUpdateEdgeArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceUpdateEdgeArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -4204,7 +4807,7 @@ func (p *GraphStorageServiceUpdateEdgeArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -4281,7 +4884,7 @@ func (p *GraphStorageServiceUpdateEdgeArgs) String() string {
 //  - Success
 type GraphStorageServiceUpdateEdgeResult struct {
 	thrift.IResponse
-	Success *UpdateResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *UpdateResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceUpdateEdgeResult() *GraphStorageServiceUpdateEdgeResult {
@@ -4300,6 +4903,32 @@ func (p *GraphStorageServiceUpdateEdgeResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceUpdateEdgeResultBuilder struct {
+	obj *GraphStorageServiceUpdateEdgeResult
+}
+
+func NewGraphStorageServiceUpdateEdgeResultBuilder() *GraphStorageServiceUpdateEdgeResultBuilder {
+	return &GraphStorageServiceUpdateEdgeResultBuilder{
+		obj: NewGraphStorageServiceUpdateEdgeResult(),
+	}
+}
+
+func (p GraphStorageServiceUpdateEdgeResultBuilder) Emit() *GraphStorageServiceUpdateEdgeResult {
+	return &GraphStorageServiceUpdateEdgeResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceUpdateEdgeResultBuilder) Success(success *UpdateResponse) *GraphStorageServiceUpdateEdgeResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceUpdateEdgeResult) SetSuccess(success *UpdateResponse) *GraphStorageServiceUpdateEdgeResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceUpdateEdgeResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -4311,7 +4940,7 @@ func (p *GraphStorageServiceUpdateEdgeResult) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -4411,6 +5040,32 @@ func (p *GraphStorageServiceScanVertexArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceScanVertexArgsBuilder struct {
+	obj *GraphStorageServiceScanVertexArgs
+}
+
+func NewGraphStorageServiceScanVertexArgsBuilder() *GraphStorageServiceScanVertexArgsBuilder {
+	return &GraphStorageServiceScanVertexArgsBuilder{
+		obj: NewGraphStorageServiceScanVertexArgs(),
+	}
+}
+
+func (p GraphStorageServiceScanVertexArgsBuilder) Emit() *GraphStorageServiceScanVertexArgs {
+	return &GraphStorageServiceScanVertexArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceScanVertexArgsBuilder) Req(req *ScanVertexRequest) *GraphStorageServiceScanVertexArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceScanVertexArgs) SetReq(req *ScanVertexRequest) *GraphStorageServiceScanVertexArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceScanVertexArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -4422,7 +5077,7 @@ func (p *GraphStorageServiceScanVertexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -4499,16 +5154,16 @@ func (p *GraphStorageServiceScanVertexArgs) String() string {
 //  - Success
 type GraphStorageServiceScanVertexResult struct {
 	thrift.IResponse
-	Success *ScanVertexResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *ScanResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceScanVertexResult() *GraphStorageServiceScanVertexResult {
 	return &GraphStorageServiceScanVertexResult{}
 }
 
-var GraphStorageServiceScanVertexResult_Success_DEFAULT *ScanVertexResponse
+var GraphStorageServiceScanVertexResult_Success_DEFAULT *ScanResponse
 
-func (p *GraphStorageServiceScanVertexResult) GetSuccess() *ScanVertexResponse {
+func (p *GraphStorageServiceScanVertexResult) GetSuccess() *ScanResponse {
 	if !p.IsSetSuccess() {
 		return GraphStorageServiceScanVertexResult_Success_DEFAULT
 	}
@@ -4516,6 +5171,32 @@ func (p *GraphStorageServiceScanVertexResult) GetSuccess() *ScanVertexResponse {
 }
 func (p *GraphStorageServiceScanVertexResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
+}
+
+type GraphStorageServiceScanVertexResultBuilder struct {
+	obj *GraphStorageServiceScanVertexResult
+}
+
+func NewGraphStorageServiceScanVertexResultBuilder() *GraphStorageServiceScanVertexResultBuilder {
+	return &GraphStorageServiceScanVertexResultBuilder{
+		obj: NewGraphStorageServiceScanVertexResult(),
+	}
+}
+
+func (p GraphStorageServiceScanVertexResultBuilder) Emit() *GraphStorageServiceScanVertexResult {
+	return &GraphStorageServiceScanVertexResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceScanVertexResultBuilder) Success(success *ScanResponse) *GraphStorageServiceScanVertexResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceScanVertexResult) SetSuccess(success *ScanResponse) *GraphStorageServiceScanVertexResult {
+	g.Success = success
+	return g
 }
 
 func (p *GraphStorageServiceScanVertexResult) Read(iprot thrift.Protocol) error {
@@ -4529,7 +5210,7 @@ func (p *GraphStorageServiceScanVertexResult) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -4552,7 +5233,7 @@ func (p *GraphStorageServiceScanVertexResult) Read(iprot thrift.Protocol) error 
 }
 
 func (p *GraphStorageServiceScanVertexResult) ReadField0(iprot thrift.Protocol) error {
-	p.Success = NewScanVertexResponse()
+	p.Success = NewScanResponse()
 	if err := p.Success.Read(iprot); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Success), err)
 	}
@@ -4629,6 +5310,32 @@ func (p *GraphStorageServiceScanEdgeArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceScanEdgeArgsBuilder struct {
+	obj *GraphStorageServiceScanEdgeArgs
+}
+
+func NewGraphStorageServiceScanEdgeArgsBuilder() *GraphStorageServiceScanEdgeArgsBuilder {
+	return &GraphStorageServiceScanEdgeArgsBuilder{
+		obj: NewGraphStorageServiceScanEdgeArgs(),
+	}
+}
+
+func (p GraphStorageServiceScanEdgeArgsBuilder) Emit() *GraphStorageServiceScanEdgeArgs {
+	return &GraphStorageServiceScanEdgeArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceScanEdgeArgsBuilder) Req(req *ScanEdgeRequest) *GraphStorageServiceScanEdgeArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceScanEdgeArgs) SetReq(req *ScanEdgeRequest) *GraphStorageServiceScanEdgeArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceScanEdgeArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -4640,7 +5347,7 @@ func (p *GraphStorageServiceScanEdgeArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -4717,16 +5424,16 @@ func (p *GraphStorageServiceScanEdgeArgs) String() string {
 //  - Success
 type GraphStorageServiceScanEdgeResult struct {
 	thrift.IResponse
-	Success *ScanEdgeResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *ScanResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceScanEdgeResult() *GraphStorageServiceScanEdgeResult {
 	return &GraphStorageServiceScanEdgeResult{}
 }
 
-var GraphStorageServiceScanEdgeResult_Success_DEFAULT *ScanEdgeResponse
+var GraphStorageServiceScanEdgeResult_Success_DEFAULT *ScanResponse
 
-func (p *GraphStorageServiceScanEdgeResult) GetSuccess() *ScanEdgeResponse {
+func (p *GraphStorageServiceScanEdgeResult) GetSuccess() *ScanResponse {
 	if !p.IsSetSuccess() {
 		return GraphStorageServiceScanEdgeResult_Success_DEFAULT
 	}
@@ -4734,6 +5441,32 @@ func (p *GraphStorageServiceScanEdgeResult) GetSuccess() *ScanEdgeResponse {
 }
 func (p *GraphStorageServiceScanEdgeResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
+}
+
+type GraphStorageServiceScanEdgeResultBuilder struct {
+	obj *GraphStorageServiceScanEdgeResult
+}
+
+func NewGraphStorageServiceScanEdgeResultBuilder() *GraphStorageServiceScanEdgeResultBuilder {
+	return &GraphStorageServiceScanEdgeResultBuilder{
+		obj: NewGraphStorageServiceScanEdgeResult(),
+	}
+}
+
+func (p GraphStorageServiceScanEdgeResultBuilder) Emit() *GraphStorageServiceScanEdgeResult {
+	return &GraphStorageServiceScanEdgeResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceScanEdgeResultBuilder) Success(success *ScanResponse) *GraphStorageServiceScanEdgeResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceScanEdgeResult) SetSuccess(success *ScanResponse) *GraphStorageServiceScanEdgeResult {
+	g.Success = success
+	return g
 }
 
 func (p *GraphStorageServiceScanEdgeResult) Read(iprot thrift.Protocol) error {
@@ -4747,7 +5480,7 @@ func (p *GraphStorageServiceScanEdgeResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -4770,7 +5503,7 @@ func (p *GraphStorageServiceScanEdgeResult) Read(iprot thrift.Protocol) error {
 }
 
 func (p *GraphStorageServiceScanEdgeResult) ReadField0(iprot thrift.Protocol) error {
-	p.Success = NewScanEdgeResponse()
+	p.Success = NewScanResponse()
 	if err := p.Success.Read(iprot); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Success), err)
 	}
@@ -4847,6 +5580,32 @@ func (p *GraphStorageServiceGetUUIDArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceGetUUIDArgsBuilder struct {
+	obj *GraphStorageServiceGetUUIDArgs
+}
+
+func NewGraphStorageServiceGetUUIDArgsBuilder() *GraphStorageServiceGetUUIDArgsBuilder {
+	return &GraphStorageServiceGetUUIDArgsBuilder{
+		obj: NewGraphStorageServiceGetUUIDArgs(),
+	}
+}
+
+func (p GraphStorageServiceGetUUIDArgsBuilder) Emit() *GraphStorageServiceGetUUIDArgs {
+	return &GraphStorageServiceGetUUIDArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceGetUUIDArgsBuilder) Req(req *GetUUIDReq) *GraphStorageServiceGetUUIDArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceGetUUIDArgs) SetReq(req *GetUUIDReq) *GraphStorageServiceGetUUIDArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceGetUUIDArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -4858,7 +5617,7 @@ func (p *GraphStorageServiceGetUUIDArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -4935,7 +5694,7 @@ func (p *GraphStorageServiceGetUUIDArgs) String() string {
 //  - Success
 type GraphStorageServiceGetUUIDResult struct {
 	thrift.IResponse
-	Success *GetUUIDResp `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *GetUUIDResp `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceGetUUIDResult() *GraphStorageServiceGetUUIDResult {
@@ -4954,6 +5713,32 @@ func (p *GraphStorageServiceGetUUIDResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceGetUUIDResultBuilder struct {
+	obj *GraphStorageServiceGetUUIDResult
+}
+
+func NewGraphStorageServiceGetUUIDResultBuilder() *GraphStorageServiceGetUUIDResultBuilder {
+	return &GraphStorageServiceGetUUIDResultBuilder{
+		obj: NewGraphStorageServiceGetUUIDResult(),
+	}
+}
+
+func (p GraphStorageServiceGetUUIDResultBuilder) Emit() *GraphStorageServiceGetUUIDResult {
+	return &GraphStorageServiceGetUUIDResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceGetUUIDResultBuilder) Success(success *GetUUIDResp) *GraphStorageServiceGetUUIDResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceGetUUIDResult) SetSuccess(success *GetUUIDResp) *GraphStorageServiceGetUUIDResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceGetUUIDResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -4965,7 +5750,7 @@ func (p *GraphStorageServiceGetUUIDResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -5065,6 +5850,32 @@ func (p *GraphStorageServiceLookupIndexArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceLookupIndexArgsBuilder struct {
+	obj *GraphStorageServiceLookupIndexArgs
+}
+
+func NewGraphStorageServiceLookupIndexArgsBuilder() *GraphStorageServiceLookupIndexArgsBuilder {
+	return &GraphStorageServiceLookupIndexArgsBuilder{
+		obj: NewGraphStorageServiceLookupIndexArgs(),
+	}
+}
+
+func (p GraphStorageServiceLookupIndexArgsBuilder) Emit() *GraphStorageServiceLookupIndexArgs {
+	return &GraphStorageServiceLookupIndexArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceLookupIndexArgsBuilder) Req(req *LookupIndexRequest) *GraphStorageServiceLookupIndexArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceLookupIndexArgs) SetReq(req *LookupIndexRequest) *GraphStorageServiceLookupIndexArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceLookupIndexArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5076,7 +5887,7 @@ func (p *GraphStorageServiceLookupIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -5153,7 +5964,7 @@ func (p *GraphStorageServiceLookupIndexArgs) String() string {
 //  - Success
 type GraphStorageServiceLookupIndexResult struct {
 	thrift.IResponse
-	Success *LookupIndexResp `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *LookupIndexResp `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceLookupIndexResult() *GraphStorageServiceLookupIndexResult {
@@ -5172,6 +5983,32 @@ func (p *GraphStorageServiceLookupIndexResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceLookupIndexResultBuilder struct {
+	obj *GraphStorageServiceLookupIndexResult
+}
+
+func NewGraphStorageServiceLookupIndexResultBuilder() *GraphStorageServiceLookupIndexResultBuilder {
+	return &GraphStorageServiceLookupIndexResultBuilder{
+		obj: NewGraphStorageServiceLookupIndexResult(),
+	}
+}
+
+func (p GraphStorageServiceLookupIndexResultBuilder) Emit() *GraphStorageServiceLookupIndexResult {
+	return &GraphStorageServiceLookupIndexResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceLookupIndexResultBuilder) Success(success *LookupIndexResp) *GraphStorageServiceLookupIndexResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceLookupIndexResult) SetSuccess(success *LookupIndexResp) *GraphStorageServiceLookupIndexResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceLookupIndexResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5183,7 +6020,7 @@ func (p *GraphStorageServiceLookupIndexResult) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -5283,6 +6120,32 @@ func (p *GraphStorageServiceLookupAndTraverseArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceLookupAndTraverseArgsBuilder struct {
+	obj *GraphStorageServiceLookupAndTraverseArgs
+}
+
+func NewGraphStorageServiceLookupAndTraverseArgsBuilder() *GraphStorageServiceLookupAndTraverseArgsBuilder {
+	return &GraphStorageServiceLookupAndTraverseArgsBuilder{
+		obj: NewGraphStorageServiceLookupAndTraverseArgs(),
+	}
+}
+
+func (p GraphStorageServiceLookupAndTraverseArgsBuilder) Emit() *GraphStorageServiceLookupAndTraverseArgs {
+	return &GraphStorageServiceLookupAndTraverseArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceLookupAndTraverseArgsBuilder) Req(req *LookupAndTraverseRequest) *GraphStorageServiceLookupAndTraverseArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceLookupAndTraverseArgs) SetReq(req *LookupAndTraverseRequest) *GraphStorageServiceLookupAndTraverseArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceLookupAndTraverseArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5294,7 +6157,7 @@ func (p *GraphStorageServiceLookupAndTraverseArgs) Read(iprot thrift.Protocol) e
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -5371,7 +6234,7 @@ func (p *GraphStorageServiceLookupAndTraverseArgs) String() string {
 //  - Success
 type GraphStorageServiceLookupAndTraverseResult struct {
 	thrift.IResponse
-	Success *GetNeighborsResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *GetNeighborsResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceLookupAndTraverseResult() *GraphStorageServiceLookupAndTraverseResult {
@@ -5390,6 +6253,32 @@ func (p *GraphStorageServiceLookupAndTraverseResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceLookupAndTraverseResultBuilder struct {
+	obj *GraphStorageServiceLookupAndTraverseResult
+}
+
+func NewGraphStorageServiceLookupAndTraverseResultBuilder() *GraphStorageServiceLookupAndTraverseResultBuilder {
+	return &GraphStorageServiceLookupAndTraverseResultBuilder{
+		obj: NewGraphStorageServiceLookupAndTraverseResult(),
+	}
+}
+
+func (p GraphStorageServiceLookupAndTraverseResultBuilder) Emit() *GraphStorageServiceLookupAndTraverseResult {
+	return &GraphStorageServiceLookupAndTraverseResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceLookupAndTraverseResultBuilder) Success(success *GetNeighborsResponse) *GraphStorageServiceLookupAndTraverseResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceLookupAndTraverseResult) SetSuccess(success *GetNeighborsResponse) *GraphStorageServiceLookupAndTraverseResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceLookupAndTraverseResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5401,7 +6290,7 @@ func (p *GraphStorageServiceLookupAndTraverseResult) Read(iprot thrift.Protocol)
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -5501,6 +6390,32 @@ func (p *GraphStorageServiceChainUpdateEdgeArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceChainUpdateEdgeArgsBuilder struct {
+	obj *GraphStorageServiceChainUpdateEdgeArgs
+}
+
+func NewGraphStorageServiceChainUpdateEdgeArgsBuilder() *GraphStorageServiceChainUpdateEdgeArgsBuilder {
+	return &GraphStorageServiceChainUpdateEdgeArgsBuilder{
+		obj: NewGraphStorageServiceChainUpdateEdgeArgs(),
+	}
+}
+
+func (p GraphStorageServiceChainUpdateEdgeArgsBuilder) Emit() *GraphStorageServiceChainUpdateEdgeArgs {
+	return &GraphStorageServiceChainUpdateEdgeArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceChainUpdateEdgeArgsBuilder) Req(req *UpdateEdgeRequest) *GraphStorageServiceChainUpdateEdgeArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceChainUpdateEdgeArgs) SetReq(req *UpdateEdgeRequest) *GraphStorageServiceChainUpdateEdgeArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceChainUpdateEdgeArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5512,7 +6427,7 @@ func (p *GraphStorageServiceChainUpdateEdgeArgs) Read(iprot thrift.Protocol) err
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -5589,7 +6504,7 @@ func (p *GraphStorageServiceChainUpdateEdgeArgs) String() string {
 //  - Success
 type GraphStorageServiceChainUpdateEdgeResult struct {
 	thrift.IResponse
-	Success *UpdateResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *UpdateResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceChainUpdateEdgeResult() *GraphStorageServiceChainUpdateEdgeResult {
@@ -5608,6 +6523,32 @@ func (p *GraphStorageServiceChainUpdateEdgeResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceChainUpdateEdgeResultBuilder struct {
+	obj *GraphStorageServiceChainUpdateEdgeResult
+}
+
+func NewGraphStorageServiceChainUpdateEdgeResultBuilder() *GraphStorageServiceChainUpdateEdgeResultBuilder {
+	return &GraphStorageServiceChainUpdateEdgeResultBuilder{
+		obj: NewGraphStorageServiceChainUpdateEdgeResult(),
+	}
+}
+
+func (p GraphStorageServiceChainUpdateEdgeResultBuilder) Emit() *GraphStorageServiceChainUpdateEdgeResult {
+	return &GraphStorageServiceChainUpdateEdgeResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceChainUpdateEdgeResultBuilder) Success(success *UpdateResponse) *GraphStorageServiceChainUpdateEdgeResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceChainUpdateEdgeResult) SetSuccess(success *UpdateResponse) *GraphStorageServiceChainUpdateEdgeResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceChainUpdateEdgeResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5619,7 +6560,7 @@ func (p *GraphStorageServiceChainUpdateEdgeResult) Read(iprot thrift.Protocol) e
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -5719,6 +6660,32 @@ func (p *GraphStorageServiceChainAddEdgesArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceChainAddEdgesArgsBuilder struct {
+	obj *GraphStorageServiceChainAddEdgesArgs
+}
+
+func NewGraphStorageServiceChainAddEdgesArgsBuilder() *GraphStorageServiceChainAddEdgesArgsBuilder {
+	return &GraphStorageServiceChainAddEdgesArgsBuilder{
+		obj: NewGraphStorageServiceChainAddEdgesArgs(),
+	}
+}
+
+func (p GraphStorageServiceChainAddEdgesArgsBuilder) Emit() *GraphStorageServiceChainAddEdgesArgs {
+	return &GraphStorageServiceChainAddEdgesArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceChainAddEdgesArgsBuilder) Req(req *AddEdgesRequest) *GraphStorageServiceChainAddEdgesArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceChainAddEdgesArgs) SetReq(req *AddEdgesRequest) *GraphStorageServiceChainAddEdgesArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceChainAddEdgesArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5730,7 +6697,7 @@ func (p *GraphStorageServiceChainAddEdgesArgs) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -5807,7 +6774,7 @@ func (p *GraphStorageServiceChainAddEdgesArgs) String() string {
 //  - Success
 type GraphStorageServiceChainAddEdgesResult struct {
 	thrift.IResponse
-	Success *ExecResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *ExecResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceChainAddEdgesResult() *GraphStorageServiceChainAddEdgesResult {
@@ -5826,6 +6793,32 @@ func (p *GraphStorageServiceChainAddEdgesResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceChainAddEdgesResultBuilder struct {
+	obj *GraphStorageServiceChainAddEdgesResult
+}
+
+func NewGraphStorageServiceChainAddEdgesResultBuilder() *GraphStorageServiceChainAddEdgesResultBuilder {
+	return &GraphStorageServiceChainAddEdgesResultBuilder{
+		obj: NewGraphStorageServiceChainAddEdgesResult(),
+	}
+}
+
+func (p GraphStorageServiceChainAddEdgesResultBuilder) Emit() *GraphStorageServiceChainAddEdgesResult {
+	return &GraphStorageServiceChainAddEdgesResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceChainAddEdgesResultBuilder) Success(success *ExecResponse) *GraphStorageServiceChainAddEdgesResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceChainAddEdgesResult) SetSuccess(success *ExecResponse) *GraphStorageServiceChainAddEdgesResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceChainAddEdgesResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5837,7 +6830,7 @@ func (p *GraphStorageServiceChainAddEdgesResult) Read(iprot thrift.Protocol) err
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -5937,6 +6930,32 @@ func (p *GraphStorageServiceGetArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceGetArgsBuilder struct {
+	obj *GraphStorageServiceGetArgs
+}
+
+func NewGraphStorageServiceGetArgsBuilder() *GraphStorageServiceGetArgsBuilder {
+	return &GraphStorageServiceGetArgsBuilder{
+		obj: NewGraphStorageServiceGetArgs(),
+	}
+}
+
+func (p GraphStorageServiceGetArgsBuilder) Emit() *GraphStorageServiceGetArgs {
+	return &GraphStorageServiceGetArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceGetArgsBuilder) Req(req *KVGetRequest) *GraphStorageServiceGetArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceGetArgs) SetReq(req *KVGetRequest) *GraphStorageServiceGetArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceGetArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5948,7 +6967,7 @@ func (p *GraphStorageServiceGetArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -6025,7 +7044,7 @@ func (p *GraphStorageServiceGetArgs) String() string {
 //  - Success
 type GraphStorageServiceGetResult struct {
 	thrift.IResponse
-	Success *KVGetResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *KVGetResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceGetResult() *GraphStorageServiceGetResult {
@@ -6044,6 +7063,32 @@ func (p *GraphStorageServiceGetResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceGetResultBuilder struct {
+	obj *GraphStorageServiceGetResult
+}
+
+func NewGraphStorageServiceGetResultBuilder() *GraphStorageServiceGetResultBuilder {
+	return &GraphStorageServiceGetResultBuilder{
+		obj: NewGraphStorageServiceGetResult(),
+	}
+}
+
+func (p GraphStorageServiceGetResultBuilder) Emit() *GraphStorageServiceGetResult {
+	return &GraphStorageServiceGetResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceGetResultBuilder) Success(success *KVGetResponse) *GraphStorageServiceGetResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceGetResult) SetSuccess(success *KVGetResponse) *GraphStorageServiceGetResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceGetResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -6055,7 +7100,7 @@ func (p *GraphStorageServiceGetResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -6155,6 +7200,32 @@ func (p *GraphStorageServicePutArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServicePutArgsBuilder struct {
+	obj *GraphStorageServicePutArgs
+}
+
+func NewGraphStorageServicePutArgsBuilder() *GraphStorageServicePutArgsBuilder {
+	return &GraphStorageServicePutArgsBuilder{
+		obj: NewGraphStorageServicePutArgs(),
+	}
+}
+
+func (p GraphStorageServicePutArgsBuilder) Emit() *GraphStorageServicePutArgs {
+	return &GraphStorageServicePutArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServicePutArgsBuilder) Req(req *KVPutRequest) *GraphStorageServicePutArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServicePutArgs) SetReq(req *KVPutRequest) *GraphStorageServicePutArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServicePutArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -6166,7 +7237,7 @@ func (p *GraphStorageServicePutArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -6243,7 +7314,7 @@ func (p *GraphStorageServicePutArgs) String() string {
 //  - Success
 type GraphStorageServicePutResult struct {
 	thrift.IResponse
-	Success *ExecResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *ExecResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServicePutResult() *GraphStorageServicePutResult {
@@ -6262,6 +7333,32 @@ func (p *GraphStorageServicePutResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServicePutResultBuilder struct {
+	obj *GraphStorageServicePutResult
+}
+
+func NewGraphStorageServicePutResultBuilder() *GraphStorageServicePutResultBuilder {
+	return &GraphStorageServicePutResultBuilder{
+		obj: NewGraphStorageServicePutResult(),
+	}
+}
+
+func (p GraphStorageServicePutResultBuilder) Emit() *GraphStorageServicePutResult {
+	return &GraphStorageServicePutResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServicePutResultBuilder) Success(success *ExecResponse) *GraphStorageServicePutResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServicePutResult) SetSuccess(success *ExecResponse) *GraphStorageServicePutResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServicePutResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -6273,7 +7370,7 @@ func (p *GraphStorageServicePutResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -6373,6 +7470,32 @@ func (p *GraphStorageServiceRemoveArgs) IsSetReq() bool {
 	return p != nil && p.Req != nil
 }
 
+type GraphStorageServiceRemoveArgsBuilder struct {
+	obj *GraphStorageServiceRemoveArgs
+}
+
+func NewGraphStorageServiceRemoveArgsBuilder() *GraphStorageServiceRemoveArgsBuilder {
+	return &GraphStorageServiceRemoveArgsBuilder{
+		obj: NewGraphStorageServiceRemoveArgs(),
+	}
+}
+
+func (p GraphStorageServiceRemoveArgsBuilder) Emit() *GraphStorageServiceRemoveArgs {
+	return &GraphStorageServiceRemoveArgs{
+		Req: p.obj.Req,
+	}
+}
+
+func (g *GraphStorageServiceRemoveArgsBuilder) Req(req *KVRemoveRequest) *GraphStorageServiceRemoveArgsBuilder {
+	g.obj.Req = req
+	return g
+}
+
+func (g *GraphStorageServiceRemoveArgs) SetReq(req *KVRemoveRequest) *GraphStorageServiceRemoveArgs {
+	g.Req = req
+	return g
+}
+
 func (p *GraphStorageServiceRemoveArgs) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -6384,7 +7507,7 @@ func (p *GraphStorageServiceRemoveArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -6461,7 +7584,7 @@ func (p *GraphStorageServiceRemoveArgs) String() string {
 //  - Success
 type GraphStorageServiceRemoveResult struct {
 	thrift.IResponse
-	Success *ExecResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+	Success *ExecResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGraphStorageServiceRemoveResult() *GraphStorageServiceRemoveResult {
@@ -6480,6 +7603,32 @@ func (p *GraphStorageServiceRemoveResult) IsSetSuccess() bool {
 	return p != nil && p.Success != nil
 }
 
+type GraphStorageServiceRemoveResultBuilder struct {
+	obj *GraphStorageServiceRemoveResult
+}
+
+func NewGraphStorageServiceRemoveResultBuilder() *GraphStorageServiceRemoveResultBuilder {
+	return &GraphStorageServiceRemoveResultBuilder{
+		obj: NewGraphStorageServiceRemoveResult(),
+	}
+}
+
+func (p GraphStorageServiceRemoveResultBuilder) Emit() *GraphStorageServiceRemoveResult {
+	return &GraphStorageServiceRemoveResult{
+		Success: p.obj.Success,
+	}
+}
+
+func (g *GraphStorageServiceRemoveResultBuilder) Success(success *ExecResponse) *GraphStorageServiceRemoveResultBuilder {
+	g.obj.Success = success
+	return g
+}
+
+func (g *GraphStorageServiceRemoveResult) SetSuccess(success *ExecResponse) *GraphStorageServiceRemoveResult {
+	g.Success = success
+	return g
+}
+
 func (p *GraphStorageServiceRemoveResult) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -6491,7 +7640,7 @@ func (p *GraphStorageServiceRemoveResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 0:
@@ -6565,3 +7714,5 @@ func (p *GraphStorageServiceRemoveResult) String() string {
 	}
 	return fmt.Sprintf("GraphStorageServiceRemoveResult({Success:%s})", successVal)
 }
+
+

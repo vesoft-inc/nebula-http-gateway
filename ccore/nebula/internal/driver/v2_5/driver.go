@@ -6,15 +6,17 @@ import (
 )
 
 var (
-	_ types.Driver = (*defaultDriver)(nil)
+	_ types.Driver        = (*defaultDriver)(nil)
+	_ types.FactoryDriver = (*defaultFactoryDriver)(nil)
 )
 
 type (
-	defaultDriver struct{}
+	defaultDriver        struct{}
+	defaultFactoryDriver struct{}
 )
 
 func init() {
-	types.Register(types.Version2_5, &defaultDriver{})
+	types.Register(types.Version2_5, &defaultDriver{}, &defaultFactoryDriver{})
 }
 
 func (d *defaultDriver) NewGraphClientDriver(transport thrift.Transport, pf thrift.ProtocolFactory) types.GraphClientDriver {
@@ -27,4 +29,9 @@ func (d *defaultDriver) NewMetaClientDriver(transport thrift.Transport, pf thrif
 
 func (d *defaultDriver) NewStorageClientDriver(transport thrift.Transport, pf thrift.ProtocolFactory) types.StorageAdminClientDriver {
 	return newStorageAdminClient(transport, pf)
+}
+
+func (f *defaultFactoryDriver) NewValue() types.Value {
+	value := newValue()
+	return newValueWrapper(value)
 }

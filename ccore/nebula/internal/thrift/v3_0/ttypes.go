@@ -8,8 +8,9 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	"sync"
+
+	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -19,7 +20,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
-var GoUnusedProtection__ int
+var GoUnusedProtection__ int;
 
 type NullType int64
 
@@ -109,6 +110,7 @@ const (
 	PropertyType_INT16        PropertyType = 9
 	PropertyType_INT32        PropertyType = 10
 	PropertyType_TIMESTAMP    PropertyType = 21
+	PropertyType_DURATION     PropertyType = 23
 	PropertyType_DATE         PropertyType = 24
 	PropertyType_DATETIME     PropertyType = 25
 	PropertyType_TIME         PropertyType = 26
@@ -128,6 +130,7 @@ var PropertyTypeToName = map[PropertyType]string{
 	PropertyType_INT16:        "INT16",
 	PropertyType_INT32:        "INT32",
 	PropertyType_TIMESTAMP:    "TIMESTAMP",
+	PropertyType_DURATION:     "DURATION",
 	PropertyType_DATE:         "DATE",
 	PropertyType_DATETIME:     "DATETIME",
 	PropertyType_TIME:         "TIME",
@@ -147,6 +150,7 @@ var PropertyTypeToValue = map[string]PropertyType{
 	"INT16":        PropertyType_INT16,
 	"INT32":        PropertyType_INT32,
 	"TIMESTAMP":    PropertyType_TIMESTAMP,
+	"DURATION":     PropertyType_DURATION,
 	"DATE":         PropertyType_DATE,
 	"DATETIME":     PropertyType_DATETIME,
 	"TIME":         PropertyType_TIME,
@@ -166,6 +170,7 @@ var PropertyTypeNames = []string{
 	"INT16",
 	"INT32",
 	"TIMESTAMP",
+	"DURATION",
 	"DATE",
 	"DATETIME",
 	"TIME",
@@ -185,6 +190,7 @@ var PropertyTypeValues = []PropertyType{
 	PropertyType_INT16,
 	PropertyType_INT32,
 	PropertyType_TIMESTAMP,
+	PropertyType_DURATION,
 	PropertyType_DATE,
 	PropertyType_DATETIME,
 	PropertyType_TIME,
@@ -223,7 +229,7 @@ const (
 	ErrorCode_E_TAG_PROP_NOT_FOUND                ErrorCode = -10
 	ErrorCode_E_ROLE_NOT_FOUND                    ErrorCode = -11
 	ErrorCode_E_CONFIG_NOT_FOUND                  ErrorCode = -12
-	ErrorCode_E_GROUP_NOT_FOUND                   ErrorCode = -13
+	ErrorCode_E_MACHINE_NOT_FOUND                 ErrorCode = -13
 	ErrorCode_E_ZONE_NOT_FOUND                    ErrorCode = -14
 	ErrorCode_E_LISTENER_NOT_FOUND                ErrorCode = -15
 	ErrorCode_E_PART_NOT_FOUND                    ErrorCode = -16
@@ -291,6 +297,7 @@ const (
 	ErrorCode_E_LIST_CLUSTER_GET_ABS_PATH_FAILURE ErrorCode = -2071
 	ErrorCode_E_GET_META_DIR_FAILURE              ErrorCode = -2072
 	ErrorCode_E_QUERY_NOT_FOUND                   ErrorCode = -2073
+	ErrorCode_E_AGENT_HB_FAILUE                   ErrorCode = -2074
 	ErrorCode_E_CONSENSUS_ERROR                   ErrorCode = -3001
 	ErrorCode_E_KEY_HAS_EXISTS                    ErrorCode = -3002
 	ErrorCode_E_DATA_TYPE_MISMATCH                ErrorCode = -3003
@@ -347,7 +354,7 @@ var ErrorCodeToName = map[ErrorCode]string{
 	ErrorCode_E_TAG_PROP_NOT_FOUND:                "E_TAG_PROP_NOT_FOUND",
 	ErrorCode_E_ROLE_NOT_FOUND:                    "E_ROLE_NOT_FOUND",
 	ErrorCode_E_CONFIG_NOT_FOUND:                  "E_CONFIG_NOT_FOUND",
-	ErrorCode_E_GROUP_NOT_FOUND:                   "E_GROUP_NOT_FOUND",
+	ErrorCode_E_MACHINE_NOT_FOUND:                 "E_MACHINE_NOT_FOUND",
 	ErrorCode_E_ZONE_NOT_FOUND:                    "E_ZONE_NOT_FOUND",
 	ErrorCode_E_LISTENER_NOT_FOUND:                "E_LISTENER_NOT_FOUND",
 	ErrorCode_E_PART_NOT_FOUND:                    "E_PART_NOT_FOUND",
@@ -415,6 +422,7 @@ var ErrorCodeToName = map[ErrorCode]string{
 	ErrorCode_E_LIST_CLUSTER_GET_ABS_PATH_FAILURE: "E_LIST_CLUSTER_GET_ABS_PATH_FAILURE",
 	ErrorCode_E_GET_META_DIR_FAILURE:              "E_GET_META_DIR_FAILURE",
 	ErrorCode_E_QUERY_NOT_FOUND:                   "E_QUERY_NOT_FOUND",
+	ErrorCode_E_AGENT_HB_FAILUE:                   "E_AGENT_HB_FAILUE",
 	ErrorCode_E_CONSENSUS_ERROR:                   "E_CONSENSUS_ERROR",
 	ErrorCode_E_KEY_HAS_EXISTS:                    "E_KEY_HAS_EXISTS",
 	ErrorCode_E_DATA_TYPE_MISMATCH:                "E_DATA_TYPE_MISMATCH",
@@ -471,7 +479,7 @@ var ErrorCodeToValue = map[string]ErrorCode{
 	"E_TAG_PROP_NOT_FOUND":                ErrorCode_E_TAG_PROP_NOT_FOUND,
 	"E_ROLE_NOT_FOUND":                    ErrorCode_E_ROLE_NOT_FOUND,
 	"E_CONFIG_NOT_FOUND":                  ErrorCode_E_CONFIG_NOT_FOUND,
-	"E_GROUP_NOT_FOUND":                   ErrorCode_E_GROUP_NOT_FOUND,
+	"E_MACHINE_NOT_FOUND":                 ErrorCode_E_MACHINE_NOT_FOUND,
 	"E_ZONE_NOT_FOUND":                    ErrorCode_E_ZONE_NOT_FOUND,
 	"E_LISTENER_NOT_FOUND":                ErrorCode_E_LISTENER_NOT_FOUND,
 	"E_PART_NOT_FOUND":                    ErrorCode_E_PART_NOT_FOUND,
@@ -539,6 +547,7 @@ var ErrorCodeToValue = map[string]ErrorCode{
 	"E_LIST_CLUSTER_GET_ABS_PATH_FAILURE": ErrorCode_E_LIST_CLUSTER_GET_ABS_PATH_FAILURE,
 	"E_GET_META_DIR_FAILURE":              ErrorCode_E_GET_META_DIR_FAILURE,
 	"E_QUERY_NOT_FOUND":                   ErrorCode_E_QUERY_NOT_FOUND,
+	"E_AGENT_HB_FAILUE":                   ErrorCode_E_AGENT_HB_FAILUE,
 	"E_CONSENSUS_ERROR":                   ErrorCode_E_CONSENSUS_ERROR,
 	"E_KEY_HAS_EXISTS":                    ErrorCode_E_KEY_HAS_EXISTS,
 	"E_DATA_TYPE_MISMATCH":                ErrorCode_E_DATA_TYPE_MISMATCH,
@@ -595,7 +604,7 @@ var ErrorCodeNames = []string{
 	"E_TAG_PROP_NOT_FOUND",
 	"E_ROLE_NOT_FOUND",
 	"E_CONFIG_NOT_FOUND",
-	"E_GROUP_NOT_FOUND",
+	"E_MACHINE_NOT_FOUND",
 	"E_ZONE_NOT_FOUND",
 	"E_LISTENER_NOT_FOUND",
 	"E_PART_NOT_FOUND",
@@ -663,6 +672,7 @@ var ErrorCodeNames = []string{
 	"E_LIST_CLUSTER_GET_ABS_PATH_FAILURE",
 	"E_GET_META_DIR_FAILURE",
 	"E_QUERY_NOT_FOUND",
+	"E_AGENT_HB_FAILUE",
 	"E_CONSENSUS_ERROR",
 	"E_KEY_HAS_EXISTS",
 	"E_DATA_TYPE_MISMATCH",
@@ -719,7 +729,7 @@ var ErrorCodeValues = []ErrorCode{
 	ErrorCode_E_TAG_PROP_NOT_FOUND,
 	ErrorCode_E_ROLE_NOT_FOUND,
 	ErrorCode_E_CONFIG_NOT_FOUND,
-	ErrorCode_E_GROUP_NOT_FOUND,
+	ErrorCode_E_MACHINE_NOT_FOUND,
 	ErrorCode_E_ZONE_NOT_FOUND,
 	ErrorCode_E_LISTENER_NOT_FOUND,
 	ErrorCode_E_PART_NOT_FOUND,
@@ -787,6 +797,7 @@ var ErrorCodeValues = []ErrorCode{
 	ErrorCode_E_LIST_CLUSTER_GET_ABS_PATH_FAILURE,
 	ErrorCode_E_GET_META_DIR_FAILURE,
 	ErrorCode_E_QUERY_NOT_FOUND,
+	ErrorCode_E_AGENT_HB_FAILUE,
 	ErrorCode_E_CONSENSUS_ERROR,
 	ErrorCode_E_KEY_HAS_EXISTS,
 	ErrorCode_E_DATA_TYPE_MISMATCH,
@@ -901,8 +912,8 @@ func ExecutionPlanIDPtr(v ExecutionPlanID) *ExecutionPlanID { return &v }
 //  - TagID
 //  - EdgeType
 type SchemaID struct {
-	TagID    *TagID    `thrift:"tag_id,1" db:"tag_id" json:"tag_id,omitempty"`
-	EdgeType *EdgeType `thrift:"edge_type,2" db:"edge_type" json:"edge_type,omitempty"`
+	TagID    *TagID    `thrift:"tag_id,1,optional" db:"tag_id" json:"tag_id,omitempty"`
+	EdgeType *EdgeType `thrift:"edge_type,2,optional" db:"edge_type" json:"edge_type,omitempty"`
 }
 
 func NewSchemaID() *SchemaID {
@@ -928,10 +939,10 @@ func (p *SchemaID) GetEdgeType() EdgeType {
 }
 func (p *SchemaID) CountSetFieldsSchemaID() int {
 	count := 0
-	if p.IsSetTagID() {
+	if (p.IsSetTagID()) {
 		count++
 	}
-	if p.IsSetEdgeType() {
+	if (p.IsSetEdgeType()) {
 		count++
 	}
 	return count
@@ -946,6 +957,43 @@ func (p *SchemaID) IsSetEdgeType() bool {
 	return p != nil && p.EdgeType != nil
 }
 
+type SchemaIDBuilder struct {
+	obj *SchemaID
+}
+
+func NewSchemaIDBuilder() *SchemaIDBuilder {
+	return &SchemaIDBuilder{
+		obj: NewSchemaID(),
+	}
+}
+
+func (p SchemaIDBuilder) Emit() *SchemaID {
+	return &SchemaID{
+		TagID:    p.obj.TagID,
+		EdgeType: p.obj.EdgeType,
+	}
+}
+
+func (s *SchemaIDBuilder) TagID(tagID *TagID) *SchemaIDBuilder {
+	s.obj.TagID = tagID
+	return s
+}
+
+func (s *SchemaIDBuilder) EdgeType(edgeType *EdgeType) *SchemaIDBuilder {
+	s.obj.EdgeType = edgeType
+	return s
+}
+
+func (s *SchemaID) SetTagID(tagID *TagID) *SchemaID {
+	s.TagID = tagID
+	return s
+}
+
+func (s *SchemaID) SetEdgeType(edgeType *EdgeType) *SchemaID {
+	s.EdgeType = edgeType
+	return s
+}
+
 func (p *SchemaID) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -957,7 +1005,7 @@ func (p *SchemaID) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -1100,6 +1148,55 @@ func (p *Date) GetMonth() int8 {
 func (p *Date) GetDay() int8 {
 	return p.Day
 }
+
+type DateBuilder struct {
+	obj *Date
+}
+
+func NewDateBuilder() *DateBuilder {
+	return &DateBuilder{
+		obj: NewDate(),
+	}
+}
+
+func (p DateBuilder) Emit() *Date {
+	return &Date{
+		Year:  p.obj.Year,
+		Month: p.obj.Month,
+		Day:   p.obj.Day,
+	}
+}
+
+func (d *DateBuilder) Year(year int16) *DateBuilder {
+	d.obj.Year = year
+	return d
+}
+
+func (d *DateBuilder) Month(month int8) *DateBuilder {
+	d.obj.Month = month
+	return d
+}
+
+func (d *DateBuilder) Day(day int8) *DateBuilder {
+	d.obj.Day = day
+	return d
+}
+
+func (d *Date) SetYear(year int16) *Date {
+	d.Year = year
+	return d
+}
+
+func (d *Date) SetMonth(month int8) *Date {
+	d.Month = month
+	return d
+}
+
+func (d *Date) SetDay(day int8) *Date {
+	d.Day = day
+	return d
+}
+
 func (p *Date) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1111,7 +1208,7 @@ func (p *Date) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -1273,6 +1370,66 @@ func (p *Time) GetSec() int8 {
 func (p *Time) GetMicrosec() int32 {
 	return p.Microsec
 }
+
+type TimeBuilder struct {
+	obj *Time
+}
+
+func NewTimeBuilder() *TimeBuilder {
+	return &TimeBuilder{
+		obj: NewTime(),
+	}
+}
+
+func (p TimeBuilder) Emit() *Time {
+	return &Time{
+		Hour:     p.obj.Hour,
+		Minute:   p.obj.Minute,
+		Sec:      p.obj.Sec,
+		Microsec: p.obj.Microsec,
+	}
+}
+
+func (t *TimeBuilder) Hour(hour int8) *TimeBuilder {
+	t.obj.Hour = hour
+	return t
+}
+
+func (t *TimeBuilder) Minute(minute int8) *TimeBuilder {
+	t.obj.Minute = minute
+	return t
+}
+
+func (t *TimeBuilder) Sec(sec int8) *TimeBuilder {
+	t.obj.Sec = sec
+	return t
+}
+
+func (t *TimeBuilder) Microsec(microsec int32) *TimeBuilder {
+	t.obj.Microsec = microsec
+	return t
+}
+
+func (t *Time) SetHour(hour int8) *Time {
+	t.Hour = hour
+	return t
+}
+
+func (t *Time) SetMinute(minute int8) *Time {
+	t.Minute = minute
+	return t
+}
+
+func (t *Time) SetSec(sec int8) *Time {
+	t.Sec = sec
+	return t
+}
+
+func (t *Time) SetMicrosec(microsec int32) *Time {
+	t.Microsec = microsec
+	return t
+}
+
 func (p *Time) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1284,7 +1441,7 @@ func (p *Time) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -1495,6 +1652,99 @@ func (p *DateTime) GetSec() int8 {
 func (p *DateTime) GetMicrosec() int32 {
 	return p.Microsec
 }
+
+type DateTimeBuilder struct {
+	obj *DateTime
+}
+
+func NewDateTimeBuilder() *DateTimeBuilder {
+	return &DateTimeBuilder{
+		obj: NewDateTime(),
+	}
+}
+
+func (p DateTimeBuilder) Emit() *DateTime {
+	return &DateTime{
+		Year:     p.obj.Year,
+		Month:    p.obj.Month,
+		Day:      p.obj.Day,
+		Hour:     p.obj.Hour,
+		Minute:   p.obj.Minute,
+		Sec:      p.obj.Sec,
+		Microsec: p.obj.Microsec,
+	}
+}
+
+func (d *DateTimeBuilder) Year(year int16) *DateTimeBuilder {
+	d.obj.Year = year
+	return d
+}
+
+func (d *DateTimeBuilder) Month(month int8) *DateTimeBuilder {
+	d.obj.Month = month
+	return d
+}
+
+func (d *DateTimeBuilder) Day(day int8) *DateTimeBuilder {
+	d.obj.Day = day
+	return d
+}
+
+func (d *DateTimeBuilder) Hour(hour int8) *DateTimeBuilder {
+	d.obj.Hour = hour
+	return d
+}
+
+func (d *DateTimeBuilder) Minute(minute int8) *DateTimeBuilder {
+	d.obj.Minute = minute
+	return d
+}
+
+func (d *DateTimeBuilder) Sec(sec int8) *DateTimeBuilder {
+	d.obj.Sec = sec
+	return d
+}
+
+func (d *DateTimeBuilder) Microsec(microsec int32) *DateTimeBuilder {
+	d.obj.Microsec = microsec
+	return d
+}
+
+func (d *DateTime) SetYear(year int16) *DateTime {
+	d.Year = year
+	return d
+}
+
+func (d *DateTime) SetMonth(month int8) *DateTime {
+	d.Month = month
+	return d
+}
+
+func (d *DateTime) SetDay(day int8) *DateTime {
+	d.Day = day
+	return d
+}
+
+func (d *DateTime) SetHour(hour int8) *DateTime {
+	d.Hour = hour
+	return d
+}
+
+func (d *DateTime) SetMinute(minute int8) *DateTime {
+	d.Minute = minute
+	return d
+}
+
+func (d *DateTime) SetSec(sec int8) *DateTime {
+	d.Sec = sec
+	return d
+}
+
+func (d *DateTime) SetMicrosec(microsec int32) *DateTime {
+	d.Microsec = microsec
+	return d
+}
+
 func (p *DateTime) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1506,7 +1756,7 @@ func (p *DateTime) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -1777,23 +2027,25 @@ func (p *DateTime) String() string {
 //  - UVal
 //  - GVal
 //  - GgVal
+//  - DuVal
 type Value struct {
-	NVal  *NullType  `thrift:"nVal,1" db:"nVal" json:"nVal,omitempty"`
-	BVal  *bool      `thrift:"bVal,2" db:"bVal" json:"bVal,omitempty"`
-	IVal  *int64     `thrift:"iVal,3" db:"iVal" json:"iVal,omitempty"`
-	FVal  *float64   `thrift:"fVal,4" db:"fVal" json:"fVal,omitempty"`
-	SVal  []byte     `thrift:"sVal,5" db:"sVal" json:"sVal,omitempty"`
-	DVal  *Date      `thrift:"dVal,6" db:"dVal" json:"dVal,omitempty"`
-	TVal  *Time      `thrift:"tVal,7" db:"tVal" json:"tVal,omitempty"`
-	DtVal *DateTime  `thrift:"dtVal,8" db:"dtVal" json:"dtVal,omitempty"`
-	VVal  *Vertex    `thrift:"vVal,9" db:"vVal" json:"vVal,omitempty"`
-	EVal  *Edge      `thrift:"eVal,10" db:"eVal" json:"eVal,omitempty"`
-	PVal  *Path      `thrift:"pVal,11" db:"pVal" json:"pVal,omitempty"`
-	LVal  *NList     `thrift:"lVal,12" db:"lVal" json:"lVal,omitempty"`
-	MVal  *NMap      `thrift:"mVal,13" db:"mVal" json:"mVal,omitempty"`
-	UVal  *NSet      `thrift:"uVal,14" db:"uVal" json:"uVal,omitempty"`
-	GVal  *DataSet   `thrift:"gVal,15" db:"gVal" json:"gVal,omitempty"`
-	GgVal *Geography `thrift:"ggVal,16" db:"ggVal" json:"ggVal,omitempty"`
+	NVal  *NullType  `thrift:"nVal,1,optional" db:"nVal" json:"nVal,omitempty"`
+	BVal  *bool      `thrift:"bVal,2,optional" db:"bVal" json:"bVal,omitempty"`
+	IVal  *int64     `thrift:"iVal,3,optional" db:"iVal" json:"iVal,omitempty"`
+	FVal  *float64   `thrift:"fVal,4,optional" db:"fVal" json:"fVal,omitempty"`
+	SVal  []byte     `thrift:"sVal,5,optional" db:"sVal" json:"sVal,omitempty"`
+	DVal  *Date      `thrift:"dVal,6,optional" db:"dVal" json:"dVal,omitempty"`
+	TVal  *Time      `thrift:"tVal,7,optional" db:"tVal" json:"tVal,omitempty"`
+	DtVal *DateTime  `thrift:"dtVal,8,optional" db:"dtVal" json:"dtVal,omitempty"`
+	VVal  *Vertex    `thrift:"vVal,9,optional" db:"vVal" json:"vVal,omitempty"`
+	EVal  *Edge      `thrift:"eVal,10,optional" db:"eVal" json:"eVal,omitempty"`
+	PVal  *Path      `thrift:"pVal,11,optional" db:"pVal" json:"pVal,omitempty"`
+	LVal  *NList     `thrift:"lVal,12,optional" db:"lVal" json:"lVal,omitempty"`
+	MVal  *NMap      `thrift:"mVal,13,optional" db:"mVal" json:"mVal,omitempty"`
+	UVal  *NSet      `thrift:"uVal,14,optional" db:"uVal" json:"uVal,omitempty"`
+	GVal  *DataSet   `thrift:"gVal,15,optional" db:"gVal" json:"gVal,omitempty"`
+	GgVal *Geography `thrift:"ggVal,16,optional" db:"ggVal" json:"ggVal,omitempty"`
+	DuVal *Duration  `thrift:"duVal,17,optional" db:"duVal" json:"duVal,omitempty"`
 }
 
 func NewValue() *Value {
@@ -1940,54 +2192,66 @@ func (p *Value) GetGgVal() *Geography {
 	}
 	return p.GgVal
 }
+
+var Value_DuVal_DEFAULT *Duration
+
+func (p *Value) GetDuVal() *Duration {
+	if !p.IsSetDuVal() {
+		return Value_DuVal_DEFAULT
+	}
+	return p.DuVal
+}
 func (p *Value) CountSetFieldsValue() int {
 	count := 0
-	if p.IsSetNVal() {
+	if (p.IsSetNVal()) {
 		count++
 	}
-	if p.IsSetBVal() {
+	if (p.IsSetBVal()) {
 		count++
 	}
-	if p.IsSetIVal() {
+	if (p.IsSetIVal()) {
 		count++
 	}
-	if p.IsSetFVal() {
+	if (p.IsSetFVal()) {
 		count++
 	}
-	if p.IsSetSVal() {
+	if (p.IsSetSVal()) {
 		count++
 	}
-	if p.IsSetDVal() {
+	if (p.IsSetDVal()) {
 		count++
 	}
-	if p.IsSetTVal() {
+	if (p.IsSetTVal()) {
 		count++
 	}
-	if p.IsSetDtVal() {
+	if (p.IsSetDtVal()) {
 		count++
 	}
-	if p.IsSetVVal() {
+	if (p.IsSetVVal()) {
 		count++
 	}
-	if p.IsSetEVal() {
+	if (p.IsSetEVal()) {
 		count++
 	}
-	if p.IsSetPVal() {
+	if (p.IsSetPVal()) {
 		count++
 	}
-	if p.IsSetLVal() {
+	if (p.IsSetLVal()) {
 		count++
 	}
-	if p.IsSetMVal() {
+	if (p.IsSetMVal()) {
 		count++
 	}
-	if p.IsSetUVal() {
+	if (p.IsSetUVal()) {
 		count++
 	}
-	if p.IsSetGVal() {
+	if (p.IsSetGVal()) {
 		count++
 	}
-	if p.IsSetGgVal() {
+	if (p.IsSetGgVal()) {
+		count++
+	}
+	if (p.IsSetDuVal()) {
 		count++
 	}
 	return count
@@ -2058,6 +2322,212 @@ func (p *Value) IsSetGgVal() bool {
 	return p != nil && p.GgVal != nil
 }
 
+func (p *Value) IsSetDuVal() bool {
+	return p != nil && p.DuVal != nil
+}
+
+type ValueBuilder struct {
+	obj *Value
+}
+
+func NewValueBuilder() *ValueBuilder {
+	return &ValueBuilder{
+		obj: NewValue(),
+	}
+}
+
+func (p ValueBuilder) Emit() *Value {
+	return &Value{
+		NVal:  p.obj.NVal,
+		BVal:  p.obj.BVal,
+		IVal:  p.obj.IVal,
+		FVal:  p.obj.FVal,
+		SVal:  p.obj.SVal,
+		DVal:  p.obj.DVal,
+		TVal:  p.obj.TVal,
+		DtVal: p.obj.DtVal,
+		VVal:  p.obj.VVal,
+		EVal:  p.obj.EVal,
+		PVal:  p.obj.PVal,
+		LVal:  p.obj.LVal,
+		MVal:  p.obj.MVal,
+		UVal:  p.obj.UVal,
+		GVal:  p.obj.GVal,
+		GgVal: p.obj.GgVal,
+		DuVal: p.obj.DuVal,
+	}
+}
+
+func (v *ValueBuilder) NVal(nVal *NullType) *ValueBuilder {
+	v.obj.NVal = nVal
+	return v
+}
+
+func (v *ValueBuilder) BVal(bVal *bool) *ValueBuilder {
+	v.obj.BVal = bVal
+	return v
+}
+
+func (v *ValueBuilder) IVal(iVal *int64) *ValueBuilder {
+	v.obj.IVal = iVal
+	return v
+}
+
+func (v *ValueBuilder) FVal(fVal *float64) *ValueBuilder {
+	v.obj.FVal = fVal
+	return v
+}
+
+func (v *ValueBuilder) SVal(sVal []byte) *ValueBuilder {
+	v.obj.SVal = sVal
+	return v
+}
+
+func (v *ValueBuilder) DVal(dVal *Date) *ValueBuilder {
+	v.obj.DVal = dVal
+	return v
+}
+
+func (v *ValueBuilder) TVal(tVal *Time) *ValueBuilder {
+	v.obj.TVal = tVal
+	return v
+}
+
+func (v *ValueBuilder) DtVal(dtVal *DateTime) *ValueBuilder {
+	v.obj.DtVal = dtVal
+	return v
+}
+
+func (v *ValueBuilder) VVal(vVal *Vertex) *ValueBuilder {
+	v.obj.VVal = vVal
+	return v
+}
+
+func (v *ValueBuilder) EVal(eVal *Edge) *ValueBuilder {
+	v.obj.EVal = eVal
+	return v
+}
+
+func (v *ValueBuilder) PVal(pVal *Path) *ValueBuilder {
+	v.obj.PVal = pVal
+	return v
+}
+
+func (v *ValueBuilder) LVal(lVal *NList) *ValueBuilder {
+	v.obj.LVal = lVal
+	return v
+}
+
+func (v *ValueBuilder) MVal(mVal *NMap) *ValueBuilder {
+	v.obj.MVal = mVal
+	return v
+}
+
+func (v *ValueBuilder) UVal(uVal *NSet) *ValueBuilder {
+	v.obj.UVal = uVal
+	return v
+}
+
+func (v *ValueBuilder) GVal(gVal *DataSet) *ValueBuilder {
+	v.obj.GVal = gVal
+	return v
+}
+
+func (v *ValueBuilder) GgVal(ggVal *Geography) *ValueBuilder {
+	v.obj.GgVal = ggVal
+	return v
+}
+
+func (v *ValueBuilder) DuVal(duVal *Duration) *ValueBuilder {
+	v.obj.DuVal = duVal
+	return v
+}
+
+func (v *Value) SetNVal(nVal *NullType) *Value {
+	v.NVal = nVal
+	return v
+}
+
+func (v *Value) SetBVal(bVal *bool) *Value {
+	v.BVal = bVal
+	return v
+}
+
+func (v *Value) SetIVal(iVal *int64) *Value {
+	v.IVal = iVal
+	return v
+}
+
+func (v *Value) SetFVal(fVal *float64) *Value {
+	v.FVal = fVal
+	return v
+}
+
+func (v *Value) SetSVal(sVal []byte) *Value {
+	v.SVal = sVal
+	return v
+}
+
+func (v *Value) SetDVal(dVal *Date) *Value {
+	v.DVal = dVal
+	return v
+}
+
+func (v *Value) SetTVal(tVal *Time) *Value {
+	v.TVal = tVal
+	return v
+}
+
+func (v *Value) SetDtVal(dtVal *DateTime) *Value {
+	v.DtVal = dtVal
+	return v
+}
+
+func (v *Value) SetVVal(vVal *Vertex) *Value {
+	v.VVal = vVal
+	return v
+}
+
+func (v *Value) SetEVal(eVal *Edge) *Value {
+	v.EVal = eVal
+	return v
+}
+
+func (v *Value) SetPVal(pVal *Path) *Value {
+	v.PVal = pVal
+	return v
+}
+
+func (v *Value) SetLVal(lVal *NList) *Value {
+	v.LVal = lVal
+	return v
+}
+
+func (v *Value) SetMVal(mVal *NMap) *Value {
+	v.MVal = mVal
+	return v
+}
+
+func (v *Value) SetUVal(uVal *NSet) *Value {
+	v.UVal = uVal
+	return v
+}
+
+func (v *Value) SetGVal(gVal *DataSet) *Value {
+	v.GVal = gVal
+	return v
+}
+
+func (v *Value) SetGgVal(ggVal *Geography) *Value {
+	v.GgVal = ggVal
+	return v
+}
+
+func (v *Value) SetDuVal(duVal *Duration) *Value {
+	v.DuVal = duVal
+	return v
+}
+
 func (p *Value) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2069,7 +2539,7 @@ func (p *Value) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -2134,6 +2604,10 @@ func (p *Value) Read(iprot thrift.Protocol) error {
 			}
 		case 16:
 			if err := p.ReadField16(iprot); err != nil {
+				return err
+			}
+		case 17:
+			if err := p.ReadField17(iprot); err != nil {
 				return err
 			}
 		default:
@@ -2285,6 +2759,14 @@ func (p *Value) ReadField16(iprot thrift.Protocol) error {
 	return nil
 }
 
+func (p *Value) ReadField17(iprot thrift.Protocol) error {
+	p.DuVal = NewDuration()
+	if err := p.DuVal.Read(iprot); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.DuVal), err)
+	}
+	return nil
+}
+
 func (p *Value) Write(oprot thrift.Protocol) error {
 	if c := p.CountSetFieldsValue(); c > 1 {
 		return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
@@ -2338,6 +2820,9 @@ func (p *Value) Write(oprot thrift.Protocol) error {
 		return err
 	}
 	if err := p.writeField16(oprot); err != nil {
+		return err
+	}
+	if err := p.writeField17(oprot); err != nil {
 		return err
 	}
 	if err := oprot.WriteFieldStop(); err != nil {
@@ -2589,6 +3074,21 @@ func (p *Value) writeField16(oprot thrift.Protocol) (err error) {
 	return err
 }
 
+func (p *Value) writeField17(oprot thrift.Protocol) (err error) {
+	if p.IsSetDuVal() {
+		if err := oprot.WriteFieldBegin("duVal", thrift.STRUCT, 17); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T write field begin error 17:duVal: ", p), err)
+		}
+		if err := p.DuVal.Write(oprot); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.DuVal), err)
+		}
+		if err := oprot.WriteFieldEnd(); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T write field end error 17:duVal: ", p), err)
+		}
+	}
+	return err
+}
+
 func (p *Value) String() string {
 	if p == nil {
 		return "<nil>"
@@ -2685,7 +3185,13 @@ func (p *Value) String() string {
 	} else {
 		ggValVal = fmt.Sprintf("%v", p.GgVal)
 	}
-	return fmt.Sprintf("Value({NVal:%s BVal:%s IVal:%s FVal:%s SVal:%s DVal:%s TVal:%s DtVal:%s VVal:%s EVal:%s PVal:%s LVal:%s MVal:%s UVal:%s GVal:%s GgVal:%s})", nValVal, bValVal, iValVal, fValVal, sValVal, dValVal, tValVal, dtValVal, vValVal, eValVal, pValVal, lValVal, mValVal, uValVal, gValVal, ggValVal)
+	var duValVal string
+	if p.DuVal == nil {
+		duValVal = "<nil>"
+	} else {
+		duValVal = fmt.Sprintf("%v", p.DuVal)
+	}
+	return fmt.Sprintf("Value({NVal:%s BVal:%s IVal:%s FVal:%s SVal:%s DVal:%s TVal:%s DtVal:%s VVal:%s EVal:%s PVal:%s LVal:%s MVal:%s UVal:%s GVal:%s GgVal:%s DuVal:%s})", nValVal, bValVal, iValVal, fValVal, sValVal, dValVal, tValVal, dtValVal, vValVal, eValVal, pValVal, lValVal, mValVal, uValVal, gValVal, ggValVal, duValVal)
 }
 
 // Attributes:
@@ -2701,6 +3207,33 @@ func NewNList() *NList {
 func (p *NList) GetValues() []*Value {
 	return p.Values
 }
+
+type NListBuilder struct {
+	obj *NList
+}
+
+func NewNListBuilder() *NListBuilder {
+	return &NListBuilder{
+		obj: NewNList(),
+	}
+}
+
+func (p NListBuilder) Emit() *NList {
+	return &NList{
+		Values: p.obj.Values,
+	}
+}
+
+func (n *NListBuilder) Values(values []*Value) *NListBuilder {
+	n.obj.Values = values
+	return n
+}
+
+func (n *NList) SetValues(values []*Value) *NList {
+	n.Values = values
+	return n
+}
+
 func (p *NList) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2712,7 +3245,7 @@ func (p *NList) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -2813,6 +3346,33 @@ func NewNMap() *NMap {
 func (p *NMap) GetKvs() map[string]*Value {
 	return p.Kvs
 }
+
+type NMapBuilder struct {
+	obj *NMap
+}
+
+func NewNMapBuilder() *NMapBuilder {
+	return &NMapBuilder{
+		obj: NewNMap(),
+	}
+}
+
+func (p NMapBuilder) Emit() *NMap {
+	return &NMap{
+		Kvs: p.obj.Kvs,
+	}
+}
+
+func (n *NMapBuilder) Kvs(kvs map[string]*Value) *NMapBuilder {
+	n.obj.Kvs = kvs
+	return n
+}
+
+func (n *NMap) SetKvs(kvs map[string]*Value) *NMap {
+	n.Kvs = kvs
+	return n
+}
+
 func (p *NMap) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2824,7 +3384,7 @@ func (p *NMap) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -2934,6 +3494,33 @@ func NewNSet() *NSet {
 func (p *NSet) GetValues() []*Value {
 	return p.Values
 }
+
+type NSetBuilder struct {
+	obj *NSet
+}
+
+func NewNSetBuilder() *NSetBuilder {
+	return &NSetBuilder{
+		obj: NewNSet(),
+	}
+}
+
+func (p NSetBuilder) Emit() *NSet {
+	return &NSet{
+		Values: p.obj.Values,
+	}
+}
+
+func (n *NSetBuilder) Values(values []*Value) *NSetBuilder {
+	n.obj.Values = values
+	return n
+}
+
+func (n *NSet) SetValues(values []*Value) *NSet {
+	n.Values = values
+	return n
+}
+
 func (p *NSet) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2945,7 +3532,7 @@ func (p *NSet) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -3053,6 +3640,33 @@ func NewRow() *Row {
 func (p *Row) GetValues() []*Value {
 	return p.Values
 }
+
+type RowBuilder struct {
+	obj *Row
+}
+
+func NewRowBuilder() *RowBuilder {
+	return &RowBuilder{
+		obj: NewRow(),
+	}
+}
+
+func (p RowBuilder) Emit() *Row {
+	return &Row{
+		Values: p.obj.Values,
+	}
+}
+
+func (r *RowBuilder) Values(values []*Value) *RowBuilder {
+	r.obj.Values = values
+	return r
+}
+
+func (r *Row) SetValues(values []*Value) *Row {
+	r.Values = values
+	return r
+}
+
 func (p *Row) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3064,7 +3678,7 @@ func (p *Row) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -3171,6 +3785,44 @@ func (p *DataSet) GetColumnNames() [][]byte {
 func (p *DataSet) GetRows() []*Row {
 	return p.Rows
 }
+
+type DataSetBuilder struct {
+	obj *DataSet
+}
+
+func NewDataSetBuilder() *DataSetBuilder {
+	return &DataSetBuilder{
+		obj: NewDataSet(),
+	}
+}
+
+func (p DataSetBuilder) Emit() *DataSet {
+	return &DataSet{
+		ColumnNames: p.obj.ColumnNames,
+		Rows:        p.obj.Rows,
+	}
+}
+
+func (d *DataSetBuilder) ColumnNames(columnNames [][]byte) *DataSetBuilder {
+	d.obj.ColumnNames = columnNames
+	return d
+}
+
+func (d *DataSetBuilder) Rows(rows []*Row) *DataSetBuilder {
+	d.obj.Rows = rows
+	return d
+}
+
+func (d *DataSet) SetColumnNames(columnNames [][]byte) *DataSet {
+	d.ColumnNames = columnNames
+	return d
+}
+
+func (d *DataSet) SetRows(rows []*Row) *DataSet {
+	d.Rows = rows
+	return d
+}
+
 func (p *DataSet) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3182,7 +3834,7 @@ func (p *DataSet) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -3340,6 +3992,44 @@ func (p *Coordinate) GetX() float64 {
 func (p *Coordinate) GetY() float64 {
 	return p.Y
 }
+
+type CoordinateBuilder struct {
+	obj *Coordinate
+}
+
+func NewCoordinateBuilder() *CoordinateBuilder {
+	return &CoordinateBuilder{
+		obj: NewCoordinate(),
+	}
+}
+
+func (p CoordinateBuilder) Emit() *Coordinate {
+	return &Coordinate{
+		X: p.obj.X,
+		Y: p.obj.Y,
+	}
+}
+
+func (c *CoordinateBuilder) X(x float64) *CoordinateBuilder {
+	c.obj.X = x
+	return c
+}
+
+func (c *CoordinateBuilder) Y(y float64) *CoordinateBuilder {
+	c.obj.Y = y
+	return c
+}
+
+func (c *Coordinate) SetX(x float64) *Coordinate {
+	c.X = x
+	return c
+}
+
+func (c *Coordinate) SetY(y float64) *Coordinate {
+	c.Y = y
+	return c
+}
+
 func (p *Coordinate) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3351,7 +4041,7 @@ func (p *Coordinate) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -3474,6 +4164,32 @@ func (p *Point) IsSetCoord() bool {
 	return p != nil && p.Coord != nil
 }
 
+type PointBuilder struct {
+	obj *Point
+}
+
+func NewPointBuilder() *PointBuilder {
+	return &PointBuilder{
+		obj: NewPoint(),
+	}
+}
+
+func (p PointBuilder) Emit() *Point {
+	return &Point{
+		Coord: p.obj.Coord,
+	}
+}
+
+func (p *PointBuilder) Coord(coord *Coordinate) *PointBuilder {
+	p.obj.Coord = coord
+	return p
+}
+
+func (p *Point) SetCoord(coord *Coordinate) *Point {
+	p.Coord = coord
+	return p
+}
+
 func (p *Point) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3485,7 +4201,7 @@ func (p *Point) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -3571,6 +4287,33 @@ func NewLineString() *LineString {
 func (p *LineString) GetCoordList() []*Coordinate {
 	return p.CoordList
 }
+
+type LineStringBuilder struct {
+	obj *LineString
+}
+
+func NewLineStringBuilder() *LineStringBuilder {
+	return &LineStringBuilder{
+		obj: NewLineString(),
+	}
+}
+
+func (p LineStringBuilder) Emit() *LineString {
+	return &LineString{
+		CoordList: p.obj.CoordList,
+	}
+}
+
+func (l *LineStringBuilder) CoordList(coordList []*Coordinate) *LineStringBuilder {
+	l.obj.CoordList = coordList
+	return l
+}
+
+func (l *LineString) SetCoordList(coordList []*Coordinate) *LineString {
+	l.CoordList = coordList
+	return l
+}
+
 func (p *LineString) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3582,7 +4325,7 @@ func (p *LineString) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -3683,6 +4426,33 @@ func NewPolygon() *Polygon {
 func (p *Polygon) GetCoordListList() [][]*Coordinate {
 	return p.CoordListList
 }
+
+type PolygonBuilder struct {
+	obj *Polygon
+}
+
+func NewPolygonBuilder() *PolygonBuilder {
+	return &PolygonBuilder{
+		obj: NewPolygon(),
+	}
+}
+
+func (p PolygonBuilder) Emit() *Polygon {
+	return &Polygon{
+		CoordListList: p.obj.CoordListList,
+	}
+}
+
+func (p *PolygonBuilder) CoordListList(coordListList [][]*Coordinate) *PolygonBuilder {
+	p.obj.CoordListList = coordListList
+	return p
+}
+
+func (p *Polygon) SetCoordListList(coordListList [][]*Coordinate) *Polygon {
+	p.CoordListList = coordListList
+	return p
+}
+
 func (p *Polygon) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3694,7 +4464,7 @@ func (p *Polygon) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -3807,9 +4577,9 @@ func (p *Polygon) String() string {
 //  - LsVal
 //  - PgVal
 type Geography struct {
-	PtVal *Point      `thrift:"ptVal,1" db:"ptVal" json:"ptVal,omitempty"`
-	LsVal *LineString `thrift:"lsVal,2" db:"lsVal" json:"lsVal,omitempty"`
-	PgVal *Polygon    `thrift:"pgVal,3" db:"pgVal" json:"pgVal,omitempty"`
+	PtVal *Point      `thrift:"ptVal,1,optional" db:"ptVal" json:"ptVal,omitempty"`
+	LsVal *LineString `thrift:"lsVal,2,optional" db:"lsVal" json:"lsVal,omitempty"`
+	PgVal *Polygon    `thrift:"pgVal,3,optional" db:"pgVal" json:"pgVal,omitempty"`
 }
 
 func NewGeography() *Geography {
@@ -3844,13 +4614,13 @@ func (p *Geography) GetPgVal() *Polygon {
 }
 func (p *Geography) CountSetFieldsGeography() int {
 	count := 0
-	if p.IsSetPtVal() {
+	if (p.IsSetPtVal()) {
 		count++
 	}
-	if p.IsSetLsVal() {
+	if (p.IsSetLsVal()) {
 		count++
 	}
-	if p.IsSetPgVal() {
+	if (p.IsSetPgVal()) {
 		count++
 	}
 	return count
@@ -3869,6 +4639,54 @@ func (p *Geography) IsSetPgVal() bool {
 	return p != nil && p.PgVal != nil
 }
 
+type GeographyBuilder struct {
+	obj *Geography
+}
+
+func NewGeographyBuilder() *GeographyBuilder {
+	return &GeographyBuilder{
+		obj: NewGeography(),
+	}
+}
+
+func (p GeographyBuilder) Emit() *Geography {
+	return &Geography{
+		PtVal: p.obj.PtVal,
+		LsVal: p.obj.LsVal,
+		PgVal: p.obj.PgVal,
+	}
+}
+
+func (g *GeographyBuilder) PtVal(ptVal *Point) *GeographyBuilder {
+	g.obj.PtVal = ptVal
+	return g
+}
+
+func (g *GeographyBuilder) LsVal(lsVal *LineString) *GeographyBuilder {
+	g.obj.LsVal = lsVal
+	return g
+}
+
+func (g *GeographyBuilder) PgVal(pgVal *Polygon) *GeographyBuilder {
+	g.obj.PgVal = pgVal
+	return g
+}
+
+func (g *Geography) SetPtVal(ptVal *Point) *Geography {
+	g.PtVal = ptVal
+	return g
+}
+
+func (g *Geography) SetLsVal(lsVal *LineString) *Geography {
+	g.LsVal = lsVal
+	return g
+}
+
+func (g *Geography) SetPgVal(pgVal *Polygon) *Geography {
+	g.PgVal = pgVal
+	return g
+}
+
 func (p *Geography) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3880,7 +4698,7 @@ func (p *Geography) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -4049,6 +4867,44 @@ func (p *Tag) GetName() []byte {
 func (p *Tag) GetProps() map[string]*Value {
 	return p.Props
 }
+
+type TagBuilder struct {
+	obj *Tag
+}
+
+func NewTagBuilder() *TagBuilder {
+	return &TagBuilder{
+		obj: NewTag(),
+	}
+}
+
+func (p TagBuilder) Emit() *Tag {
+	return &Tag{
+		Name:  p.obj.Name,
+		Props: p.obj.Props,
+	}
+}
+
+func (t *TagBuilder) Name(name []byte) *TagBuilder {
+	t.obj.Name = name
+	return t
+}
+
+func (t *TagBuilder) Props(props map[string]*Value) *TagBuilder {
+	t.obj.Props = props
+	return t
+}
+
+func (t *Tag) SetName(name []byte) *Tag {
+	t.Name = name
+	return t
+}
+
+func (t *Tag) SetProps(props map[string]*Value) *Tag {
+	t.Props = props
+	return t
+}
+
 func (p *Tag) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -4060,7 +4916,7 @@ func (p *Tag) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -4215,6 +5071,43 @@ func (p *Vertex) IsSetVid() bool {
 	return p != nil && p.Vid != nil
 }
 
+type VertexBuilder struct {
+	obj *Vertex
+}
+
+func NewVertexBuilder() *VertexBuilder {
+	return &VertexBuilder{
+		obj: NewVertex(),
+	}
+}
+
+func (p VertexBuilder) Emit() *Vertex {
+	return &Vertex{
+		Vid:  p.obj.Vid,
+		Tags: p.obj.Tags,
+	}
+}
+
+func (v *VertexBuilder) Vid(vid *Value) *VertexBuilder {
+	v.obj.Vid = vid
+	return v
+}
+
+func (v *VertexBuilder) Tags(tags []*Tag) *VertexBuilder {
+	v.obj.Tags = tags
+	return v
+}
+
+func (v *Vertex) SetVid(vid *Value) *Vertex {
+	v.Vid = vid
+	return v
+}
+
+func (v *Vertex) SetTags(tags []*Tag) *Vertex {
+	v.Tags = tags
+	return v
+}
+
 func (p *Vertex) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -4226,7 +5119,7 @@ func (p *Vertex) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -4409,6 +5302,87 @@ func (p *Edge) IsSetDst() bool {
 	return p != nil && p.Dst != nil
 }
 
+type EdgeBuilder struct {
+	obj *Edge
+}
+
+func NewEdgeBuilder() *EdgeBuilder {
+	return &EdgeBuilder{
+		obj: NewEdge(),
+	}
+}
+
+func (p EdgeBuilder) Emit() *Edge {
+	return &Edge{
+		Src:     p.obj.Src,
+		Dst:     p.obj.Dst,
+		Type:    p.obj.Type,
+		Name:    p.obj.Name,
+		Ranking: p.obj.Ranking,
+		Props:   p.obj.Props,
+	}
+}
+
+func (e *EdgeBuilder) Src(src *Value) *EdgeBuilder {
+	e.obj.Src = src
+	return e
+}
+
+func (e *EdgeBuilder) Dst(dst *Value) *EdgeBuilder {
+	e.obj.Dst = dst
+	return e
+}
+
+func (e *EdgeBuilder) Type(type_a1 EdgeType) *EdgeBuilder {
+	e.obj.Type = type_a1
+	return e
+}
+
+func (e *EdgeBuilder) Name(name []byte) *EdgeBuilder {
+	e.obj.Name = name
+	return e
+}
+
+func (e *EdgeBuilder) Ranking(ranking EdgeRanking) *EdgeBuilder {
+	e.obj.Ranking = ranking
+	return e
+}
+
+func (e *EdgeBuilder) Props(props map[string]*Value) *EdgeBuilder {
+	e.obj.Props = props
+	return e
+}
+
+func (e *Edge) SetSrc(src *Value) *Edge {
+	e.Src = src
+	return e
+}
+
+func (e *Edge) SetDst(dst *Value) *Edge {
+	e.Dst = dst
+	return e
+}
+
+func (e *Edge) SetType(type_a1 EdgeType) *Edge {
+	e.Type = type_a1
+	return e
+}
+
+func (e *Edge) SetName(name []byte) *Edge {
+	e.Name = name
+	return e
+}
+
+func (e *Edge) SetRanking(ranking EdgeRanking) *Edge {
+	e.Ranking = ranking
+	return e
+}
+
+func (e *Edge) SetProps(props map[string]*Value) *Edge {
+	e.Props = props
+	return e
+}
+
 func (p *Edge) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -4420,7 +5394,7 @@ func (p *Edge) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -4725,6 +5699,76 @@ func (p *Step) IsSetDst() bool {
 	return p != nil && p.Dst != nil
 }
 
+type StepBuilder struct {
+	obj *Step
+}
+
+func NewStepBuilder() *StepBuilder {
+	return &StepBuilder{
+		obj: NewStep(),
+	}
+}
+
+func (p StepBuilder) Emit() *Step {
+	return &Step{
+		Dst:     p.obj.Dst,
+		Type:    p.obj.Type,
+		Name:    p.obj.Name,
+		Ranking: p.obj.Ranking,
+		Props:   p.obj.Props,
+	}
+}
+
+func (s *StepBuilder) Dst(dst *Vertex) *StepBuilder {
+	s.obj.Dst = dst
+	return s
+}
+
+func (s *StepBuilder) Type(type_a1 EdgeType) *StepBuilder {
+	s.obj.Type = type_a1
+	return s
+}
+
+func (s *StepBuilder) Name(name []byte) *StepBuilder {
+	s.obj.Name = name
+	return s
+}
+
+func (s *StepBuilder) Ranking(ranking EdgeRanking) *StepBuilder {
+	s.obj.Ranking = ranking
+	return s
+}
+
+func (s *StepBuilder) Props(props map[string]*Value) *StepBuilder {
+	s.obj.Props = props
+	return s
+}
+
+func (s *Step) SetDst(dst *Vertex) *Step {
+	s.Dst = dst
+	return s
+}
+
+func (s *Step) SetType(type_a1 EdgeType) *Step {
+	s.Type = type_a1
+	return s
+}
+
+func (s *Step) SetName(name []byte) *Step {
+	s.Name = name
+	return s
+}
+
+func (s *Step) SetRanking(ranking EdgeRanking) *Step {
+	s.Ranking = ranking
+	return s
+}
+
+func (s *Step) SetProps(props map[string]*Value) *Step {
+	s.Props = props
+	return s
+}
+
 func (p *Step) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -4736,7 +5780,7 @@ func (p *Step) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -4989,6 +6033,43 @@ func (p *Path) IsSetSrc() bool {
 	return p != nil && p.Src != nil
 }
 
+type PathBuilder struct {
+	obj *Path
+}
+
+func NewPathBuilder() *PathBuilder {
+	return &PathBuilder{
+		obj: NewPath(),
+	}
+}
+
+func (p PathBuilder) Emit() *Path {
+	return &Path{
+		Src:   p.obj.Src,
+		Steps: p.obj.Steps,
+	}
+}
+
+func (p *PathBuilder) Src(src *Vertex) *PathBuilder {
+	p.obj.Src = src
+	return p
+}
+
+func (p *PathBuilder) Steps(steps []*Step) *PathBuilder {
+	p.obj.Steps = steps
+	return p
+}
+
+func (p *Path) SetSrc(src *Vertex) *Path {
+	p.Src = src
+	return p
+}
+
+func (p *Path) SetSteps(steps []*Step) *Path {
+	p.Steps = steps
+	return p
+}
+
 func (p *Path) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5000,7 +6081,7 @@ func (p *Path) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -5141,6 +6222,44 @@ func (p *HostAddr) GetHost() string {
 func (p *HostAddr) GetPort() Port {
 	return p.Port
 }
+
+type HostAddrBuilder struct {
+	obj *HostAddr
+}
+
+func NewHostAddrBuilder() *HostAddrBuilder {
+	return &HostAddrBuilder{
+		obj: NewHostAddr(),
+	}
+}
+
+func (p HostAddrBuilder) Emit() *HostAddr {
+	return &HostAddr{
+		Host: p.obj.Host,
+		Port: p.obj.Port,
+	}
+}
+
+func (h *HostAddrBuilder) Host(host string) *HostAddrBuilder {
+	h.obj.Host = host
+	return h
+}
+
+func (h *HostAddrBuilder) Port(port Port) *HostAddrBuilder {
+	h.obj.Port = port
+	return h
+}
+
+func (h *HostAddr) SetHost(host string) *HostAddr {
+	h.Host = host
+	return h
+}
+
+func (h *HostAddr) SetPort(port Port) *HostAddr {
+	h.Port = port
+	return h
+}
+
 func (p *HostAddr) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5152,7 +6271,7 @@ func (p *HostAddr) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -5271,6 +6390,44 @@ func (p *KeyValue) GetKey() []byte {
 func (p *KeyValue) GetValue() []byte {
 	return p.Value
 }
+
+type KeyValueBuilder struct {
+	obj *KeyValue
+}
+
+func NewKeyValueBuilder() *KeyValueBuilder {
+	return &KeyValueBuilder{
+		obj: NewKeyValue(),
+	}
+}
+
+func (p KeyValueBuilder) Emit() *KeyValue {
+	return &KeyValue{
+		Key:   p.obj.Key,
+		Value: p.obj.Value,
+	}
+}
+
+func (k *KeyValueBuilder) Key(key []byte) *KeyValueBuilder {
+	k.obj.Key = key
+	return k
+}
+
+func (k *KeyValueBuilder) Value(value []byte) *KeyValueBuilder {
+	k.obj.Value = value
+	return k
+}
+
+func (k *KeyValue) SetKey(key []byte) *KeyValue {
+	k.Key = key
+	return k
+}
+
+func (k *KeyValue) SetValue(value []byte) *KeyValue {
+	k.Value = value
+	return k
+}
+
 func (p *KeyValue) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5282,7 +6439,7 @@ func (p *KeyValue) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -5382,6 +6539,220 @@ func (p *KeyValue) String() string {
 }
 
 // Attributes:
+//  - Seconds
+//  - Microseconds
+//  - Months
+type Duration struct {
+	Seconds      int64 `thrift:"seconds,1" db:"seconds" json:"seconds"`
+	Microseconds int32 `thrift:"microseconds,2" db:"microseconds" json:"microseconds"`
+	Months       int32 `thrift:"months,3" db:"months" json:"months"`
+}
+
+func NewDuration() *Duration {
+	return &Duration{}
+}
+
+func (p *Duration) GetSeconds() int64 {
+	return p.Seconds
+}
+
+func (p *Duration) GetMicroseconds() int32 {
+	return p.Microseconds
+}
+
+func (p *Duration) GetMonths() int32 {
+	return p.Months
+}
+
+type DurationBuilder struct {
+	obj *Duration
+}
+
+func NewDurationBuilder() *DurationBuilder {
+	return &DurationBuilder{
+		obj: NewDuration(),
+	}
+}
+
+func (p DurationBuilder) Emit() *Duration {
+	return &Duration{
+		Seconds:      p.obj.Seconds,
+		Microseconds: p.obj.Microseconds,
+		Months:       p.obj.Months,
+	}
+}
+
+func (d *DurationBuilder) Seconds(seconds int64) *DurationBuilder {
+	d.obj.Seconds = seconds
+	return d
+}
+
+func (d *DurationBuilder) Microseconds(microseconds int32) *DurationBuilder {
+	d.obj.Microseconds = microseconds
+	return d
+}
+
+func (d *DurationBuilder) Months(months int32) *DurationBuilder {
+	d.obj.Months = months
+	return d
+}
+
+func (d *Duration) SetSeconds(seconds int64) *Duration {
+	d.Seconds = seconds
+	return d
+}
+
+func (d *Duration) SetMicroseconds(microseconds int32) *Duration {
+	d.Microseconds = microseconds
+	return d
+}
+
+func (d *Duration) SetMonths(months int32) *Duration {
+	d.Months = months
+	return d
+}
+
+func (p *Duration) Read(iprot thrift.Protocol) error {
+	if _, err := iprot.ReadStructBegin(); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+		if err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+		}
+		if fieldTypeId == thrift.STOP {
+			break;
+		}
+		switch fieldId {
+		case 1:
+			if err := p.ReadField1(iprot); err != nil {
+				return err
+			}
+		case 2:
+			if err := p.ReadField2(iprot); err != nil {
+				return err
+			}
+		case 3:
+			if err := p.ReadField3(iprot); err != nil {
+				return err
+			}
+		default:
+			if err := iprot.Skip(fieldTypeId); err != nil {
+				return err
+			}
+		}
+		if err := iprot.ReadFieldEnd(); err != nil {
+			return err
+		}
+	}
+	if err := iprot.ReadStructEnd(); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	}
+	return nil
+}
+
+func (p *Duration) ReadField1(iprot thrift.Protocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return thrift.PrependError("error reading field 1: ", err)
+	} else {
+		p.Seconds = v
+	}
+	return nil
+}
+
+func (p *Duration) ReadField2(iprot thrift.Protocol) error {
+	if v, err := iprot.ReadI32(); err != nil {
+		return thrift.PrependError("error reading field 2: ", err)
+	} else {
+		p.Microseconds = v
+	}
+	return nil
+}
+
+func (p *Duration) ReadField3(iprot thrift.Protocol) error {
+	if v, err := iprot.ReadI32(); err != nil {
+		return thrift.PrependError("error reading field 3: ", err)
+	} else {
+		p.Months = v
+	}
+	return nil
+}
+
+func (p *Duration) Write(oprot thrift.Protocol) error {
+	if err := oprot.WriteStructBegin("Duration"); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+	}
+	if err := p.writeField1(oprot); err != nil {
+		return err
+	}
+	if err := p.writeField2(oprot); err != nil {
+		return err
+	}
+	if err := p.writeField3(oprot); err != nil {
+		return err
+	}
+	if err := oprot.WriteFieldStop(); err != nil {
+		return thrift.PrependError("write field stop error: ", err)
+	}
+	if err := oprot.WriteStructEnd(); err != nil {
+		return thrift.PrependError("write struct stop error: ", err)
+	}
+	return nil
+}
+
+func (p *Duration) writeField1(oprot thrift.Protocol) (err error) {
+	if err := oprot.WriteFieldBegin("seconds", thrift.I64, 1); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:seconds: ", p), err)
+	}
+	if err := oprot.WriteI64(int64(p.Seconds)); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T.seconds (1) field write error: ", p), err)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field end error 1:seconds: ", p), err)
+	}
+	return err
+}
+
+func (p *Duration) writeField2(oprot thrift.Protocol) (err error) {
+	if err := oprot.WriteFieldBegin("microseconds", thrift.I32, 2); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:microseconds: ", p), err)
+	}
+	if err := oprot.WriteI32(int32(p.Microseconds)); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T.microseconds (2) field write error: ", p), err)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field end error 2:microseconds: ", p), err)
+	}
+	return err
+}
+
+func (p *Duration) writeField3(oprot thrift.Protocol) (err error) {
+	if err := oprot.WriteFieldBegin("months", thrift.I32, 3); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:months: ", p), err)
+	}
+	if err := oprot.WriteI32(int32(p.Months)); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T.months (3) field write error: ", p), err)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field end error 3:months: ", p), err)
+	}
+	return err
+}
+
+func (p *Duration) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+
+	secondsVal := fmt.Sprintf("%v", p.Seconds)
+	microsecondsVal := fmt.Sprintf("%v", p.Microseconds)
+	monthsVal := fmt.Sprintf("%v", p.Months)
+	return fmt.Sprintf("Duration({Seconds:%s Microseconds:%s Months:%s})", secondsVal, microsecondsVal, monthsVal)
+}
+
+// Attributes:
 //  - LogID
 //  - TermID
 type LogInfo struct {
@@ -5400,6 +6771,44 @@ func (p *LogInfo) GetLogID() LogID {
 func (p *LogInfo) GetTermID() TermID {
 	return p.TermID
 }
+
+type LogInfoBuilder struct {
+	obj *LogInfo
+}
+
+func NewLogInfoBuilder() *LogInfoBuilder {
+	return &LogInfoBuilder{
+		obj: NewLogInfo(),
+	}
+}
+
+func (p LogInfoBuilder) Emit() *LogInfo {
+	return &LogInfo{
+		LogID:  p.obj.LogID,
+		TermID: p.obj.TermID,
+	}
+}
+
+func (l *LogInfoBuilder) LogID(logID LogID) *LogInfoBuilder {
+	l.obj.LogID = logID
+	return l
+}
+
+func (l *LogInfoBuilder) TermID(termID TermID) *LogInfoBuilder {
+	l.obj.TermID = termID
+	return l
+}
+
+func (l *LogInfo) SetLogID(logID LogID) *LogInfo {
+	l.LogID = logID
+	return l
+}
+
+func (l *LogInfo) SetTermID(termID TermID) *LogInfo {
+	l.TermID = termID
+	return l
+}
+
 func (p *LogInfo) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5411,7 +6820,7 @@ func (p *LogInfo) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -5531,6 +6940,44 @@ func (p *DirInfo) GetRoot() []byte {
 func (p *DirInfo) GetData() [][]byte {
 	return p.Data
 }
+
+type DirInfoBuilder struct {
+	obj *DirInfo
+}
+
+func NewDirInfoBuilder() *DirInfoBuilder {
+	return &DirInfoBuilder{
+		obj: NewDirInfo(),
+	}
+}
+
+func (p DirInfoBuilder) Emit() *DirInfo {
+	return &DirInfo{
+		Root: p.obj.Root,
+		Data: p.obj.Data,
+	}
+}
+
+func (d *DirInfoBuilder) Root(root []byte) *DirInfoBuilder {
+	d.obj.Root = root
+	return d
+}
+
+func (d *DirInfoBuilder) Data(data [][]byte) *DirInfoBuilder {
+	d.obj.Data = data
+	return d
+}
+
+func (d *DirInfo) SetRoot(root []byte) *DirInfo {
+	d.Root = root
+	return d
+}
+
+func (d *DirInfo) SetData(data [][]byte) *DirInfo {
+	d.Data = data
+	return d
+}
+
 func (p *DirInfo) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -5542,7 +6989,7 @@ func (p *DirInfo) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -5663,313 +7110,77 @@ func (p *DirInfo) String() string {
 }
 
 // Attributes:
-//  - Host
-//  - Dir
-type NodeInfo struct {
-	Host *HostAddr `thrift:"host,1" db:"host" json:"host"`
-	Dir  *DirInfo  `thrift:"dir,2" db:"dir" json:"dir"`
-}
-
-func NewNodeInfo() *NodeInfo {
-	return &NodeInfo{
-		Host: NewHostAddr(),
-		Dir:  NewDirInfo(),
-	}
-}
-
-var NodeInfo_Host_DEFAULT *HostAddr
-
-func (p *NodeInfo) GetHost() *HostAddr {
-	if !p.IsSetHost() {
-		return NodeInfo_Host_DEFAULT
-	}
-	return p.Host
-}
-
-var NodeInfo_Dir_DEFAULT *DirInfo
-
-func (p *NodeInfo) GetDir() *DirInfo {
-	if !p.IsSetDir() {
-		return NodeInfo_Dir_DEFAULT
-	}
-	return p.Dir
-}
-func (p *NodeInfo) IsSetHost() bool {
-	return p != nil && p.Host != nil
-}
-
-func (p *NodeInfo) IsSetDir() bool {
-	return p != nil && p.Dir != nil
-}
-
-func (p *NodeInfo) Read(iprot thrift.Protocol) error {
-	if _, err := iprot.ReadStructBegin(); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
-		if err != nil {
-			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-		switch fieldId {
-		case 1:
-			if err := p.ReadField1(iprot); err != nil {
-				return err
-			}
-		case 2:
-			if err := p.ReadField2(iprot); err != nil {
-				return err
-			}
-		default:
-			if err := iprot.Skip(fieldTypeId); err != nil {
-				return err
-			}
-		}
-		if err := iprot.ReadFieldEnd(); err != nil {
-			return err
-		}
-	}
-	if err := iprot.ReadStructEnd(); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-	}
-	return nil
-}
-
-func (p *NodeInfo) ReadField1(iprot thrift.Protocol) error {
-	p.Host = NewHostAddr()
-	if err := p.Host.Read(iprot); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Host), err)
-	}
-	return nil
-}
-
-func (p *NodeInfo) ReadField2(iprot thrift.Protocol) error {
-	p.Dir = NewDirInfo()
-	if err := p.Dir.Read(iprot); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Dir), err)
-	}
-	return nil
-}
-
-func (p *NodeInfo) Write(oprot thrift.Protocol) error {
-	if err := oprot.WriteStructBegin("NodeInfo"); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-	}
-	if err := p.writeField1(oprot); err != nil {
-		return err
-	}
-	if err := p.writeField2(oprot); err != nil {
-		return err
-	}
-	if err := oprot.WriteFieldStop(); err != nil {
-		return thrift.PrependError("write field stop error: ", err)
-	}
-	if err := oprot.WriteStructEnd(); err != nil {
-		return thrift.PrependError("write struct stop error: ", err)
-	}
-	return nil
-}
-
-func (p *NodeInfo) writeField1(oprot thrift.Protocol) (err error) {
-	if err := oprot.WriteFieldBegin("host", thrift.STRUCT, 1); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:host: ", p), err)
-	}
-	if err := p.Host.Write(oprot); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Host), err)
-	}
-	if err := oprot.WriteFieldEnd(); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write field end error 1:host: ", p), err)
-	}
-	return err
-}
-
-func (p *NodeInfo) writeField2(oprot thrift.Protocol) (err error) {
-	if err := oprot.WriteFieldBegin("dir", thrift.STRUCT, 2); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:dir: ", p), err)
-	}
-	if err := p.Dir.Write(oprot); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Dir), err)
-	}
-	if err := oprot.WriteFieldEnd(); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write field end error 2:dir: ", p), err)
-	}
-	return err
-}
-
-func (p *NodeInfo) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-
-	var hostVal string
-	if p.Host == nil {
-		hostVal = "<nil>"
-	} else {
-		hostVal = fmt.Sprintf("%v", p.Host)
-	}
-	var dirVal string
-	if p.Dir == nil {
-		dirVal = "<nil>"
-	} else {
-		dirVal = fmt.Sprintf("%v", p.Dir)
-	}
-	return fmt.Sprintf("NodeInfo({Host:%s Dir:%s})", hostVal, dirVal)
-}
-
-// Attributes:
-//  - Info
-type PartitionBackupInfo struct {
-	Info map[PartitionID]*LogInfo `thrift:"info,1" db:"info" json:"info"`
-}
-
-func NewPartitionBackupInfo() *PartitionBackupInfo {
-	return &PartitionBackupInfo{}
-}
-
-func (p *PartitionBackupInfo) GetInfo() map[PartitionID]*LogInfo {
-	return p.Info
-}
-func (p *PartitionBackupInfo) Read(iprot thrift.Protocol) error {
-	if _, err := iprot.ReadStructBegin(); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
-		if err != nil {
-			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-		switch fieldId {
-		case 1:
-			if err := p.ReadField1(iprot); err != nil {
-				return err
-			}
-		default:
-			if err := iprot.Skip(fieldTypeId); err != nil {
-				return err
-			}
-		}
-		if err := iprot.ReadFieldEnd(); err != nil {
-			return err
-		}
-	}
-	if err := iprot.ReadStructEnd(); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-	}
-	return nil
-}
-
-func (p *PartitionBackupInfo) ReadField1(iprot thrift.Protocol) error {
-	_, _, size, err := iprot.ReadMapBegin()
-	if err != nil {
-		return thrift.PrependError("error reading map begin: ", err)
-	}
-	tMap := make(map[PartitionID]*LogInfo, size)
-	p.Info = tMap
-	for i := 0; i < size; i++ {
-		var _key19 PartitionID
-		if v, err := iprot.ReadI32(); err != nil {
-			return thrift.PrependError("error reading field 0: ", err)
-		} else {
-			temp := PartitionID(v)
-			_key19 = temp
-		}
-		_val20 := NewLogInfo()
-		if err := _val20.Read(iprot); err != nil {
-			return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _val20), err)
-		}
-		p.Info[_key19] = _val20
-	}
-	if err := iprot.ReadMapEnd(); err != nil {
-		return thrift.PrependError("error reading map end: ", err)
-	}
-	return nil
-}
-
-func (p *PartitionBackupInfo) Write(oprot thrift.Protocol) error {
-	if err := oprot.WriteStructBegin("PartitionBackupInfo"); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-	}
-	if err := p.writeField1(oprot); err != nil {
-		return err
-	}
-	if err := oprot.WriteFieldStop(); err != nil {
-		return thrift.PrependError("write field stop error: ", err)
-	}
-	if err := oprot.WriteStructEnd(); err != nil {
-		return thrift.PrependError("write struct stop error: ", err)
-	}
-	return nil
-}
-
-func (p *PartitionBackupInfo) writeField1(oprot thrift.Protocol) (err error) {
-	if err := oprot.WriteFieldBegin("info", thrift.MAP, 1); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:info: ", p), err)
-	}
-	if err := oprot.WriteMapBegin(thrift.I32, thrift.STRUCT, len(p.Info)); err != nil {
-		return thrift.PrependError("error writing map begin: ", err)
-	}
-	for k, v := range p.Info {
-		if err := oprot.WriteI32(int32(k)); err != nil {
-			return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err)
-		}
-		if err := v.Write(oprot); err != nil {
-			return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
-		}
-	}
-	if err := oprot.WriteMapEnd(); err != nil {
-		return thrift.PrependError("error writing map end: ", err)
-	}
-	if err := oprot.WriteFieldEnd(); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write field end error 1:info: ", p), err)
-	}
-	return err
-}
-
-func (p *PartitionBackupInfo) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-
-	infoVal := fmt.Sprintf("%v", p.Info)
-	return fmt.Sprintf("PartitionBackupInfo({Info:%s})", infoVal)
-}
-
-// Attributes:
-//  - PartitionInfo
+//  - SpaceID
+//  - Parts
 //  - Path
 type CheckpointInfo struct {
-	PartitionInfo *PartitionBackupInfo `thrift:"partition_info,1" db:"partition_info" json:"partition_info"`
-	Path          []byte               `thrift:"path,2" db:"path" json:"path"`
+	SpaceID GraphSpaceID             `thrift:"space_id,1" db:"space_id" json:"space_id"`
+	Parts   map[PartitionID]*LogInfo `thrift:"parts,2" db:"parts" json:"parts"`
+	Path    []byte                   `thrift:"path,3" db:"path" json:"path"`
 }
 
 func NewCheckpointInfo() *CheckpointInfo {
-	return &CheckpointInfo{
-		PartitionInfo: NewPartitionBackupInfo(),
-	}
+	return &CheckpointInfo{}
 }
 
-var CheckpointInfo_PartitionInfo_DEFAULT *PartitionBackupInfo
+func (p *CheckpointInfo) GetSpaceID() GraphSpaceID {
+	return p.SpaceID
+}
 
-func (p *CheckpointInfo) GetPartitionInfo() *PartitionBackupInfo {
-	if !p.IsSetPartitionInfo() {
-		return CheckpointInfo_PartitionInfo_DEFAULT
-	}
-	return p.PartitionInfo
+func (p *CheckpointInfo) GetParts() map[PartitionID]*LogInfo {
+	return p.Parts
 }
 
 func (p *CheckpointInfo) GetPath() []byte {
 	return p.Path
 }
-func (p *CheckpointInfo) IsSetPartitionInfo() bool {
-	return p != nil && p.PartitionInfo != nil
+
+type CheckpointInfoBuilder struct {
+	obj *CheckpointInfo
+}
+
+func NewCheckpointInfoBuilder() *CheckpointInfoBuilder {
+	return &CheckpointInfoBuilder{
+		obj: NewCheckpointInfo(),
+	}
+}
+
+func (p CheckpointInfoBuilder) Emit() *CheckpointInfo {
+	return &CheckpointInfo{
+		SpaceID: p.obj.SpaceID,
+		Parts:   p.obj.Parts,
+		Path:    p.obj.Path,
+	}
+}
+
+func (c *CheckpointInfoBuilder) SpaceID(spaceID GraphSpaceID) *CheckpointInfoBuilder {
+	c.obj.SpaceID = spaceID
+	return c
+}
+
+func (c *CheckpointInfoBuilder) Parts(parts map[PartitionID]*LogInfo) *CheckpointInfoBuilder {
+	c.obj.Parts = parts
+	return c
+}
+
+func (c *CheckpointInfoBuilder) Path(path []byte) *CheckpointInfoBuilder {
+	c.obj.Path = path
+	return c
+}
+
+func (c *CheckpointInfo) SetSpaceID(spaceID GraphSpaceID) *CheckpointInfo {
+	c.SpaceID = spaceID
+	return c
+}
+
+func (c *CheckpointInfo) SetParts(parts map[PartitionID]*LogInfo) *CheckpointInfo {
+	c.Parts = parts
+	return c
+}
+
+func (c *CheckpointInfo) SetPath(path []byte) *CheckpointInfo {
+	c.Path = path
+	return c
 }
 
 func (p *CheckpointInfo) Read(iprot thrift.Protocol) error {
@@ -5983,7 +7194,7 @@ func (p *CheckpointInfo) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -5992,6 +7203,10 @@ func (p *CheckpointInfo) Read(iprot thrift.Protocol) error {
 			}
 		case 2:
 			if err := p.ReadField2(iprot); err != nil {
+				return err
+			}
+		case 3:
+			if err := p.ReadField3(iprot); err != nil {
 				return err
 			}
 		default:
@@ -6010,16 +7225,45 @@ func (p *CheckpointInfo) Read(iprot thrift.Protocol) error {
 }
 
 func (p *CheckpointInfo) ReadField1(iprot thrift.Protocol) error {
-	p.PartitionInfo = NewPartitionBackupInfo()
-	if err := p.PartitionInfo.Read(iprot); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PartitionInfo), err)
+	if v, err := iprot.ReadI32(); err != nil {
+		return thrift.PrependError("error reading field 1: ", err)
+	} else {
+		temp := GraphSpaceID(v)
+		p.SpaceID = temp
 	}
 	return nil
 }
 
 func (p *CheckpointInfo) ReadField2(iprot thrift.Protocol) error {
+	_, _, size, err := iprot.ReadMapBegin()
+	if err != nil {
+		return thrift.PrependError("error reading map begin: ", err)
+	}
+	tMap := make(map[PartitionID]*LogInfo, size)
+	p.Parts = tMap
+	for i := 0; i < size; i++ {
+		var _key19 PartitionID
+		if v, err := iprot.ReadI32(); err != nil {
+			return thrift.PrependError("error reading field 0: ", err)
+		} else {
+			temp := PartitionID(v)
+			_key19 = temp
+		}
+		_val20 := NewLogInfo()
+		if err := _val20.Read(iprot); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _val20), err)
+		}
+		p.Parts[_key19] = _val20
+	}
+	if err := iprot.ReadMapEnd(); err != nil {
+		return thrift.PrependError("error reading map end: ", err)
+	}
+	return nil
+}
+
+func (p *CheckpointInfo) ReadField3(iprot thrift.Protocol) error {
 	if v, err := iprot.ReadBinary(); err != nil {
-		return thrift.PrependError("error reading field 2: ", err)
+		return thrift.PrependError("error reading field 3: ", err)
 	} else {
 		p.Path = v
 	}
@@ -6036,6 +7280,9 @@ func (p *CheckpointInfo) Write(oprot thrift.Protocol) error {
 	if err := p.writeField2(oprot); err != nil {
 		return err
 	}
+	if err := p.writeField3(oprot); err != nil {
+		return err
+	}
 	if err := oprot.WriteFieldStop(); err != nil {
 		return thrift.PrependError("write field stop error: ", err)
 	}
@@ -6046,27 +7293,51 @@ func (p *CheckpointInfo) Write(oprot thrift.Protocol) error {
 }
 
 func (p *CheckpointInfo) writeField1(oprot thrift.Protocol) (err error) {
-	if err := oprot.WriteFieldBegin("partition_info", thrift.STRUCT, 1); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:partition_info: ", p), err)
+	if err := oprot.WriteFieldBegin("space_id", thrift.I32, 1); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:space_id: ", p), err)
 	}
-	if err := p.PartitionInfo.Write(oprot); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PartitionInfo), err)
+	if err := oprot.WriteI32(int32(p.SpaceID)); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T.space_id (1) field write error: ", p), err)
 	}
 	if err := oprot.WriteFieldEnd(); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write field end error 1:partition_info: ", p), err)
+		return thrift.PrependError(fmt.Sprintf("%T write field end error 1:space_id: ", p), err)
 	}
 	return err
 }
 
 func (p *CheckpointInfo) writeField2(oprot thrift.Protocol) (err error) {
-	if err := oprot.WriteFieldBegin("path", thrift.STRING, 2); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:path: ", p), err)
+	if err := oprot.WriteFieldBegin("parts", thrift.MAP, 2); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:parts: ", p), err)
 	}
-	if err := oprot.WriteBinary(p.Path); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T.path (2) field write error: ", p), err)
+	if err := oprot.WriteMapBegin(thrift.I32, thrift.STRUCT, len(p.Parts)); err != nil {
+		return thrift.PrependError("error writing map begin: ", err)
+	}
+	for k, v := range p.Parts {
+		if err := oprot.WriteI32(int32(k)); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err)
+		}
+		if err := v.Write(oprot); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+		}
+	}
+	if err := oprot.WriteMapEnd(); err != nil {
+		return thrift.PrependError("error writing map end: ", err)
 	}
 	if err := oprot.WriteFieldEnd(); err != nil {
-		return thrift.PrependError(fmt.Sprintf("%T write field end error 2:path: ", p), err)
+		return thrift.PrependError(fmt.Sprintf("%T write field end error 2:parts: ", p), err)
+	}
+	return err
+}
+
+func (p *CheckpointInfo) writeField3(oprot thrift.Protocol) (err error) {
+	if err := oprot.WriteFieldBegin("path", thrift.STRING, 3); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:path: ", p), err)
+	}
+	if err := oprot.WriteBinary(p.Path); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T.path (3) field write error: ", p), err)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field end error 3:path: ", p), err)
 	}
 	return err
 }
@@ -6076,14 +7347,10 @@ func (p *CheckpointInfo) String() string {
 		return "<nil>"
 	}
 
-	var partitionInfoVal string
-	if p.PartitionInfo == nil {
-		partitionInfoVal = "<nil>"
-	} else {
-		partitionInfoVal = fmt.Sprintf("%v", p.PartitionInfo)
-	}
+	spaceIDVal := fmt.Sprintf("%v", p.SpaceID)
+	partsVal := fmt.Sprintf("%v", p.Parts)
 	pathVal := fmt.Sprintf("%v", p.Path)
-	return fmt.Sprintf("CheckpointInfo({PartitionInfo:%s Path:%s})", partitionInfoVal, pathVal)
+	return fmt.Sprintf("CheckpointInfo({SpaceID:%s Parts:%s Path:%s})", spaceIDVal, partsVal, pathVal)
 }
 
 // Attributes:
@@ -6105,6 +7372,44 @@ func (p *LogEntry) GetCluster() ClusterID {
 func (p *LogEntry) GetLogStr() []byte {
 	return p.LogStr
 }
+
+type LogEntryBuilder struct {
+	obj *LogEntry
+}
+
+func NewLogEntryBuilder() *LogEntryBuilder {
+	return &LogEntryBuilder{
+		obj: NewLogEntry(),
+	}
+}
+
+func (p LogEntryBuilder) Emit() *LogEntry {
+	return &LogEntry{
+		Cluster: p.obj.Cluster,
+		LogStr:  p.obj.LogStr,
+	}
+}
+
+func (l *LogEntryBuilder) Cluster(cluster ClusterID) *LogEntryBuilder {
+	l.obj.Cluster = cluster
+	return l
+}
+
+func (l *LogEntryBuilder) LogStr(logStr []byte) *LogEntryBuilder {
+	l.obj.LogStr = logStr
+	return l
+}
+
+func (l *LogEntry) SetCluster(cluster ClusterID) *LogEntry {
+	l.Cluster = cluster
+	return l
+}
+
+func (l *LogEntry) SetLogStr(logStr []byte) *LogEntry {
+	l.LogStr = logStr
+	return l
+}
+
 func (p *LogEntry) Read(iprot thrift.Protocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -6116,7 +7421,7 @@ func (p *LogEntry) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break
+			break;
 		}
 		switch fieldId {
 		case 1:
@@ -6215,3 +7520,4 @@ func (p *LogEntry) String() string {
 	logStrVal := fmt.Sprintf("%v", p.LogStr)
 	return fmt.Sprintf("LogEntry({Cluster:%s LogStr:%s})", clusterVal, logStrVal)
 }
+

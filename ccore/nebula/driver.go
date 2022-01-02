@@ -35,6 +35,10 @@ type (
 		mu        sync.Mutex
 		endpoints []string
 	}
+
+	driverFactory struct {
+		types.FactoryDriver
+	}
 )
 
 func newDriverGraph(endpoints []string, username, password string, o *socketOptions) *driverGraph {
@@ -62,6 +66,10 @@ func newConnectionMu(endpoints []string, o *socketOptions) *connectionMu {
 		o:         o,
 		endpoints: endpoints,
 	}
+}
+
+func newDriverFactory() *driverFactory {
+	return &driverFactory{}
 }
 
 func (d *driverGraph) open(driver types.Driver) error {

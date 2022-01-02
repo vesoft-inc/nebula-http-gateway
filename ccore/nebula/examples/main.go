@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
+	"log"
 )
 
 func main() {
@@ -52,5 +52,20 @@ func main() {
 				panic(err)
 			}
 		}
+		{ // test factory and builder
+			f, err := nebula.NewFactory(nebula.WithVersion(version))
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			s := []byte{1, 2, 3}
+			v1 := f.NewValue()
+			v1.SetSVal(s)
+			v2 := v1.Builder().Emit().SetSVal([]byte{1, 2})
+			i1 := v1.Unwrap()
+			i2 := v2.Unwrap()
+			log.Printf("\n%p, %p;\n%v, %v", i1, i2, v1.GetSVal(), v2.GetSVal())
+		}
 	}
+
 }

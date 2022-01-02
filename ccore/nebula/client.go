@@ -16,6 +16,8 @@ type (
 		Graph() GraphClient
 		Meta() MetaClient
 		StorageAdmin() StorageAdminClient
+		Factory() Factory
+		Version() Version
 	}
 
 	ConnectionInfo struct {
@@ -70,6 +72,15 @@ func (c *defaultClient) StorageAdmin() StorageAdminClient {
 	return (*defaultStorageAdminClient)(c)
 }
 
+func (c *defaultClient) Factory() Factory {
+	f, _ := NewFactory(WithVersion(c.o.version))
+	return f
+}
+
+func (c *defaultClient) Version() Version {
+	return c.o.version
+}
+
 func (c *defaultClient) initDriver(checkFn func(types.Driver) error) error {
 	if c.o.version != VersionAuto {
 		driver, err := types.GetDriver(c.o.version)
@@ -98,6 +109,7 @@ func (c *defaultClient) initDriver(checkFn func(types.Driver) error) error {
 			return err
 		}
 		c.driver = driver
+		c.o.version = v
 		return nil
 	}
 	return nerrors.ErrUnsupportedVersion

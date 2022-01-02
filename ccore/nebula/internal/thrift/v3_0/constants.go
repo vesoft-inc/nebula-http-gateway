@@ -8,8 +8,9 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	"sync"
+
+	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
 )
 
 // (needed to ensure safety because of naive import list construction.)

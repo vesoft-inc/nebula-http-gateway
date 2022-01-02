@@ -16,11 +16,13 @@ type DataSet interface {
 	GetColumnNames() [][]byte
 	GetRows() []Row
 	String() string
+	Unwrap() interface{}
 }
 
 type Row interface {
 	GetValues() []Value
 	String() string
+	Unwrap() interface{}
 }
 
 type Value interface {
@@ -40,10 +42,11 @@ type Value interface {
 	GetUVal() NSet
 	GetGVal() DataSet
 	GetGgVal() Geography
+	GetDuVal() Duration
 	CountSetFieldsValue() int
 	IsSetNVal() bool
-	IsSetIVal() bool
 	IsSetBVal() bool
+	IsSetIVal() bool
 	IsSetFVal() bool
 	IsSetSVal() bool
 	IsSetDVal() bool
@@ -57,7 +60,27 @@ type Value interface {
 	IsSetUVal() bool
 	IsSetGVal() bool
 	IsSetGgVal() bool
+	IsSetDuVal() bool
+	SetNVal(*NullType) Value
+	SetBVal(*bool) Value
+	SetIVal(*int64) Value
+	SetFVal(*float64) Value
+	SetSVal([]byte) Value
+	SetDVal(Date) Value
+	SetTVal(Time) Value
+	SetDtVal(DateTime) Value
+	SetVVal(Vertex) Value
+	SetEVal(Edge) Value
+	SetPVal(Path) Value
+	SetLVal(NList) Value
+	SetMVal(NMap) Value
+	SetUVal(NSet) Value
+	SetGVal(DataSet) Value
+	SetGgVal(Geography) Value
+	SetDuVal(Duration) Value
 	String() string
+	Unwrap() interface{}
+	Builder() ValueBuilder
 }
 
 type NullType int64
@@ -138,6 +161,7 @@ type Date interface {
 	GetMonth() int8
 	GetDay() int8
 	String() string
+	Unwrap() interface{}
 }
 
 type Time interface {
@@ -146,6 +170,7 @@ type Time interface {
 	GetSec() int8
 	GetMicrosec() int32
 	String() string
+	Unwrap() interface{}
 }
 
 type DateTime interface {
@@ -157,6 +182,7 @@ type DateTime interface {
 	GetSec() int8
 	GetMicrosec() int32
 	String() string
+	Unwrap() interface{}
 }
 
 type Vertex interface {
@@ -164,6 +190,7 @@ type Vertex interface {
 	GetTags() []Tag
 	IsSetVid() bool
 	String() string
+	Unwrap() interface{}
 }
 
 type Edge interface {
@@ -176,6 +203,7 @@ type Edge interface {
 	IsSetSrc() bool
 	IsSetDst() bool
 	String() string
+	Unwrap() interface{}
 }
 
 type Path interface {
@@ -183,21 +211,25 @@ type Path interface {
 	GetSteps() []Step
 	IsSetSrc() bool
 	String() string
+	Unwrap() interface{}
 }
 
 type NList interface {
 	GetValues() []Value
 	String() string
+	Unwrap() interface{}
 }
 
 type NMap interface {
 	GetKvs() map[string]Value
 	String() string
+	Unwrap() interface{}
 }
 
 type NSet interface {
 	GetValues() []Value
 	String() string
+	Unwrap() interface{}
 }
 
 type Geography interface {
@@ -209,12 +241,14 @@ type Geography interface {
 	IsSetLsVal() bool
 	IsSetPgVal() bool
 	String() string
+	Unwrap() interface{}
 }
 
 type Tag interface {
 	GetName() []byte
 	GetProps() map[string]Value
 	String() string
+	Unwrap() interface{}
 }
 
 type Step interface {
@@ -225,28 +259,41 @@ type Step interface {
 	GetProps() map[string]Value
 	IsSetDst() bool
 	String() string
+	Unwrap() interface{}
 }
 
 type Point interface {
 	GetCoord() Coordinate
 	IsSetCoord() bool
 	String() string
+	Unwrap() interface{}
 }
 
 type LineString interface {
 	GetCoordList() []Coordinate
 	String() string
+	Unwrap() interface{}
 }
 
 type Polygon interface {
 	GetCoordListList() [][]Coordinate
 	String() string
+	Unwrap() interface{}
 }
 
 type Coordinate interface {
 	GetX() float64
 	GetY() float64
 	String() string
+	Unwrap() interface{}
+}
+
+type Duration interface {
+	GetSeconds() int64
+	GetMicroseconds() int32
+	GetMonths() int32
+	String() string
+	Unwrap() interface{}
 }
 
 type PlanDescription interface {
@@ -255,6 +302,7 @@ type PlanDescription interface {
 	GetFormat() []byte
 	GetOptimizeTimeInUs() int32
 	String() string
+	Unwrap() interface{}
 }
 
 type PlanNodeDescription interface {
@@ -270,12 +318,14 @@ type PlanNodeDescription interface {
 	IsSetBranchInfo() bool
 	IsSetDependencies() bool
 	String() string
+	Unwrap() interface{}
 }
 
 type Pair interface {
 	GetKey() []byte
 	GetValue() []byte
 	String() string
+	Unwrap() interface{}
 }
 
 type ProfilingStats interface {
@@ -285,10 +335,12 @@ type ProfilingStats interface {
 	GetOtherStats() map[string][]byte
 	IsSetOtherStats() bool
 	String() string
+	Unwrap() interface{}
 }
 
 type PlanNodeBranchInfo interface {
 	GetIsDoBranch() bool
 	GetConditionNodeID() int64
 	String() string
+	Unwrap() interface{}
 }
