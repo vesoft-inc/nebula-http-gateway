@@ -20,7 +20,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
-var GoUnusedProtection__ int;
+var GoUnusedProtection__ int
 
 type NullType int64
 
@@ -939,10 +939,10 @@ func (p *SchemaID) GetEdgeType() EdgeType {
 }
 func (p *SchemaID) CountSetFieldsSchemaID() int {
 	count := 0
-	if (p.IsSetTagID()) {
+	if p.IsSetTagID() {
 		count++
 	}
-	if (p.IsSetEdgeType()) {
+	if p.IsSetEdgeType() {
 		count++
 	}
 	return count
@@ -1005,7 +1005,7 @@ func (p *SchemaID) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -1208,7 +1208,7 @@ func (p *Date) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -1441,7 +1441,7 @@ func (p *Time) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -1756,7 +1756,7 @@ func (p *DateTime) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -2203,55 +2203,55 @@ func (p *Value) GetDuVal() *Duration {
 }
 func (p *Value) CountSetFieldsValue() int {
 	count := 0
-	if (p.IsSetNVal()) {
+	if p.IsSetNVal() {
 		count++
 	}
-	if (p.IsSetBVal()) {
+	if p.IsSetBVal() {
 		count++
 	}
-	if (p.IsSetIVal()) {
+	if p.IsSetIVal() {
 		count++
 	}
-	if (p.IsSetFVal()) {
+	if p.IsSetFVal() {
 		count++
 	}
-	if (p.IsSetSVal()) {
+	if p.IsSetSVal() {
 		count++
 	}
-	if (p.IsSetDVal()) {
+	if p.IsSetDVal() {
 		count++
 	}
-	if (p.IsSetTVal()) {
+	if p.IsSetTVal() {
 		count++
 	}
-	if (p.IsSetDtVal()) {
+	if p.IsSetDtVal() {
 		count++
 	}
-	if (p.IsSetVVal()) {
+	if p.IsSetVVal() {
 		count++
 	}
-	if (p.IsSetEVal()) {
+	if p.IsSetEVal() {
 		count++
 	}
-	if (p.IsSetPVal()) {
+	if p.IsSetPVal() {
 		count++
 	}
-	if (p.IsSetLVal()) {
+	if p.IsSetLVal() {
 		count++
 	}
-	if (p.IsSetMVal()) {
+	if p.IsSetMVal() {
 		count++
 	}
-	if (p.IsSetUVal()) {
+	if p.IsSetUVal() {
 		count++
 	}
-	if (p.IsSetGVal()) {
+	if p.IsSetGVal() {
 		count++
 	}
-	if (p.IsSetGgVal()) {
+	if p.IsSetGgVal() {
 		count++
 	}
-	if (p.IsSetDuVal()) {
+	if p.IsSetDuVal() {
 		count++
 	}
 	return count
@@ -2539,7 +2539,7 @@ func (p *Value) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3245,7 +3245,7 @@ func (p *NList) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3384,7 +3384,7 @@ func (p *NMap) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3532,7 +3532,7 @@ func (p *NSet) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3678,7 +3678,7 @@ func (p *Row) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3834,7 +3834,7 @@ func (p *DataSet) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4041,7 +4041,7 @@ func (p *Coordinate) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4201,7 +4201,7 @@ func (p *Point) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4325,7 +4325,7 @@ func (p *LineString) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4464,7 +4464,7 @@ func (p *Polygon) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4614,13 +4614,13 @@ func (p *Geography) GetPgVal() *Polygon {
 }
 func (p *Geography) CountSetFieldsGeography() int {
 	count := 0
-	if (p.IsSetPtVal()) {
+	if p.IsSetPtVal() {
 		count++
 	}
-	if (p.IsSetLsVal()) {
+	if p.IsSetLsVal() {
 		count++
 	}
-	if (p.IsSetPgVal()) {
+	if p.IsSetPgVal() {
 		count++
 	}
 	return count
@@ -4698,7 +4698,7 @@ func (p *Geography) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4916,7 +4916,7 @@ func (p *Tag) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -5119,7 +5119,7 @@ func (p *Vertex) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -5394,7 +5394,7 @@ func (p *Edge) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -5780,7 +5780,7 @@ func (p *Step) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -6081,7 +6081,7 @@ func (p *Path) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -6271,7 +6271,7 @@ func (p *HostAddr) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -6439,7 +6439,7 @@ func (p *KeyValue) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -6623,7 +6623,7 @@ func (p *Duration) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -6820,7 +6820,7 @@ func (p *LogInfo) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -6989,7 +6989,7 @@ func (p *DirInfo) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -7194,7 +7194,7 @@ func (p *CheckpointInfo) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -7421,7 +7421,7 @@ func (p *LogEntry) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -7520,4 +7520,3 @@ func (p *LogEntry) String() string {
 	logStrVal := fmt.Sprintf("%v", p.LogStr)
 	return fmt.Sprintf("LogEntry({Cluster:%s LogStr:%s})", clusterVal, logStrVal)
 }
-

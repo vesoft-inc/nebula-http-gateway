@@ -22,7 +22,7 @@ var _ = bytes.Equal
 var _ = context.Background
 
 var _ = nebula0.GoUnusedProtection__
-var GoUnusedProtection__ int;
+var GoUnusedProtection__ int
 
 // Attributes:
 //  - Rows
@@ -125,9 +125,9 @@ func (p *ProfilingStats) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
 	}
 
-	var issetRows bool = false;
-	var issetExecDurationInUs bool = false;
-	var issetTotalDurationInUs bool = false;
+	var issetRows bool = false
+	var issetExecDurationInUs bool = false
+	var issetTotalDurationInUs bool = false
 
 	for {
 		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
@@ -135,7 +135,7 @@ func (p *ProfilingStats) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -170,13 +170,13 @@ func (p *ProfilingStats) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 	}
 	if !issetRows {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Rows is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Rows is not set"))
 	}
 	if !issetExecDurationInUs {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field ExecDurationInUs is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field ExecDurationInUs is not set"))
 	}
 	if !issetTotalDurationInUs {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field TotalDurationInUs is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field TotalDurationInUs is not set"))
 	}
 	return nil
 }
@@ -400,8 +400,8 @@ func (p *PlanNodeBranchInfo) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
 	}
 
-	var issetIsDoBranch bool = false;
-	var issetConditionNodeID bool = false;
+	var issetIsDoBranch bool = false
+	var issetConditionNodeID bool = false
 
 	for {
 		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
@@ -409,7 +409,7 @@ func (p *PlanNodeBranchInfo) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -435,10 +435,10 @@ func (p *PlanNodeBranchInfo) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 	}
 	if !issetIsDoBranch {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field IsDoBranch is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field IsDoBranch is not set"))
 	}
 	if !issetConditionNodeID {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field ConditionNodeID is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field ConditionNodeID is not set"))
 	}
 	return nil
 }
@@ -578,8 +578,8 @@ func (p *Pair) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
 	}
 
-	var issetKey bool = false;
-	var issetValue bool = false;
+	var issetKey bool = false
+	var issetValue bool = false
 
 	for {
 		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
@@ -587,7 +587,7 @@ func (p *Pair) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -613,10 +613,10 @@ func (p *Pair) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 	}
 	if !issetKey {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Key is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Key is not set"))
 	}
 	if !issetValue {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Value is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Value is not set"))
 	}
 	return nil
 }
@@ -867,9 +867,9 @@ func (p *PlanNodeDescription) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
 	}
 
-	var issetName bool = false;
-	var issetId bool = false;
-	var issetOutputVar bool = false;
+	var issetName bool = false
+	var issetId bool = false
+	var issetOutputVar bool = false
 
 	for {
 		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
@@ -877,7 +877,7 @@ func (p *PlanNodeDescription) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -924,13 +924,13 @@ func (p *PlanNodeDescription) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 	}
 	if !issetName {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Name is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Name is not set"))
 	}
 	if !issetId {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Id is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Id is not set"))
 	}
 	if !issetOutputVar {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field OutputVar is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field OutputVar is not set"))
 	}
 	return nil
 }
@@ -1305,10 +1305,10 @@ func (p *PlanDescription) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
 	}
 
-	var issetPlanNodeDescs bool = false;
-	var issetNodeIndexMap bool = false;
-	var issetFormat bool = false;
-	var issetOptimizeTimeInUs bool = false;
+	var issetPlanNodeDescs bool = false
+	var issetNodeIndexMap bool = false
+	var issetFormat bool = false
+	var issetOptimizeTimeInUs bool = false
 
 	for {
 		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
@@ -1316,7 +1316,7 @@ func (p *PlanDescription) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -1352,16 +1352,16 @@ func (p *PlanDescription) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 	}
 	if !issetPlanNodeDescs {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field PlanNodeDescs is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field PlanNodeDescs is not set"))
 	}
 	if !issetNodeIndexMap {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field NodeIndexMap is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field NodeIndexMap is not set"))
 	}
 	if !issetFormat {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Format is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Format is not set"))
 	}
 	if !issetOptimizeTimeInUs {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field OptimizeTimeInUs is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field OptimizeTimeInUs is not set"))
 	}
 	return nil
 }
@@ -1722,8 +1722,8 @@ func (p *ExecutionResponse) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
 	}
 
-	var issetErrorCode bool = false;
-	var issetLatencyInUs bool = false;
+	var issetErrorCode bool = false
+	var issetLatencyInUs bool = false
 
 	for {
 		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
@@ -1731,7 +1731,7 @@ func (p *ExecutionResponse) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -1777,10 +1777,10 @@ func (p *ExecutionResponse) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 	}
 	if !issetErrorCode {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field ErrorCode is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field ErrorCode is not set"))
 	}
 	if !issetLatencyInUs {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field LatencyInUs is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field LatencyInUs is not set"))
 	}
 	return nil
 }
@@ -2149,7 +2149,7 @@ func (p *AuthResponse) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
 	}
 
-	var issetErrorCode bool = false;
+	var issetErrorCode bool = false
 
 	for {
 		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
@@ -2157,7 +2157,7 @@ func (p *AuthResponse) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -2194,7 +2194,7 @@ func (p *AuthResponse) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 	}
 	if !issetErrorCode {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field ErrorCode is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field ErrorCode is not set"))
 	}
 	return nil
 }
@@ -2436,7 +2436,7 @@ func (p *VerifyClientVersionResp) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
 	}
 
-	var issetErrorCode bool = false;
+	var issetErrorCode bool = false
 
 	for {
 		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
@@ -2444,7 +2444,7 @@ func (p *VerifyClientVersionResp) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -2469,7 +2469,7 @@ func (p *VerifyClientVersionResp) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 	}
 	if !issetErrorCode {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field ErrorCode is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field ErrorCode is not set"))
 	}
 	return nil
 }
@@ -2597,7 +2597,7 @@ func (p *VerifyClientVersionReq) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
 	}
 
-	var issetVersion bool = false;
+	var issetVersion bool = false
 
 	for {
 		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
@@ -2605,7 +2605,7 @@ func (p *VerifyClientVersionReq) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -2626,7 +2626,7 @@ func (p *VerifyClientVersionReq) Read(iprot thrift.Protocol) error {
 		return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 	}
 	if !issetVersion {
-		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Version is not set"));
+		return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Version is not set"))
 	}
 	return nil
 }
@@ -2677,4 +2677,3 @@ func (p *VerifyClientVersionReq) String() string {
 	versionVal := fmt.Sprintf("%v", p.Version)
 	return fmt.Sprintf("VerifyClientVersionReq({Version:%s})", versionVal)
 }
-

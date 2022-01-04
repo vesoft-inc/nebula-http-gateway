@@ -2135,7 +2135,7 @@ func (p *StorageAdminServiceTransLeaderArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -2268,7 +2268,7 @@ func (p *StorageAdminServiceTransLeaderResult) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -2405,7 +2405,7 @@ func (p *StorageAdminServiceAddPartArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -2538,7 +2538,7 @@ func (p *StorageAdminServiceAddPartResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -2675,7 +2675,7 @@ func (p *StorageAdminServiceAddLearnerArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -2808,7 +2808,7 @@ func (p *StorageAdminServiceAddLearnerResult) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -2945,7 +2945,7 @@ func (p *StorageAdminServiceRemovePartArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3078,7 +3078,7 @@ func (p *StorageAdminServiceRemovePartResult) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -3215,7 +3215,7 @@ func (p *StorageAdminServiceMemberChangeArgs) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3348,7 +3348,7 @@ func (p *StorageAdminServiceMemberChangeResult) Read(iprot thrift.Protocol) erro
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -3485,7 +3485,7 @@ func (p *StorageAdminServiceWaitingForCatchUpDataArgs) Read(iprot thrift.Protoco
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3618,7 +3618,7 @@ func (p *StorageAdminServiceWaitingForCatchUpDataResult) Read(iprot thrift.Proto
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -3755,7 +3755,7 @@ func (p *StorageAdminServiceCreateCheckpointArgs) Read(iprot thrift.Protocol) er
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3888,7 +3888,7 @@ func (p *StorageAdminServiceCreateCheckpointResult) Read(iprot thrift.Protocol) 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -4025,7 +4025,7 @@ func (p *StorageAdminServiceDropCheckpointArgs) Read(iprot thrift.Protocol) erro
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4158,7 +4158,7 @@ func (p *StorageAdminServiceDropCheckpointResult) Read(iprot thrift.Protocol) er
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -4295,7 +4295,7 @@ func (p *StorageAdminServiceBlockingWritesArgs) Read(iprot thrift.Protocol) erro
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4428,7 +4428,7 @@ func (p *StorageAdminServiceBlockingWritesResult) Read(iprot thrift.Protocol) er
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -4565,7 +4565,7 @@ func (p *StorageAdminServiceRebuildTagIndexArgs) Read(iprot thrift.Protocol) err
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4698,7 +4698,7 @@ func (p *StorageAdminServiceRebuildTagIndexResult) Read(iprot thrift.Protocol) e
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -4835,7 +4835,7 @@ func (p *StorageAdminServiceRebuildEdgeIndexArgs) Read(iprot thrift.Protocol) er
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4968,7 +4968,7 @@ func (p *StorageAdminServiceRebuildEdgeIndexResult) Read(iprot thrift.Protocol) 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -5105,7 +5105,7 @@ func (p *StorageAdminServiceGetLeaderPartsArgs) Read(iprot thrift.Protocol) erro
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -5238,7 +5238,7 @@ func (p *StorageAdminServiceGetLeaderPartsResult) Read(iprot thrift.Protocol) er
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -5375,7 +5375,7 @@ func (p *StorageAdminServiceCheckPeersArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -5508,7 +5508,7 @@ func (p *StorageAdminServiceCheckPeersResult) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -5645,7 +5645,7 @@ func (p *StorageAdminServiceAddAdminTaskArgs) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -5778,7 +5778,7 @@ func (p *StorageAdminServiceAddAdminTaskResult) Read(iprot thrift.Protocol) erro
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -5915,7 +5915,7 @@ func (p *StorageAdminServiceStopAdminTaskArgs) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -6048,7 +6048,7 @@ func (p *StorageAdminServiceStopAdminTaskResult) Read(iprot thrift.Protocol) err
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -6122,5 +6122,3 @@ func (p *StorageAdminServiceStopAdminTaskResult) String() string {
 	}
 	return fmt.Sprintf("StorageAdminServiceStopAdminTaskResult({Success:%s})", successVal)
 }
-
-

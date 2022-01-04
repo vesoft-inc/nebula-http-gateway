@@ -10,11 +10,11 @@ type (
 		//NewDataset() DataSet
 		//NewRow() Row
 		NewValue() types.Value
-		//NewDate() Date
-		//NewTime() Time
-		//NewDateTime() DateTime
+		NewDate() types.Date
+		NewTime() types.Time
+		NewDateTime() types.DateTime
 		//NewVertex() Vertex
-		//NewEdge() Edge
+		NewEdge() types.Edge
 		//NewPath() Path
 		//NewNList() NList
 		//NewNMap() NMap
@@ -64,6 +64,22 @@ func NewFactory(opts ...Option) (Factory, error) {
 
 func (f *defaultFactory) NewValue() types.Value {
 	return f.factory.NewValue()
+}
+
+func (f *defaultFactory) NewDate() types.Date {
+	return f.factory.NewDate()
+}
+
+func (f *defaultFactory) NewTime() types.Time {
+	return f.factory.NewTime()
+}
+
+func (f *defaultFactory) NewDateTime() types.DateTime {
+	return f.factory.NewDateTime()
+}
+
+func (f *defaultFactory) NewEdge() types.Edge {
+	return f.factory.NewEdge()
 }
 
 func (f *defaultFactory) initDriver() error {

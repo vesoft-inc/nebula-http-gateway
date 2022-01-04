@@ -1,12 +1,37 @@
 package types
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Any = interface{}
 
 /*
 	define the interfaces to fit internal/<ver>/thrift/ttypes and  internal/<ver>/thrift/graph/ttypes
 */
+
+type TimezoneInfo struct {
+	offset int32
+	name   []byte
+}
+
+func (t *TimezoneInfo) GetOffset() int32 {
+	return t.offset
+}
+
+func (t *TimezoneInfo) GetName() []byte {
+	return t.name
+}
+
+func (t *TimezoneInfo) SetOffset(offset int32) *TimezoneInfo {
+	t.offset = offset
+	return t
+}
+
+func (t *TimezoneInfo) SetName(name []byte) *TimezoneInfo {
+	t.name = name
+	return t
+}
 
 type EdgeType = int32
 
@@ -26,7 +51,7 @@ type Row interface {
 }
 
 type Value interface {
-	GetNVal() *NullType
+	GetNVal() NullType
 	GetBVal() bool
 	GetIVal() int64
 	GetFVal() float64
@@ -160,8 +185,12 @@ type Date interface {
 	GetYear() int16
 	GetMonth() int8
 	GetDay() int8
+	SetYear(int16) Date
+	SetMonth(int8) Date
+	SetDay(int8) Date
 	String() string
 	Unwrap() interface{}
+	Builder() DateBuilder
 }
 
 type Time interface {
@@ -169,8 +198,13 @@ type Time interface {
 	GetMinute() int8
 	GetSec() int8
 	GetMicrosec() int32
+	SetHour(int8) Time
+	SetMinute(int8) Time
+	SetSec(int8) Time
+	SetMicrosec(int32) Time
 	String() string
 	Unwrap() interface{}
+	Builder() TimeBuilder
 }
 
 type DateTime interface {
@@ -181,8 +215,16 @@ type DateTime interface {
 	GetMinute() int8
 	GetSec() int8
 	GetMicrosec() int32
+	SetYear(int16) DateTime
+	SetMonth(int8) DateTime
+	SetDay(int8) DateTime
+	SetHour(int8) DateTime
+	SetMinute(int8) DateTime
+	SetSec(int8) DateTime
+	SetMicrosec(int32) DateTime
 	String() string
 	Unwrap() interface{}
+	Builder() DateTimeBuilder
 }
 
 type Vertex interface {
@@ -202,8 +244,15 @@ type Edge interface {
 	GetProps() map[string]Value
 	IsSetSrc() bool
 	IsSetDst() bool
+	SetSrc(Value) Edge
+	SetDst(Value) Edge
+	SetType(EdgeType) Edge
+	SetName([]byte) Edge
+	SetRanking(EdgeRanking) Edge
+	SetProps(map[string]Value) Edge
 	String() string
 	Unwrap() interface{}
+	Builder() EdgeBuilder
 }
 
 type Path interface {

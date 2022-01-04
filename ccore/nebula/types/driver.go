@@ -45,6 +45,7 @@ type (
 
 	AuthResponse interface {
 		SessionID() *int64
+		GetTimezoneInfo() TimezoneInfo
 	}
 
 	ExecutionResponse interface {
@@ -53,6 +54,8 @@ type (
 		GetSpaceName() []byte
 		GetPlanDesc() PlanDescription
 		GetComment() []byte
+		GetErrorCode() nerrors.ErrorCode
+		GetErrorMsg() []byte
 		IsSetData() bool
 		IsSetSpaceName() bool
 		IsSetErrorMsg() bool
@@ -65,11 +68,11 @@ type (
 		//NewDataset() DataSet
 		//NewRow() Row
 		NewValue() Value
-		//NewDate() Date
-		//NewTime() Time
-		//NewDateTime() DateTime
+		NewDate() Date
+		NewTime() Time
+		NewDateTime() DateTime
 		//NewVertex() Vertex
-		//NewEdge() Edge
+		NewEdge() Edge
 		//NewPath() Path
 		//NewNList() NList
 		//NewNMap() NMap

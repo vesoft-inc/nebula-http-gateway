@@ -25,4 +25,3 @@ var _ = nebula0.GoUnusedProtection__
 
 func init() {
 }
-

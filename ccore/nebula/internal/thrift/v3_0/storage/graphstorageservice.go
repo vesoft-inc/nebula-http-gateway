@@ -2647,7 +2647,7 @@ func (p *GraphStorageServiceGetNeighborsArgs) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -2780,7 +2780,7 @@ func (p *GraphStorageServiceGetNeighborsResult) Read(iprot thrift.Protocol) erro
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -2917,7 +2917,7 @@ func (p *GraphStorageServiceGetPropsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3050,7 +3050,7 @@ func (p *GraphStorageServiceGetPropsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -3187,7 +3187,7 @@ func (p *GraphStorageServiceAddVerticesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3320,7 +3320,7 @@ func (p *GraphStorageServiceAddVerticesResult) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -3457,7 +3457,7 @@ func (p *GraphStorageServiceAddEdgesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3590,7 +3590,7 @@ func (p *GraphStorageServiceAddEdgesResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -3727,7 +3727,7 @@ func (p *GraphStorageServiceDeleteEdgesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -3860,7 +3860,7 @@ func (p *GraphStorageServiceDeleteEdgesResult) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -3997,7 +3997,7 @@ func (p *GraphStorageServiceDeleteVerticesArgs) Read(iprot thrift.Protocol) erro
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4130,7 +4130,7 @@ func (p *GraphStorageServiceDeleteVerticesResult) Read(iprot thrift.Protocol) er
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -4267,7 +4267,7 @@ func (p *GraphStorageServiceDeleteTagsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4400,7 +4400,7 @@ func (p *GraphStorageServiceDeleteTagsResult) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -4537,7 +4537,7 @@ func (p *GraphStorageServiceUpdateVertexArgs) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4670,7 +4670,7 @@ func (p *GraphStorageServiceUpdateVertexResult) Read(iprot thrift.Protocol) erro
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -4807,7 +4807,7 @@ func (p *GraphStorageServiceUpdateEdgeArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -4940,7 +4940,7 @@ func (p *GraphStorageServiceUpdateEdgeResult) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -5077,7 +5077,7 @@ func (p *GraphStorageServiceScanVertexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -5210,7 +5210,7 @@ func (p *GraphStorageServiceScanVertexResult) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -5347,7 +5347,7 @@ func (p *GraphStorageServiceScanEdgeArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -5480,7 +5480,7 @@ func (p *GraphStorageServiceScanEdgeResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -5617,7 +5617,7 @@ func (p *GraphStorageServiceGetUUIDArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -5750,7 +5750,7 @@ func (p *GraphStorageServiceGetUUIDResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -5887,7 +5887,7 @@ func (p *GraphStorageServiceLookupIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -6020,7 +6020,7 @@ func (p *GraphStorageServiceLookupIndexResult) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -6157,7 +6157,7 @@ func (p *GraphStorageServiceLookupAndTraverseArgs) Read(iprot thrift.Protocol) e
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -6290,7 +6290,7 @@ func (p *GraphStorageServiceLookupAndTraverseResult) Read(iprot thrift.Protocol)
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -6427,7 +6427,7 @@ func (p *GraphStorageServiceChainUpdateEdgeArgs) Read(iprot thrift.Protocol) err
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -6560,7 +6560,7 @@ func (p *GraphStorageServiceChainUpdateEdgeResult) Read(iprot thrift.Protocol) e
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -6697,7 +6697,7 @@ func (p *GraphStorageServiceChainAddEdgesArgs) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -6830,7 +6830,7 @@ func (p *GraphStorageServiceChainAddEdgesResult) Read(iprot thrift.Protocol) err
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -6967,7 +6967,7 @@ func (p *GraphStorageServiceGetArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -7100,7 +7100,7 @@ func (p *GraphStorageServiceGetResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -7237,7 +7237,7 @@ func (p *GraphStorageServicePutArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -7370,7 +7370,7 @@ func (p *GraphStorageServicePutResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -7507,7 +7507,7 @@ func (p *GraphStorageServiceRemoveArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -7640,7 +7640,7 @@ func (p *GraphStorageServiceRemoveResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -7714,5 +7714,3 @@ func (p *GraphStorageServiceRemoveResult) String() string {
 	}
 	return fmt.Sprintf("GraphStorageServiceRemoveResult({Success:%s})", successVal)
 }
-
-

@@ -11221,7 +11221,7 @@ func (p *MetaServiceCreateSpaceArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -11354,7 +11354,7 @@ func (p *MetaServiceCreateSpaceResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -11491,7 +11491,7 @@ func (p *MetaServiceDropSpaceArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -11624,7 +11624,7 @@ func (p *MetaServiceDropSpaceResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -11761,7 +11761,7 @@ func (p *MetaServiceGetSpaceArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -11894,7 +11894,7 @@ func (p *MetaServiceGetSpaceResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -12031,7 +12031,7 @@ func (p *MetaServiceListSpacesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -12164,7 +12164,7 @@ func (p *MetaServiceListSpacesResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -12301,7 +12301,7 @@ func (p *MetaServiceCreateSpaceAsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -12434,7 +12434,7 @@ func (p *MetaServiceCreateSpaceAsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -12571,7 +12571,7 @@ func (p *MetaServiceCreateTagArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -12704,7 +12704,7 @@ func (p *MetaServiceCreateTagResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -12841,7 +12841,7 @@ func (p *MetaServiceAlterTagArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -12974,7 +12974,7 @@ func (p *MetaServiceAlterTagResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -13111,7 +13111,7 @@ func (p *MetaServiceDropTagArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -13244,7 +13244,7 @@ func (p *MetaServiceDropTagResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -13381,7 +13381,7 @@ func (p *MetaServiceGetTagArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -13514,7 +13514,7 @@ func (p *MetaServiceGetTagResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -13651,7 +13651,7 @@ func (p *MetaServiceListTagsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -13784,7 +13784,7 @@ func (p *MetaServiceListTagsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -13921,7 +13921,7 @@ func (p *MetaServiceCreateEdgeArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -14054,7 +14054,7 @@ func (p *MetaServiceCreateEdgeResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -14191,7 +14191,7 @@ func (p *MetaServiceAlterEdgeArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -14324,7 +14324,7 @@ func (p *MetaServiceAlterEdgeResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -14461,7 +14461,7 @@ func (p *MetaServiceDropEdgeArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -14594,7 +14594,7 @@ func (p *MetaServiceDropEdgeResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -14731,7 +14731,7 @@ func (p *MetaServiceGetEdgeArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -14864,7 +14864,7 @@ func (p *MetaServiceGetEdgeResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -15001,7 +15001,7 @@ func (p *MetaServiceListEdgesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -15134,7 +15134,7 @@ func (p *MetaServiceListEdgesResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -15271,7 +15271,7 @@ func (p *MetaServiceAddHostsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -15404,7 +15404,7 @@ func (p *MetaServiceAddHostsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -15541,7 +15541,7 @@ func (p *MetaServiceAddHostsIntoZoneArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -15674,7 +15674,7 @@ func (p *MetaServiceAddHostsIntoZoneResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -15811,7 +15811,7 @@ func (p *MetaServiceDropHostsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -15944,7 +15944,7 @@ func (p *MetaServiceDropHostsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -16081,7 +16081,7 @@ func (p *MetaServiceListHostsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -16214,7 +16214,7 @@ func (p *MetaServiceListHostsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -16351,7 +16351,7 @@ func (p *MetaServiceGetPartsAllocArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -16484,7 +16484,7 @@ func (p *MetaServiceGetPartsAllocResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -16621,7 +16621,7 @@ func (p *MetaServiceListPartsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -16754,7 +16754,7 @@ func (p *MetaServiceListPartsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -16891,7 +16891,7 @@ func (p *MetaServiceMultiPutArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -17024,7 +17024,7 @@ func (p *MetaServiceMultiPutResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -17161,7 +17161,7 @@ func (p *MetaServiceGetArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -17294,7 +17294,7 @@ func (p *MetaServiceGetResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -17431,7 +17431,7 @@ func (p *MetaServiceMultiGetArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -17564,7 +17564,7 @@ func (p *MetaServiceMultiGetResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -17701,7 +17701,7 @@ func (p *MetaServiceRemoveArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -17834,7 +17834,7 @@ func (p *MetaServiceRemoveResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -17971,7 +17971,7 @@ func (p *MetaServiceRemoveRangeArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -18104,7 +18104,7 @@ func (p *MetaServiceRemoveRangeResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -18241,7 +18241,7 @@ func (p *MetaServiceScanArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -18374,7 +18374,7 @@ func (p *MetaServiceScanResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -18511,7 +18511,7 @@ func (p *MetaServiceCreateTagIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -18644,7 +18644,7 @@ func (p *MetaServiceCreateTagIndexResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -18781,7 +18781,7 @@ func (p *MetaServiceDropTagIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -18914,7 +18914,7 @@ func (p *MetaServiceDropTagIndexResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -19051,7 +19051,7 @@ func (p *MetaServiceGetTagIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -19184,7 +19184,7 @@ func (p *MetaServiceGetTagIndexResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -19321,7 +19321,7 @@ func (p *MetaServiceListTagIndexesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -19454,7 +19454,7 @@ func (p *MetaServiceListTagIndexesResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -19591,7 +19591,7 @@ func (p *MetaServiceRebuildTagIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -19724,7 +19724,7 @@ func (p *MetaServiceRebuildTagIndexResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -19861,7 +19861,7 @@ func (p *MetaServiceListTagIndexStatusArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -19994,7 +19994,7 @@ func (p *MetaServiceListTagIndexStatusResult) Read(iprot thrift.Protocol) error 
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -20131,7 +20131,7 @@ func (p *MetaServiceCreateEdgeIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -20264,7 +20264,7 @@ func (p *MetaServiceCreateEdgeIndexResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -20401,7 +20401,7 @@ func (p *MetaServiceDropEdgeIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -20534,7 +20534,7 @@ func (p *MetaServiceDropEdgeIndexResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -20671,7 +20671,7 @@ func (p *MetaServiceGetEdgeIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -20804,7 +20804,7 @@ func (p *MetaServiceGetEdgeIndexResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -20941,7 +20941,7 @@ func (p *MetaServiceListEdgeIndexesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -21074,7 +21074,7 @@ func (p *MetaServiceListEdgeIndexesResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -21211,7 +21211,7 @@ func (p *MetaServiceRebuildEdgeIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -21344,7 +21344,7 @@ func (p *MetaServiceRebuildEdgeIndexResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -21481,7 +21481,7 @@ func (p *MetaServiceListEdgeIndexStatusArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -21614,7 +21614,7 @@ func (p *MetaServiceListEdgeIndexStatusResult) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -21751,7 +21751,7 @@ func (p *MetaServiceCreateUserArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -21884,7 +21884,7 @@ func (p *MetaServiceCreateUserResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -22021,7 +22021,7 @@ func (p *MetaServiceDropUserArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -22154,7 +22154,7 @@ func (p *MetaServiceDropUserResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -22291,7 +22291,7 @@ func (p *MetaServiceAlterUserArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -22424,7 +22424,7 @@ func (p *MetaServiceAlterUserResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -22561,7 +22561,7 @@ func (p *MetaServiceGrantRoleArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -22694,7 +22694,7 @@ func (p *MetaServiceGrantRoleResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -22831,7 +22831,7 @@ func (p *MetaServiceRevokeRoleArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -22964,7 +22964,7 @@ func (p *MetaServiceRevokeRoleResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -23101,7 +23101,7 @@ func (p *MetaServiceListUsersArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -23234,7 +23234,7 @@ func (p *MetaServiceListUsersResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -23371,7 +23371,7 @@ func (p *MetaServiceListRolesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -23504,7 +23504,7 @@ func (p *MetaServiceListRolesResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -23641,7 +23641,7 @@ func (p *MetaServiceGetUserRolesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -23774,7 +23774,7 @@ func (p *MetaServiceGetUserRolesResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -23911,7 +23911,7 @@ func (p *MetaServiceChangePasswordArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -24044,7 +24044,7 @@ func (p *MetaServiceChangePasswordResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -24181,7 +24181,7 @@ func (p *MetaServiceHeartBeatArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -24314,7 +24314,7 @@ func (p *MetaServiceHeartBeatResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -24451,7 +24451,7 @@ func (p *MetaServiceAgentHeartbeatArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -24584,7 +24584,7 @@ func (p *MetaServiceAgentHeartbeatResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -24721,7 +24721,7 @@ func (p *MetaServiceRegConfigArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -24854,7 +24854,7 @@ func (p *MetaServiceRegConfigResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -24991,7 +24991,7 @@ func (p *MetaServiceGetConfigArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -25124,7 +25124,7 @@ func (p *MetaServiceGetConfigResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -25261,7 +25261,7 @@ func (p *MetaServiceSetConfigArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -25394,7 +25394,7 @@ func (p *MetaServiceSetConfigResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -25531,7 +25531,7 @@ func (p *MetaServiceListConfigsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -25664,7 +25664,7 @@ func (p *MetaServiceListConfigsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -25801,7 +25801,7 @@ func (p *MetaServiceCreateSnapshotArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -25934,7 +25934,7 @@ func (p *MetaServiceCreateSnapshotResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -26071,7 +26071,7 @@ func (p *MetaServiceDropSnapshotArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -26204,7 +26204,7 @@ func (p *MetaServiceDropSnapshotResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -26341,7 +26341,7 @@ func (p *MetaServiceListSnapshotsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -26474,7 +26474,7 @@ func (p *MetaServiceListSnapshotsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -26611,7 +26611,7 @@ func (p *MetaServiceRunAdminJobArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -26744,7 +26744,7 @@ func (p *MetaServiceRunAdminJobResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -26881,7 +26881,7 @@ func (p *MetaServiceMergeZoneArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -27014,7 +27014,7 @@ func (p *MetaServiceMergeZoneResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -27151,7 +27151,7 @@ func (p *MetaServiceDropZoneArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -27284,7 +27284,7 @@ func (p *MetaServiceDropZoneResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -27421,7 +27421,7 @@ func (p *MetaServiceSplitZoneArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -27554,7 +27554,7 @@ func (p *MetaServiceSplitZoneResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -27691,7 +27691,7 @@ func (p *MetaServiceRenameZoneArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -27824,7 +27824,7 @@ func (p *MetaServiceRenameZoneResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -27961,7 +27961,7 @@ func (p *MetaServiceGetZoneArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -28094,7 +28094,7 @@ func (p *MetaServiceGetZoneResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -28231,7 +28231,7 @@ func (p *MetaServiceListZonesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -28364,7 +28364,7 @@ func (p *MetaServiceListZonesResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -28501,7 +28501,7 @@ func (p *MetaServiceAddListenerArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -28634,7 +28634,7 @@ func (p *MetaServiceAddListenerResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -28771,7 +28771,7 @@ func (p *MetaServiceRemoveListenerArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -28904,7 +28904,7 @@ func (p *MetaServiceRemoveListenerResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -29041,7 +29041,7 @@ func (p *MetaServiceListListenerArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -29174,7 +29174,7 @@ func (p *MetaServiceListListenerResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -29311,7 +29311,7 @@ func (p *MetaServiceGetStatsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -29444,7 +29444,7 @@ func (p *MetaServiceGetStatsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -29581,7 +29581,7 @@ func (p *MetaServiceSignInFTServiceArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -29714,7 +29714,7 @@ func (p *MetaServiceSignInFTServiceResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -29851,7 +29851,7 @@ func (p *MetaServiceSignOutFTServiceArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -29984,7 +29984,7 @@ func (p *MetaServiceSignOutFTServiceResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -30121,7 +30121,7 @@ func (p *MetaServiceListFTClientsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -30254,7 +30254,7 @@ func (p *MetaServiceListFTClientsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -30391,7 +30391,7 @@ func (p *MetaServiceCreateFTIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -30524,7 +30524,7 @@ func (p *MetaServiceCreateFTIndexResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -30661,7 +30661,7 @@ func (p *MetaServiceDropFTIndexArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -30794,7 +30794,7 @@ func (p *MetaServiceDropFTIndexResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -30931,7 +30931,7 @@ func (p *MetaServiceListFTIndexesArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -31064,7 +31064,7 @@ func (p *MetaServiceListFTIndexesResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -31201,7 +31201,7 @@ func (p *MetaServiceCreateSessionArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -31334,7 +31334,7 @@ func (p *MetaServiceCreateSessionResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -31471,7 +31471,7 @@ func (p *MetaServiceUpdateSessionsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -31604,7 +31604,7 @@ func (p *MetaServiceUpdateSessionsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -31741,7 +31741,7 @@ func (p *MetaServiceListSessionsArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -31874,7 +31874,7 @@ func (p *MetaServiceListSessionsResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -32011,7 +32011,7 @@ func (p *MetaServiceGetSessionArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -32144,7 +32144,7 @@ func (p *MetaServiceGetSessionResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -32281,7 +32281,7 @@ func (p *MetaServiceRemoveSessionArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -32414,7 +32414,7 @@ func (p *MetaServiceRemoveSessionResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -32551,7 +32551,7 @@ func (p *MetaServiceKillQueryArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -32684,7 +32684,7 @@ func (p *MetaServiceKillQueryResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -32821,7 +32821,7 @@ func (p *MetaServiceReportTaskFinishArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -32954,7 +32954,7 @@ func (p *MetaServiceReportTaskFinishResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -33091,7 +33091,7 @@ func (p *MetaServiceCreateBackupArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -33224,7 +33224,7 @@ func (p *MetaServiceCreateBackupResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -33361,7 +33361,7 @@ func (p *MetaServiceRestoreMetaArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -33494,7 +33494,7 @@ func (p *MetaServiceRestoreMetaResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -33631,7 +33631,7 @@ func (p *MetaServiceListClusterArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -33764,7 +33764,7 @@ func (p *MetaServiceListClusterResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -33901,7 +33901,7 @@ func (p *MetaServiceGetMetaDirInfoArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -34034,7 +34034,7 @@ func (p *MetaServiceGetMetaDirInfoResult) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -34171,7 +34171,7 @@ func (p *MetaServiceVerifyClientVersionArgs) Read(iprot thrift.Protocol) error {
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 1:
@@ -34304,7 +34304,7 @@ func (p *MetaServiceVerifyClientVersionResult) Read(iprot thrift.Protocol) error
 			return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
 		}
 		if fieldTypeId == thrift.STOP {
-			break;
+			break
 		}
 		switch fieldId {
 		case 0:
@@ -34378,5 +34378,3 @@ func (p *MetaServiceVerifyClientVersionResult) String() string {
 	}
 	return fmt.Sprintf("MetaServiceVerifyClientVersionResult({Success:%s})", successVal)
 }
-
-

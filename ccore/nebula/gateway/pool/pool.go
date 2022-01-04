@@ -98,7 +98,7 @@ func handleRequest(ncid string) {
 						}
 					}
 				}()
-				response, err := client.graphClient.Execute([]byte(request.Gql))
+				authResp, err := client.graphClient.Authenticate(client.account.username, client.account.password)
 				if err != nil {
 					err = ConnectionClosedError
 					request.ResponseChannel <- ChannelResponse{
@@ -107,7 +107,17 @@ func handleRequest(ncid string) {
 					}
 					return
 				}
-				res, err := wrapper.GenResultSet(response)
+
+				execResponse, err := client.graphClient.Execute([]byte(request.Gql))
+				if err != nil {
+					err = ConnectionClosedError
+					request.ResponseChannel <- ChannelResponse{
+						Result: nil,
+						Error:  err,
+					}
+					return
+				}
+				res, err := wrapper.GenResultSet(execResponse, client.graphClient.Factory(), authResp.GetTimezoneInfo())
 				if err != nil {
 					err = ConnectionClosedError
 				}

@@ -7,9 +7,12 @@ import (
 type (
 	GraphClient interface {
 		Open() error
+		Authenticate(username, password string) (AuthResponse, error)
 		Execute(stmt []byte) (ExecutionResponse, error)
 		ExecuteJson(stmt []byte) ([]byte, error)
 		Close() error
+		Factory() Factory
+		Version() Version
 	}
 
 	defaultGraphClient defaultClient
@@ -35,6 +38,10 @@ func (c *defaultGraphClient) Open() error {
 	})
 }
 
+func (c *defaultGraphClient) Authenticate(username, password string) (AuthResponse, error) {
+	return c.graph.Authenticate(username, password)
+}
+
 func (c *defaultGraphClient) Execute(stmt []byte) (ExecutionResponse, error) {
 	return c.graph.Execute(c.graph.sessionId, stmt)
 }
@@ -45,6 +52,14 @@ func (c *defaultGraphClient) ExecuteJson(stmt []byte) ([]byte, error) {
 
 func (c *defaultGraphClient) Close() error {
 	return c.graph.close()
+}
+
+func (c *defaultGraphClient) Factory() Factory {
+	return c.defaultClient().Factory()
+}
+
+func (c *defaultGraphClient) Version() Version {
+	return c.defaultClient().Version()
 }
 
 func (c *defaultGraphClient) defaultClient() *defaultClient {

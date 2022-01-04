@@ -35,3 +35,23 @@ func (f *defaultFactoryDriver) NewValue() types.Value {
 	value := newValue()
 	return newValueWrapper(value)
 }
+
+func (f *defaultFactoryDriver) NewDate() types.Date {
+	date := newDate()
+	return newDateWrapper(date)
+}
+
+func (f *defaultFactoryDriver) NewTime() types.Time {
+	time := newTime()
+	return newTimeWrapper(time)
+}
+
+func (f *defaultFactoryDriver) NewDateTime() types.DateTime {
+	dateTime := newDateTime()
+	return newDateTimeWrapper(dateTime)
+}
+
+func (f *defaultFactoryDriver) NewEdge() types.Edge {
+	edge := newEdge()
+	return newEdgeWrapper(edge)
+}
