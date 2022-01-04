@@ -56,3 +56,13 @@ func (f *defaultFactoryDriver) NewEdgeBuilder() types.EdgeBuilder {
 	edge := nthrift.NewEdge()
 	return &edgeBuilder{edge}
 }
+
+func (f *defaultFactoryDriver) NewNListBuilder() types.NListBuilder {
+	nlist := nthrift.NewNList()
+	return &nListBuilder{nlist}
+}
+
+func (f *defaultFactoryDriver) NewNMapBuilder() types.NMapBuilder {
+	nmap := nthrift.NewNMap()
+	return &nMapBuilder{nmap}
+}

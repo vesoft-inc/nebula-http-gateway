@@ -10,6 +10,7 @@ type (
 		Authenticate(username, password string) (AuthResponse, error)
 		Execute(stmt []byte) (ExecutionResponse, error)
 		ExecuteJson(stmt []byte) ([]byte, error)
+		ExecuteWithParameter(stmt []byte, params types.ParameterMap) (ExecutionResponse, error)
 		Close() error
 		Factory() Factory
 		Version() Version
@@ -48,6 +49,10 @@ func (c *defaultGraphClient) Execute(stmt []byte) (ExecutionResponse, error) {
 
 func (c *defaultGraphClient) ExecuteJson(stmt []byte) ([]byte, error) {
 	return c.graph.ExecuteJson(c.graph.sessionId, stmt)
+}
+
+func (c *defaultGraphClient) ExecuteWithParameter(stmt []byte, params types.ParameterMap) (ExecutionResponse, error) {
+	return c.graph.ExecuteWithParameter(c.graph.sessionId, stmt, params)
 }
 
 func (c *defaultGraphClient) Close() error {

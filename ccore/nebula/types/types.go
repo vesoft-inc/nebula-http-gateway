@@ -6,6 +6,9 @@ import (
 
 type Any = interface{}
 
+type ParameterList []string
+type ParameterMap map[string]Value
+
 /*
 	define the interfaces to fit internal/<ver>/thrift/ttypes and  internal/<ver>/thrift/graph/ttypes
 */
@@ -260,12 +263,14 @@ type Path interface {
 
 type NList interface {
 	GetValues() []Value
+	SetValues([]Value) NList
 	String() string
 	Unwrap() interface{}
 }
 
 type NMap interface {
 	GetKvs() map[string]Value
+	SetKvs(map[string]Value) NMap
 	String() string
 	Unwrap() interface{}
 }

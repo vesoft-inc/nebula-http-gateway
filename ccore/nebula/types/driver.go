@@ -29,6 +29,7 @@ type (
 		Signout(sessionId int64) (err error)
 		Execute(sessionId int64, stmt []byte) (ExecutionResponse, error)
 		ExecuteJson(sessionId int64, stmt []byte) ([]byte, error)
+		ExecuteWithParameter(sessionId int64, stmt []byte, params ParameterMap) (ExecutionResponse, error)
 		Close() error
 	}
 
@@ -74,8 +75,8 @@ type (
 		//NewVertexBuilder() VertexBuilder
 		NewEdgeBuilder() EdgeBuilder
 		//NewPathBuilder() PathBuilder
-		//NewNListBuilder() NListBuilder
-		//NewNMapBuilder() NMapBuilder
+		NewNListBuilder() NListBuilder
+		NewNMapBuilder() NMapBuilder
 		//NewNSetBuilder() NSetBuilder
 		//NewGeographyBuilder() GeographyBuilder
 		//NewTagBuilder() TagBuilder

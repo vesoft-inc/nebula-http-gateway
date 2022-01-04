@@ -56,3 +56,13 @@ type EdgeBuilder interface {
 	Props(map[string]Value) EdgeBuilder
 	Build() Edge
 }
+
+type NListBuilder interface {
+	Values([]Value) NListBuilder
+	Build() NList
+}
+
+type NMapBuilder interface {
+	Kvs(map[string]Value) NMapBuilder
+	Build() NMap
+}

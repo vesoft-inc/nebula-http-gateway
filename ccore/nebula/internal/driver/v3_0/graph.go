@@ -2,6 +2,7 @@ package v3_0
 
 import (
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	nthrift "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v3_0"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v3_0/graph"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
@@ -65,6 +66,22 @@ func (c *defaultGraphClient) Execute(sessionId int64, stmt []byte) (types.Execut
 
 func (c *defaultGraphClient) ExecuteJson(sessionId int64, stmt []byte) ([]byte, error) {
 	return c.graph.ExecuteJson(sessionId, stmt)
+}
+
+func (c *defaultGraphClient) ExecuteWithParameter(sessionId int64, stmt []byte, params types.ParameterMap) (types.ExecutionResponse, error) {
+	_params := make(map[string]*nthrift.Value, len(params))
+	for k, v := range params {
+		_params[k] = v.Unwrap().(*nthrift.Value)
+	}
+	resp, err := c.graph.ExecuteWithParameter(sessionId, stmt, _params)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = codeErrorIfHappened(resp.ErrorCode, resp.ErrorMsg); err != nil {
+		return nil, err
+	}
+	return newExecutionResponseWrapper(resp), nil
 }
 
 func (c *defaultGraphClient) Close() error {

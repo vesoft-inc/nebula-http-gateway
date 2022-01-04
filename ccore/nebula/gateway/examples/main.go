@@ -23,7 +23,7 @@ func main() {
 	defer dao.Disconnect(nsid)
 
 	gql := "show hosts;"
-	res, p, err := dao.Execute(nsid, gql)
+	res, p, err := dao.Execute(nsid, gql, nil)
 	if err != nil {
 		log.Println("error: ", err)
 		if p != nil {

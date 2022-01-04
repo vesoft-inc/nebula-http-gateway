@@ -2,6 +2,7 @@ package v2_6
 
 import (
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	nerrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_6/graph"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
@@ -65,6 +66,13 @@ func (c *defaultGraphClient) Execute(sessionId int64, stmt []byte) (types.Execut
 
 func (c *defaultGraphClient) ExecuteJson(sessionId int64, stmt []byte) ([]byte, error) {
 	return c.graph.ExecuteJson(sessionId, stmt)
+}
+
+func (c *defaultGraphClient) ExecuteWithParameter(sessionId int64, stmt []byte, params types.ParameterMap) (types.ExecutionResponse, error) {
+	if params == nil {
+		return c.Execute(sessionId, stmt)
+	}
+	return nil, nerrors.ErrMethodNotSupported
 }
 
 func (c *defaultGraphClient) Close() error {
