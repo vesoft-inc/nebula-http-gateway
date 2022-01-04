@@ -105,7 +105,6 @@ type Value interface {
 	SetDuVal(Duration) Value
 	String() string
 	Unwrap() interface{}
-	Builder() ValueBuilder
 }
 
 type NullType int64
@@ -190,7 +189,6 @@ type Date interface {
 	SetDay(int8) Date
 	String() string
 	Unwrap() interface{}
-	Builder() DateBuilder
 }
 
 type Time interface {
@@ -204,7 +202,6 @@ type Time interface {
 	SetMicrosec(int32) Time
 	String() string
 	Unwrap() interface{}
-	Builder() TimeBuilder
 }
 
 type DateTime interface {
@@ -224,7 +221,6 @@ type DateTime interface {
 	SetMicrosec(int32) DateTime
 	String() string
 	Unwrap() interface{}
-	Builder() DateTimeBuilder
 }
 
 type Vertex interface {
@@ -252,7 +248,6 @@ type Edge interface {
 	SetProps(map[string]Value) Edge
 	String() string
 	Unwrap() interface{}
-	Builder() EdgeBuilder
 }
 
 type Path interface {

@@ -109,16 +109,13 @@ func (w rowWrapper) Unwrap() interface{} {
 
 type valueWrapper struct {
 	*nthrift.Value
-	builder *valueBuilder
 }
 
 func newValueWrapper(value *nthrift.Value) types.Value {
 	if value == nil {
 		return nil
 	}
-
-	v := *value
-	return valueWrapper{Value: value, builder: &valueBuilder{v}}
+	return valueWrapper{Value: value}
 }
 
 func newVaulesWrapper(values []*nthrift.Value) []types.Value {
@@ -273,101 +270,97 @@ func (w valueWrapper) Unwrap() interface{} {
 	return w.Value
 }
 
-func (w valueWrapper) Builder() types.ValueBuilder {
-	return w.builder
-}
-
 type valueBuilder struct {
-	value nthrift.Value
+	builder *nthrift.ValueBuilder
 }
 
 func (b valueBuilder) NVal(nval *types.NullType) types.ValueBuilder {
-	b.value.SetNVal((*nthrift.NullType)(nval))
+	b.builder = b.builder.NVal((*nthrift.NullType)(nval))
 	return b
 }
 
 func (b valueBuilder) BVal(bval *bool) types.ValueBuilder {
-	b.value.SetBVal(bval)
+	b.builder = b.builder.BVal(bval)
 	return b
 }
 
 func (b valueBuilder) IVal(ival *int64) types.ValueBuilder {
-	b.value.SetIVal(ival)
+	b.builder = b.builder.IVal(ival)
 	return b
 }
 
 func (b valueBuilder) FVal(fval *float64) types.ValueBuilder {
-	b.value.SetFVal(fval)
+	b.builder = b.builder.FVal(fval)
 	return b
 }
 
 func (b valueBuilder) SVal(sval []byte) types.ValueBuilder {
-	b.value.SetSVal(sval)
+	b.builder = b.builder.SVal(sval)
 	return b
 }
 
 func (b valueBuilder) DVal(dval types.Date) types.ValueBuilder {
-	b.value.SetDVal(dval.Unwrap().(*nthrift.Date))
+	b.builder = b.builder.DVal(dval.Unwrap().(*nthrift.Date))
 	return b
 }
 
 func (b valueBuilder) TVal(tval types.Time) types.ValueBuilder {
-	b.value.SetTVal(tval.Unwrap().(*nthrift.Time))
+	b.builder = b.builder.TVal(tval.Unwrap().(*nthrift.Time))
 	return b
 }
 
 func (b valueBuilder) DtVal(dtval types.DateTime) types.ValueBuilder {
-	b.value.SetDtVal(dtval.Unwrap().(*nthrift.DateTime))
+	b.builder = b.builder.DtVal(dtval.Unwrap().(*nthrift.DateTime))
 	return b
 }
 
 func (b valueBuilder) VVal(vval types.Vertex) types.ValueBuilder {
-	b.value.SetVVal(vval.Unwrap().(*nthrift.Vertex))
+	b.builder = b.builder.VVal(vval.Unwrap().(*nthrift.Vertex))
 	return b
 }
 
 func (b valueBuilder) EVal(eval types.Edge) types.ValueBuilder {
-	b.value.SetEVal(eval.Unwrap().(*nthrift.Edge))
+	b.builder = b.builder.EVal(eval.Unwrap().(*nthrift.Edge))
 	return b
 }
 
 func (b valueBuilder) PVal(pval types.Path) types.ValueBuilder {
-	b.value.SetPVal(pval.Unwrap().(*nthrift.Path))
+	b.builder = b.builder.PVal(pval.Unwrap().(*nthrift.Path))
 	return b
 }
 
 func (b valueBuilder) LVal(lval types.NList) types.ValueBuilder {
-	b.value.SetLVal(lval.Unwrap().(*nthrift.NList))
+	b.builder = b.builder.LVal(lval.Unwrap().(*nthrift.NList))
 	return b
 }
 
 func (b valueBuilder) MVal(mval types.NMap) types.ValueBuilder {
-	b.value.SetMVal(mval.Unwrap().(*nthrift.NMap))
+	b.builder = b.builder.MVal(mval.Unwrap().(*nthrift.NMap))
 	return b
 }
 
 func (b valueBuilder) UVal(uval types.NSet) types.ValueBuilder {
-	b.value.SetUVal(uval.Unwrap().(*nthrift.NSet))
+	b.builder = b.builder.UVal(uval.Unwrap().(*nthrift.NSet))
 	return b
 }
 
 func (b valueBuilder) GVal(gval types.DataSet) types.ValueBuilder {
-	b.value.SetGVal(gval.Unwrap().(*nthrift.DataSet))
+	b.builder = b.builder.GVal(gval.Unwrap().(*nthrift.DataSet))
 	return b
 }
 
 func (b valueBuilder) GgVal(ggval types.Geography) types.ValueBuilder {
-	b.value.SetGgVal(ggval.Unwrap().(*nthrift.Geography))
+	b.builder = b.builder.GgVal(ggval.Unwrap().(*nthrift.Geography))
 	return b
 }
 
 func (b valueBuilder) DuVal(duval types.Duration) types.ValueBuilder {
-	b.value.SetDuVal(duval.Unwrap().(*nthrift.Duration))
+	b.builder = b.builder.DuVal(duval.Unwrap().(*nthrift.Duration))
 	return b
 }
 
-func (b valueBuilder) Emit() types.Value {
-	return newValueWrapper(&b.value)
+func (b valueBuilder) Build() types.Value {
+	return newValueWrapper(b.builder.Emit())
 }
 
 func newNullTypeWrapper(nullType *nthrift.NullType) types.NullType {
@@ -379,16 +372,13 @@ func newNullTypeWrapper(nullType *nthrift.NullType) types.NullType {
 
 type dateWrapper struct {
 	*nthrift.Date
-	builder *dateBuilder
 }
 
 func newDateWrapper(date *nthrift.Date) types.Date {
 	if date == nil {
 		return nil
 	}
-
-	d := *date
-	return dateWrapper{date, &dateBuilder{d}}
+	return dateWrapper{date}
 }
 
 func (w dateWrapper) SetYear(year int16) types.Date {
@@ -410,45 +400,38 @@ func (w dateWrapper) Unwrap() interface{} {
 	return w.Date
 }
 
-func (w dateWrapper) Builder() types.DateBuilder {
-	return w.builder
-}
-
 type dateBuilder struct {
-	date nthrift.Date
+	builder *nthrift.DateBuilder
 }
 
 func (b dateBuilder) Year(year int16) types.DateBuilder {
-	b.date.SetYear(year)
+	b.builder = b.builder.Year(year)
 	return b
 }
 
 func (b dateBuilder) Month(month int8) types.DateBuilder {
-	b.date.SetMonth(month)
+	b.builder = b.builder.Month(month)
 	return b
 }
 
 func (b dateBuilder) Day(day int8) types.DateBuilder {
-	b.date.SetDay(day)
+	b.builder = b.builder.Day(day)
 	return b
 }
 
-func (b dateBuilder) Emit() types.Date {
-	return newDateWrapper(&b.date)
+func (b dateBuilder) Build() types.Date {
+	return newDateWrapper(b.builder.Emit())
 }
 
 type timeWrapper struct {
 	*nthrift.Time
-	builder *timeBuilder
 }
 
 func newTimeWrapper(time *nthrift.Time) types.Time {
 	if time == nil {
 		return nil
 	}
-
-	t := *time
-	return timeWrapper{time, &timeBuilder{t}}
+	return timeWrapper{time}
 }
 
 func (w timeWrapper) SetHour(hour int8) types.Time {
@@ -475,50 +458,43 @@ func (w timeWrapper) Unwrap() interface{} {
 	return w.Time
 }
 
-func (w timeWrapper) Builder() types.TimeBuilder {
-	return w.builder
-}
-
 type timeBuilder struct {
-	time nthrift.Time
+	builder *nthrift.TimeBuilder
 }
 
 func (b timeBuilder) Hour(hour int8) types.TimeBuilder {
-	b.time.SetHour(hour)
+	b.builder = b.builder.Hour(hour)
 	return b
 }
 
 func (b timeBuilder) Minute(minute int8) types.TimeBuilder {
-	b.time.SetMinute(minute)
+	b.builder = b.builder.Minute(minute)
 	return b
 }
 
 func (b timeBuilder) Sec(sec int8) types.TimeBuilder {
-	b.time.SetSec(sec)
+	b.builder = b.builder.Sec(sec)
 	return b
 }
 
 func (b timeBuilder) Microsec(microsec int32) types.TimeBuilder {
-	b.time.SetMicrosec(microsec)
+	b.builder = b.builder.Microsec(microsec)
 	return b
 }
 
-func (b timeBuilder) Emit() types.Time {
-	return newTimeWrapper(&b.time)
+func (b timeBuilder) Build() types.Time {
+	return newTimeWrapper(b.builder.Emit())
 }
 
 type dateTimeWrapper struct {
 	*nthrift.DateTime
-	builder *dateTimeBuilder
 }
 
 func newDateTimeWrapper(dateTime *nthrift.DateTime) types.DateTime {
 	if dateTime == nil {
 		return nil
 	}
-
-	dt := *dateTime
-	return dateTimeWrapper{dateTime, &dateTimeBuilder{dt}}
+	return dateTimeWrapper{dateTime}
 }
 
 func (w dateTimeWrapper) SetYear(year int16) types.DateTime {
@@ -560,51 +536,47 @@ func (w dateTimeWrapper) Unwrap() interface{} {
 	return w.DateTime
 }
 
-func (w dateTimeWrapper) Builder() types.DateTimeBuilder {
-	return w.builder
-}
-
 type dateTimeBuilder struct {
-	dateTime nthrift.DateTime
+	builder *nthrift.DateTimeBuilder
 }
 
 func (b dateTimeBuilder) Year(year int16) types.DateTimeBuilder {
-	b.dateTime.SetYear(year)
+	b.builder = b.builder.Year(year)
 	return b
 }
 
 func (b dateTimeBuilder) Month(month int8) types.DateTimeBuilder {
-	b.dateTime.SetMonth(month)
+	b.builder = b.builder.Month(month)
 	return b
 }
 
 func (b dateTimeBuilder) Day(day int8) types.DateTimeBuilder {
-	b.dateTime.SetDay(day)
+	b.builder = b.builder.Day(day)
 	return b
 }
 
 func (b dateTimeBuilder) Hour(hour int8) types.DateTimeBuilder {
-	b.dateTime.SetHour(hour)
+	b.builder = b.builder.Hour(hour)
 	return b
 }
 
 func (b dateTimeBuilder) Minute(minute int8) types.DateTimeBuilder {
-	b.dateTime.SetMinute(minute)
+	b.builder = b.builder.Minute(minute)
 	return b
 }
 
 func (b dateTimeBuilder) Sec(sec int8) types.DateTimeBuilder {
-	b.dateTime.SetSec(sec)
+	b.builder = b.builder.Sec(sec)
 	return b
 }
 
 func (b dateTimeBuilder) Microsec(microsec int32) types.DateTimeBuilder {
-	b.dateTime.SetMicrosec(microsec)
+	b.builder = b.builder.Microsec(microsec)
 	return b
 }
 
-func (b dateTimeBuilder) Emit() types.DateTime {
-	return newDateTimeWrapper(&b.dateTime)
+func (b dateTimeBuilder) Build() types.DateTime {
+	return newDateTimeWrapper(b.builder.Emit())
 }
 
 type vertexWrapper struct {
@@ -632,16 +604,13 @@ func (w vertexWrapper) Unwrap() interface{} {
 
 type edgeWrapper struct {
 	*nthrift.Edge
-	builder *edgeBuilder
 }
 
 func newEdgeWrapper(edge *nthrift.Edge) types.Edge {
 	if edge == nil {
 		return nil
 	}
-
-	e := *edge
-	return edgeWrapper{edge, &edgeBuilder{e}}
+	return edgeWrapper{edge}
 }
 
 func (w edgeWrapper) GetSrc() types.Value {
@@ -708,36 +677,32 @@ func (w edgeWrapper) Unwrap() interface{} {
 	return w.Edge
 }
 
-func (w edgeWrapper) Builder() types.EdgeBuilder {
-	return w.builder
-}
-
 type edgeBuilder struct {
-	edge nthrift.Edge
+	builder *nthrift.EdgeBuilder
 }
 
 func (b edgeBuilder) Src(src types.Value) types.EdgeBuilder {
-	b.edge.SetSrc(src.Unwrap().(*nthrift.Value))
+	b.builder = b.builder.Src(src.Unwrap().(*nthrift.Value))
 	return b
 }
 
 func (b edgeBuilder) Dst(dst types.Value) types.EdgeBuilder {
-	b.edge.SetDst(dst.Unwrap().(*nthrift.Value))
+	b.builder = b.builder.Dst(dst.Unwrap().(*nthrift.Value))
 	return b
 }
 
 func (b edgeBuilder) Type(edgeType types.EdgeType) types.EdgeBuilder {
-	b.edge.SetType(edgeType)
+	b.builder = b.builder.Type(edgeType)
 	return b
 }
 
 func (b edgeBuilder) Name(name []byte) types.EdgeBuilder {
-	b.edge.SetName(name)
+	b.builder = b.builder.Name(name)
 	return b
 }
 
 func (b edgeBuilder) Ranking(edgeRanking types.EdgeRanking) types.EdgeBuilder {
-	b.edge.SetRanking(edgeRanking)
+	b.builder = b.builder.Ranking(edgeRanking)
 	return b
 }
 
@@ -746,12 +711,12 @@ func (b edgeBuilder) Props(props map[string]types.Value) types.EdgeBuilder {
 	for k, v := range props {
 		_props[k] = v.Unwrap().(*nthrift.Value)
 	}
-	b.edge.SetProps(_props)
+	b.builder = b.builder.Props(_props)
 	return b
 }
 
-func (b edgeBuilder) Emit() types.Edge {
-	return newEdgeWrapper(&b.edge)
+func (b edgeBuilder) Build() types.Edge {
+	return newEdgeWrapper(b.builder.Emit())
 }
 
 func newEdgeTypeWrapper(edgeType nthrift.EdgeType) types.EdgeType {

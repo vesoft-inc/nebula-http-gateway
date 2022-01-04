@@ -7,7 +7,8 @@ import (
 )
 
 func WrapTime(localTime time.Time, factory types.FactoryDriver) types.Time {
-	t := factory.NewTime()
+	tb := factory.NewTimeBuilder()
+	t := tb.Build()
 	t.SetHour(int8(localTime.Hour()))
 	t.SetMinute(int8(localTime.Minute()))
 	t.SetSec(int8(localTime.Second()))
@@ -17,7 +18,8 @@ func WrapTime(localTime time.Time, factory types.FactoryDriver) types.Time {
 }
 
 func WrapDateTime(localDT time.Time, factory types.FactoryDriver) types.DateTime {
-	datetime := factory.NewDateTime()
+	dtb := factory.NewDateTimeBuilder()
+	datetime := dtb.Build()
 	datetime.SetYear(int16(localDT.Year()))
 	datetime.SetMonth(int8(localDT.Month()))
 	datetime.SetDay(int8(localDT.Day()))

@@ -65,30 +65,30 @@ type (
 	}
 
 	FactoryDriver interface {
-		//NewDataset() DataSet
-		//NewRow() Row
-		NewValue() Value
-		NewDate() Date
-		NewTime() Time
-		NewDateTime() DateTime
-		//NewVertex() Vertex
-		NewEdge() Edge
-		//NewPath() Path
-		//NewNList() NList
-		//NewNMap() NMap
-		//NewNSet() NSet
-		//NewGeography() Geography
-		//NewTag() Tag
-		//NewStep() Step
-		//NewPoint() Point
-		//NewLineString() LineString
-		//NewPolygon() Polygon
-		//NewCoordinate() Coordinate
-		//NewPlanDescription() PlanDescription
-		//NewPlanNodeDescription() PlanNodeDescription
-		//NewPair() Pair
-		//NewProfilingStats() ProfilingStats
-		//NewPlanNodeBranchInfo() PlanNodeBranchInfo
+		//NewDatasetBuilder() DataSetBuilder
+		//NewRowBuilder() RowBuilder
+		NewValueBuilder() ValueBuilder
+		NewDateBuilder() DateBuilder
+		NewTimeBuilder() TimeBuilder
+		NewDateTimeBuilder() DateTimeBuilder
+		//NewVertexBuilder() VertexBuilder
+		NewEdgeBuilder() EdgeBuilder
+		//NewPathBuilder() PathBuilder
+		//NewNListBuilder() NListBuilder
+		//NewNMapBuilder() NMapBuilder
+		//NewNSetBuilder() NSetBuilder
+		//NewGeographyBuilder() GeographyBuilder
+		//NewTagBuilder() TagBuilder
+		//NewStepBuilder() StepBuilder
+		//NewPointBuilder() PointBuilder
+		//NewLineStringBuilder() LineStringBuilder
+		//NewPolygonBuilder() PolygonBuilder
+		//NewCoordinateBuilder() CoordinateBuilder
+		//NewPlanDescriptionBuilder() PlanDescriptionBuilder
+		//NewPlanNodeDescriptionBuilder() PlanNodeDescriptionBuilder
+		//NewPairBuilder() PairBuilder
+		//NewProfilingStatsBuilder() ProfilingStatsBuilder
+		//NewPlanNodeBranchInfoBuilder() PlanNodeBranchInfoBuilder
 	}
 )
 

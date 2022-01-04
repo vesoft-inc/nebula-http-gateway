@@ -1,36 +1,37 @@
 package nebula
 
 import (
-	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 	"sync"
+
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
 type (
 	Factory interface {
-		//NewDataset() DataSet
-		//NewRow() Row
-		NewValue() types.Value
-		NewDate() types.Date
-		NewTime() types.Time
-		NewDateTime() types.DateTime
-		//NewVertex() Vertex
-		NewEdge() types.Edge
-		//NewPath() Path
-		//NewNList() NList
-		//NewNMap() NMap
-		//NewNSet() NSet
-		//NewGeography() Geography
-		//NewTag() Tag
-		//NewStep() Step
-		//NewPoint() Point
-		//NewLineString() LineString
-		//NewPolygon() Polygon
-		//NewCoordinate() Coordinate
-		//NewPlanDescription() PlanDescription
-		//NewPlanNodeDescription() PlanNodeDescription
-		//NewPair() Pair
-		//NewProfilingStats() ProfilingStats
-		//NewPlanNodeBranchInfo() PlanNodeBranchInfo
+		//NewDatasetBuilder() types.DataSetBuilder
+		//NewRowBuilder() types.RowBuilder
+		NewValueBuilder() types.ValueBuilder
+		NewDateBuilder() types.DateBuilder
+		NewTimeBuilder() types.TimeBuilder
+		NewDateTimeBuilder() types.DateTimeBuilder
+		//NewVertexBuilder() types.VertexBuilder
+		NewEdgeBuilder() types.EdgeBuilder
+		//NewPathBuilder() types.PathBuilder
+		//NewNListBuilder() types.NListBuilder
+		//NewNMapBuilder() types.NMapBuilder
+		//NewNSetBuilder() types.NSetBuilder
+		//NewGeographyBuilder() types.GeographyBuilder
+		//NewTagBuilder() types.TagBuilder
+		//NewStepBuilder() types.StepBuilder
+		//NewPointBuilder() types.PointBuilder
+		//NewLineStringBuilder() types.LineStringBuilder
+		//NewPolygonBuilder() types.PolygonBuilder
+		//NewCoordinateBuilder() types.CoordinateBuilder
+		//NewPlanDescriptionBuilder() types.PlanDescriptionBuilder
+		//NewPlanNodeDescriptionBuilder() types.PlanNodeDescriptionBuilder
+		//NewPairBuilder() types.PairBuilder
+		//NewProfilingStatsBuilder() types.ProfilingStatsBuilder
+		//NewPlanNodeBranchInfoBuilder() types.PlanNodeBranchInfoBuilder
 	}
 
 	defaultFactory struct {
@@ -62,24 +63,24 @@ func NewFactory(opts ...Option) (Factory, error) {
 	return f, nil
 }
 
-func (f *defaultFactory) NewValue() types.Value {
-	return f.factory.NewValue()
+func (f *defaultFactory) NewValueBuilder() types.ValueBuilder {
+	return f.factory.NewValueBuilder()
 }
 
-func (f *defaultFactory) NewDate() types.Date {
-	return f.factory.NewDate()
+func (f *defaultFactory) NewDateBuilder() types.DateBuilder {
+	return f.factory.NewDateBuilder()
 }
 
-func (f *defaultFactory) NewTime() types.Time {
-	return f.factory.NewTime()
+func (f *defaultFactory) NewTimeBuilder() types.TimeBuilder {
+	return f.factory.NewTimeBuilder()
 }
 
-func (f *defaultFactory) NewDateTime() types.DateTime {
-	return f.factory.NewDateTime()
+func (f *defaultFactory) NewDateTimeBuilder() types.DateTimeBuilder {
+	return f.factory.NewDateTimeBuilder()
 }
 
-func (f *defaultFactory) NewEdge() types.Edge {
-	return f.factory.NewEdge()
+func (f *defaultFactory) NewEdgeBuilder() types.EdgeBuilder {
+	return f.factory.NewEdgeBuilder()
 }
 
 func (f *defaultFactory) initDriver() error {

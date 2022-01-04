@@ -18,14 +18,14 @@ type ValueBuilder interface {
 	GVal(DataSet) ValueBuilder
 	GgVal(Geography) ValueBuilder
 	DuVal(Duration) ValueBuilder
-	Emit() Value
+	Build() Value
 }
 
 type DateBuilder interface {
 	Year(int16) DateBuilder
 	Month(int8) DateBuilder
 	Day(int8) DateBuilder
-	Emit() Date
+	Build() Date
 }
 
 type TimeBuilder interface {
@@ -33,7 +33,7 @@ type TimeBuilder interface {
 	Minute(int8) TimeBuilder
 	Sec(int8) TimeBuilder
 	Microsec(int32) TimeBuilder
-	Emit() Time
+	Build() Time
 }
 
 type DateTimeBuilder interface {
@@ -44,7 +44,7 @@ type DateTimeBuilder interface {
 	Minute(int8) DateTimeBuilder
 	Sec(int8) DateTimeBuilder
 	Microsec(int32) DateTimeBuilder
-	Emit() DateTime
+	Build() DateTime
 }
 
 type EdgeBuilder interface {
@@ -54,5 +54,5 @@ type EdgeBuilder interface {
 	Name([]byte) EdgeBuilder
 	Ranking(EdgeRanking) EdgeBuilder
 	Props(map[string]Value) EdgeBuilder
-	Emit() Edge
+	Build() Edge
 }

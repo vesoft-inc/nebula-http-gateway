@@ -62,7 +62,7 @@ func main() {
 		}
 		{
 			log.Println("get factory by version:")
-			factory, _ := nebula.NewFactory(nebula.WithVersion(nebula.Version3_0))
+			factory, _ := nebula.NewFactory(nebula.WithVersion(version))
 			factoryExample(factory)
 		}
 	}
@@ -71,10 +71,11 @@ func main() {
 
 func factoryExample(factory types.FactoryDriver) {
 	s := []byte{1, 2, 3}
-	v1 := factory.NewValue()
-	v1.SetSVal(s)
-	v2 := v1.Builder().Emit().SetSVal([]byte{1, 2})
+	vb := factory.NewValueBuilder()
+	vb.SVal(s)
+	v1 := vb.Build()
+	v2 := vb.Build().SetSVal([]byte{1, 2})
 	i1 := v1.Unwrap()
 	i2 := v2.Unwrap()
-	log.Printf("\n%p, %p;\n%v, %v", i1, i2, v1.GetSVal(), v2.GetSVal())
+	log.Printf("\n%v, %v\n%p, %p;\n%v, %v", v1 == v2, i1 == i2, i1, i2, v1.GetSVal(), v2.GetSVal())
 }

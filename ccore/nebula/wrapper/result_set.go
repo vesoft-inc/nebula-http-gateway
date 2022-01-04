@@ -215,7 +215,8 @@ func GenPathWrapper(path types.Path, factory types.FactoryDriver, timezoneInfo t
 			segType = -stepType
 		}
 
-		edge = factory.NewEdge()
+		eb := factory.NewEdgeBuilder()
+		edge = eb.Build()
 		edge.SetSrc(segStartNode.getRawID())
 		edge.SetDst(segEndNode.getRawID())
 		edge.SetType(segType)
@@ -710,7 +711,7 @@ func (pathWrap *PathWrapper) String() string {
 	path := pathWrap.path
 	src := path.GetSrc()
 	steps := path.GetSteps()
-	resStr := ValueWrapper{pathWrap.factory.NewValue().Builder().VVal(src).Emit(), pathWrap.factory, pathWrap.timezoneInfo}.String()
+	resStr := ValueWrapper{pathWrap.factory.NewValueBuilder().VVal(src).Build(), pathWrap.factory, pathWrap.timezoneInfo}.String()
 	for _, step := range steps {
 		var keyList []string
 		var kvStr []string
@@ -737,7 +738,7 @@ func (pathWrap *PathWrapper) String() string {
 			step.GetRanking(),
 			fmt.Sprintf("%s", strings.Join(kvStr, ", ")),
 			dirChar2,
-			ValueWrapper{pathWrap.factory.NewValue().Builder().VVal(step.GetDst()).Emit(), pathWrap.factory, pathWrap.timezoneInfo}.String())
+			ValueWrapper{pathWrap.factory.NewValueBuilder().VVal(step.GetDst()).Build(), pathWrap.factory, pathWrap.timezoneInfo}.String())
 	}
 	return "<" + resStr + ">"
 }

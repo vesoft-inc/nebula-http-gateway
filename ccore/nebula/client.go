@@ -10,7 +10,6 @@ import (
 
 type (
 	// TODO: add client pool management
-	// TODO: add version auto recognize
 
 	Client interface {
 		Graph() GraphClient

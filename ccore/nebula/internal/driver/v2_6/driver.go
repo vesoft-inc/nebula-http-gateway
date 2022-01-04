@@ -2,6 +2,7 @@ package v2_6
 
 import (
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	nthrift "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_6"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
@@ -31,27 +32,27 @@ func (d *defaultDriver) NewStorageClientDriver(transport thrift.Transport, pf th
 	return newStorageAdminClient(transport, pf)
 }
 
-func (f *defaultFactoryDriver) NewValue() types.Value {
-	value := newValue()
-	return newValueWrapper(value)
+func (f *defaultFactoryDriver) NewValueBuilder() types.ValueBuilder {
+	value := nthrift.NewValue()
+	return &valueBuilder{value}
 }
 
-func (f *defaultFactoryDriver) NewDate() types.Date {
-	date := newDate()
-	return newDateWrapper(date)
+func (f *defaultFactoryDriver) NewDateBuilder() types.DateBuilder {
+	date := nthrift.NewDate()
+	return &dateBuilder{date}
 }
 
-func (f *defaultFactoryDriver) NewTime() types.Time {
-	time := newTime()
-	return newTimeWrapper(time)
+func (f *defaultFactoryDriver) NewTimeBuilder() types.TimeBuilder {
+	time := nthrift.NewTime()
+	return &timeBuilder{time}
 }
 
-func (f *defaultFactoryDriver) NewDateTime() types.DateTime {
-	dateTime := newDateTime()
-	return newDateTimeWrapper(dateTime)
+func (f *defaultFactoryDriver) NewDateTimeBuilder() types.DateTimeBuilder {
+	dateTime := nthrift.NewDateTime()
+	return &dateTimeBuilder{dateTime}
 }
 
-func (f *defaultFactoryDriver) NewEdge() types.Edge {
-	edge := newEdge()
-	return newEdgeWrapper(edge)
+func (f *defaultFactoryDriver) NewEdgeBuilder() types.EdgeBuilder {
+	edge := nthrift.NewEdge()
+	return &edgeBuilder{edge}
 }
