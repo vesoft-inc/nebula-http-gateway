@@ -17,8 +17,8 @@ type (
 		//NewVertexBuilder() types.VertexBuilder
 		NewEdgeBuilder() types.EdgeBuilder
 		//NewPathBuilder() types.PathBuilder
-		//NewNListBuilder() types.NListBuilder
-		//NewNMapBuilder() types.NMapBuilder
+		NewNListBuilder() types.NListBuilder
+		NewNMapBuilder() types.NMapBuilder
 		//NewNSetBuilder() types.NSetBuilder
 		//NewGeographyBuilder() types.GeographyBuilder
 		//NewTagBuilder() types.TagBuilder
@@ -81,6 +81,14 @@ func (f *defaultFactory) NewDateTimeBuilder() types.DateTimeBuilder {
 
 func (f *defaultFactory) NewEdgeBuilder() types.EdgeBuilder {
 	return f.factory.NewEdgeBuilder()
+}
+
+func (f *defaultFactory) NewNListBuilder() types.NListBuilder {
+	return f.factory.NewNListBuilder()
+}
+
+func (f *defaultFactory) NewNMapBuilder() types.NMapBuilder {
+	return f.factory.NewNMapBuilder()
 }
 
 func (f *defaultFactory) initDriver() error {

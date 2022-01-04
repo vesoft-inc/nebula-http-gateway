@@ -764,8 +764,34 @@ func newNListWrapper(nList *nthrift.NList) types.NList {
 	return nListWrapper{nList}
 }
 
+func (w nListWrapper) SetValues(values []types.Value) types.NList {
+	_values := make([]*nthrift.Value, len(values))
+	for i, v := range values {
+		_values[i] = v.Unwrap().(*nthrift.Value)
+	}
+	w.NList = w.NList.SetValues(_values)
+	return w
+}
+
 func (w nListWrapper) Unwrap() interface{} {
 	return w.NList
+}
+
+type nListBuilder struct {
+	builder *nthrift.NListBuilder
+}
+
+func (b nListBuilder) Values(values []types.Value) types.NListBuilder {
+	_values := make([]*nthrift.Value, len(values))
+	for i, v := range values {
+		_values[i] = v.Unwrap().(*nthrift.Value)
+	}
+	b.builder.Values(_values)
+	return b
+}
+
+func (b nListBuilder) Build() types.NList {
+	return newNListWrapper(b.builder.Emit())
 }
 
 type nMapWrapper struct {
@@ -787,8 +813,34 @@ func (w nMapWrapper) GetKvs() map[string]types.Value {
 	return kvs
 }
 
+func (w nMapWrapper) SetKvs(kvs map[string]types.Value) types.NMap {
+	_kvs := make(map[string]*nthrift.Value, len(kvs))
+	for k, v := range kvs {
+		_kvs[k] = v.Unwrap().(*nthrift.Value)
+	}
+	w.NMap = w.NMap.SetKvs(_kvs)
+	return w
+}
+
 func (w nMapWrapper) Unwrap() interface{} {
 	return w.NMap
+}
+
+type nMapBuilder struct {
+	builder *nthrift.NMapBuilder
+}
+
+func (b nMapBuilder) Kvs(kvs map[string]types.Value) types.NMapBuilder {
+	_kvs := make(map[string]*nthrift.Value, len(kvs))
+	for k, v := range kvs {
+		_kvs[k] = v.Unwrap().(*nthrift.Value)
+	}
+	b.builder.Kvs(_kvs)
+	return b
+}
+
+func (b nMapBuilder) Build() types.NMap {
+	return newNMapWrapper(b.builder.Emit())
 }
 
 type nSetWraooer struct {

@@ -1,6 +1,8 @@
 package dao
 
 import (
+	"errors"
+
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/gateway/pool"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
@@ -8,9 +10,10 @@ import (
 )
 
 type ExecuteResult struct {
-	Headers  []string               `json:"headers"`
-	Tables   []map[string]types.Any `json:"tables"`
-	TimeCost int64                  `json:"timeCost"`
+	Headers     []string               `json:"headers"`
+	Tables      []map[string]types.Any `json:"tables"`
+	TimeCost    int64                  `json:"timeCost"`
+	LocalParams types.ParameterMap     `json:"localParams"`
 }
 
 type list []types.Any
@@ -73,6 +76,8 @@ func getBasicValue(valWarp *wrapper.ValueWrapper) (types.Any, error) {
 	} else if valType == "datetime" {
 		return valWarp.String(), nil
 	} else if valType == "geography" {
+		return valWarp.String(), nil
+	} else if valType == "duration" {
 		return valWarp.String(), nil
 	} else if valType == "empty" {
 		return "_EMPTY_", nil
@@ -287,28 +292,40 @@ func Disconnect(nsid string) {
 	executes the gql based on nsid,
 	and returns result, the runtime panic error and the result error.
 */
-func Execute(nsid string, gql string) (ExecuteResult, interface{}, error) {
+func Execute(nsid string, gql string, paramList types.ParameterList) (ExecuteResult, interface{}, error) {
 	result := ExecuteResult{
-		Headers: make([]string, 0),
-		Tables:  make([]map[string]types.Any, 0),
+		Headers:     make([]string, 0),
+		Tables:      make([]map[string]types.Any, 0),
+		LocalParams: nil,
 	}
 	client, err := pool.GetClient(nsid)
 	if err != nil {
 		return result, nil, err
 	}
-
 	responseChannel := make(chan pool.ChannelResponse)
 	client.RequestChannel <- pool.ChannelRequest{
 		Gql:             gql,
 		ResponseChannel: responseChannel,
+		ParamList:       paramList,
 	}
 	response := <-responseChannel
+	paramsMap := response.Params
+	if len(paramsMap) > 0 {
+		result.LocalParams = paramsMap
+	}
 	if response.Error != nil {
 		return result, response.Msg, response.Error
 	}
 	res := response.Result
+	if response.Result == nil {
+		return result, nil, nil
+	}
 	if res.IsSetPlanDesc() {
-		format := string(res.GetPlanDesc().GetFormat())
+		resp := response.Result
+		if response.Result == nil {
+			return result, nil, nil
+		}
+		format := string(resp.GetPlanDesc().GetFormat())
 		if format == "row" {
 			result.Headers = []string{"id", "name", "dependencies", "profiling data", "operator info"}
 			rows := res.MakePlanByRow()
@@ -334,7 +351,9 @@ func Execute(nsid string, gql string) (ExecuteResult, interface{}, error) {
 			return result, nil, err
 		}
 	}
-
+	if !res.IsSucceed() {
+		return result, nil, errors.New(res.GetErrorMsg())
+	}
 	if !res.IsEmpty() {
 		rowSize := res.GetRowSize()
 		colSize := res.GetColSize()
