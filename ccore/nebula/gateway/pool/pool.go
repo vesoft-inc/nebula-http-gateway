@@ -20,7 +20,7 @@ import (
 var (
 	ConnectionClosedError = errors.New("an existing connection was forcibly closed, please check your network")
 	SessionLostError      = errors.New("the connection session was lost, please connect again")
-	InterruptError        = errors.New("Other statements was not executed due to this error.")
+	InterruptError        = errors.New("other statements was not executed due to this error")
 )
 
 // Console side commands
@@ -316,6 +316,7 @@ func NewClient(address string, port int, username string, password string, versi
 }
 
 func handleRequest(ncid string) {
+	var err error
 	client := clientPool[ncid]
 	for {
 		select {
@@ -330,18 +331,8 @@ func handleRequest(ncid string) {
 						}
 					}
 				}()
-				authResp, err := client.graphClient.Authenticate(client.account.username, client.account.password)
-				if err != nil {
-					err = ConnectionClosedError
-					request.ResponseChannel <- ChannelResponse{
-						Result: nil,
-						Error:  err,
-					}
-					return
-				}
-
 				showMap := make(types.ParameterMap)
-				if len(request.ParamList) > 0 {
+				if request.ParamList != nil && len(request.ParamList) > 0 {
 					showMap, err = executeCmd(request.ParamList, client.parameterMap)
 					if err != nil {
 						if len(request.Gql) > 0 {
@@ -365,16 +356,30 @@ func handleRequest(ncid string) {
 						}
 						params[k] = value
 					}
+					authResp, err := client.graphClient.Authenticate(client.account.username, client.account.password)
+					if err != nil {
+						err = errors.New(err.Error() + InterruptError.Error())
+						request.ResponseChannel <- ChannelResponse{
+							Result: nil,
+							Error:  err,
+						}
+						return
+					}
+
 					execResponse, err := client.graphClient.ExecuteWithParameter([]byte(request.Gql), params)
 					if err != nil && (isThriftProtoError(err) || isThriftTransportError(err)) {
 						err = ConnectionClosedError
+						request.ResponseChannel <- ChannelResponse{
+							Result: nil,
+							Error:  err,
+						}
+						return
 					}
 
 					res, err := wrapper.GenResultSet(execResponse, client.graphClient.Factory(), authResp.GetTimezoneInfo())
 					if err != nil {
-						err = ConnectionClosedError
+						err = errors.New(err.Error() + InterruptError.Error())
 					}
-
 					request.ResponseChannel <- ChannelResponse{
 						Result: res,
 						Params: showMap,
@@ -419,8 +424,4 @@ func GetClient(ncid string) (*Client, error) {
 	}
 
 	return nil, ClientNotExistedError
-}
-
-func (c *Client) Execute(gql string) (nebula.ExecutionResponse, error) {
-	return c.graphClient.Execute([]byte(gql))
 }
