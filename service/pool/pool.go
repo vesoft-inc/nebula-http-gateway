@@ -3,7 +3,6 @@ package pool
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"regexp"
 	"strings"
 	"sync"
@@ -15,7 +14,6 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 	nebula "github.com/vesoft-inc/nebula-go/v2"
-	nebulatype "github.com/vesoft-inc/nebula-go/v2/nebula"
 )
 
 var (
@@ -89,83 +87,6 @@ func isThriftTransportError(err error) bool {
 		}
 	}
 	return false
-}
-
-// construct Slice to nebula.NList
-func Slice2Nlist(list []interface{}) (*nebulatype.NList, error) {
-	sv := []*nebulatype.Value{}
-	var ret nebulatype.NList
-	for _, item := range list {
-		nv, er := Base2Value(item)
-		if er != nil {
-			return nil, er
-		}
-		sv = append(sv, nv)
-	}
-	ret.Values = sv
-	return &ret, nil
-}
-
-// construct map to nebula.NMap
-func Map2Nmap(m map[string]interface{}) (*nebulatype.NMap, error) {
-	var ret nebulatype.NMap
-	kvs := map[string]*nebulatype.Value{}
-	for k, v := range m {
-		nv, err := Base2Value(v)
-		if err != nil {
-			return nil, err
-		}
-		kvs[k] = nv
-	}
-	ret.Kvs = kvs
-	return &ret, nil
-}
-
-// construct go-type to nebula.Value
-func Base2Value(any interface{}) (value *nebulatype.Value, err error) {
-	value = nebulatype.NewValue()
-	if v, ok := any.(bool); ok {
-		value.BVal = &v
-	} else if v, ok := any.(int); ok {
-		ival := int64(v)
-		value.IVal = &ival
-	} else if v, ok := any.(float64); ok {
-		if v == float64(int64(v)) {
-			iv := int64(v)
-			value.IVal = &iv
-		} else {
-			value.FVal = &v
-		}
-	} else if v, ok := any.(float32); ok {
-		if v == float32(int64(v)) {
-			iv := int64(v)
-			value.IVal = &iv
-		} else {
-			fval := float64(v)
-			value.FVal = &fval
-		}
-	} else if v, ok := any.(string); ok {
-		value.SVal = []byte(v)
-	} else if any == nil {
-		nval := nebulatype.NullType___NULL__
-		value.NVal = &nval
-	} else if v, ok := any.([]interface{}); ok {
-		nv, er := Slice2Nlist([]interface{}(v))
-		if er != nil {
-			err = er
-		}
-		value.LVal = nv
-	} else if v, ok := any.(map[string]interface{}); ok {
-		nv, er := Map2Nmap(map[string]interface{}(v))
-		if er != nil {
-			err = er
-		}
-		value.MVal = nv
-	} else {
-		// unsupport other Value type, use this function carefully
-		err = fmt.Errorf("Only support convert boolean/float/int/string/map/list to nebula.Value but %T", any)
-	}
-	return
 }
 
 func isCmd(query string) (isLocal bool, localCmd int, args []string) {
@@ -343,15 +264,7 @@ func NewConnection(address string, port int, username string, password string) (
 						}
 
 						if len(request.Gql) > 0 {
-							params := make(map[string]*nebulatype.Value)
-							for k, v := range connection.parameterMap {
-								value, paramError := Base2Value(v)
-								if paramError != nil {
-									err = paramError
-								}
-								params[k] = value
-							}
-							response, err := connection.session.ExecuteWithParameter(request.Gql, params)
+							response, err := connection.session.ExecuteWithParameter(request.Gql, connection.parameterMap)
 							if err != nil && (isThriftProtoError(err) || isThriftTransportError(err)) {
 								err = ConnectionClosedError
 							}
