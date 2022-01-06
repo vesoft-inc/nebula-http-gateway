@@ -325,6 +325,8 @@ github.com/vesoft-inc/nebula-go/v2 v2.5.2-0.20211221081231-40030d441885 h1:mf9MR
 github.com/vesoft-inc/nebula-go/v2 v2.5.2-0.20211221081231-40030d441885/go.mod h1:fehDUs97/mpmxXi9WezhznX0Dg7hmQRUoOWgDZv9zG0=
 github.com/vesoft-inc/nebula-go/v2 v2.5.2-0.20211229125609-91a3d1eac8b5 h1:DMshLSon/oU1y3IealRdJ605QzrZjqQ5HIivYA97yM4=
 github.com/vesoft-inc/nebula-go/v2 v2.5.2-0.20211229125609-91a3d1eac8b5/go.mod h1:YRIuog6zyRKz0SagwwTcqHXCPjJ4GfQelIl+/FgSC+Y=
+github.com/vesoft-inc/nebula-go/v2 v2.5.2-0.20220106021349-6ef61ed6077f h1:3hUyg8U8FCYqDKsGr5LfIGr97l6KDVtLbY5XJF+oKq0=
+github.com/vesoft-inc/nebula-go/v2 v2.5.2-0.20220106021349-6ef61ed6077f/go.mod h1:YRIuog6zyRKz0SagwwTcqHXCPjJ4GfQelIl+/FgSC+Y=
 github.com/vesoft-inc/nebula-importer v1.0.1-0.20211213064541-05a8646be295 h1:YdBNGn+5YyIuQ6cWjIPCvSJW/3qj5ck5UIWGeh4hXNI=
 github.com/vesoft-inc/nebula-importer v1.0.1-0.20211213064541-05a8646be295/go.mod h1:0nHCbr2/nckhfxAA8sDbwxkNzA9YyXazWKyVMT/PfPo=
 github.com/wendal/errors v0.0.0-20130201093226-f66c77a7882b/go.mod h1:Q12BUT7DqIlHRmgv3RskH+UCM/4eqVMgI0EMmlSpAXc=
