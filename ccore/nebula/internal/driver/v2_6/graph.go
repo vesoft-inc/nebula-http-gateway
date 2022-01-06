@@ -68,7 +68,7 @@ func (c *defaultGraphClient) ExecuteJson(sessionId int64, stmt []byte) ([]byte, 
 	return c.graph.ExecuteJson(sessionId, stmt)
 }
 
-func (c *defaultGraphClient) ExecuteWithParameter(sessionId int64, stmt []byte, params types.ParameterMap) (types.ExecutionResponse, error) {
+func (c *defaultGraphClient) ExecuteWithParameter(sessionId int64, stmt []byte, params map[string]types.Value) (types.ExecutionResponse, error) {
 	if params == nil {
 		return c.Execute(sessionId, stmt)
 	}

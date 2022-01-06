@@ -7,7 +7,7 @@ import (
 type Any = interface{}
 
 type ParameterList []string
-type ParameterMap map[string]Value
+type ParameterMap map[string]interface{}
 
 /*
 	define the interfaces to fit internal/<ver>/thrift/ttypes and  internal/<ver>/thrift/graph/ttypes

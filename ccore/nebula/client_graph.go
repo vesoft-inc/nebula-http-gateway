@@ -2,6 +2,7 @@ package nebula
 
 import (
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/wrapper"
 )
 
 type (
@@ -52,7 +53,15 @@ func (c *defaultGraphClient) ExecuteJson(stmt []byte) ([]byte, error) {
 }
 
 func (c *defaultGraphClient) ExecuteWithParameter(stmt []byte, params types.ParameterMap) (ExecutionResponse, error) {
-	return c.graph.ExecuteWithParameter(c.graph.sessionId, stmt, params)
+	paramsMap := make(map[string]types.Value)
+	for k, v := range params {
+		nv, er := wrapper.WrapValue(v, c.Factory())
+		if er != nil {
+			return nil, er
+		}
+		paramsMap[k] = nv
+	}
+	return c.graph.ExecuteWithParameter(c.graph.sessionId, stmt, paramsMap)
 }
 
 func (c *defaultGraphClient) Close() error {

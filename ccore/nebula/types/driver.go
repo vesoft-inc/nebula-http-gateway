@@ -29,7 +29,7 @@ type (
 		Signout(sessionId int64) (err error)
 		Execute(sessionId int64, stmt []byte) (ExecutionResponse, error)
 		ExecuteJson(sessionId int64, stmt []byte) ([]byte, error)
-		ExecuteWithParameter(sessionId int64, stmt []byte, params ParameterMap) (ExecutionResponse, error)
+		ExecuteWithParameter(sessionId int64, stmt []byte, params map[string]Value) (ExecutionResponse, error)
 		Close() error
 	}
 
