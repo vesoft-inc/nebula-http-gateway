@@ -2,19 +2,19 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"strings"
+
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/wrapper"
-	"log"
-	"strings"
 )
 
 func main() {
 	for _, version := range []nebula.Version{
-		//nebula.Version2_5,
-		//nebula.Version2_6,
-		//nebula.Version3_0,
-		nebula.VersionAuto,
+		nebula.Version2_5,
+		nebula.Version2_6,
+		nebula.Version3_0,
 	} {
 		var (
 			c   nebula.Client

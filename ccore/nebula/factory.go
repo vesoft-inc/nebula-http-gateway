@@ -8,30 +8,13 @@ import (
 
 type (
 	Factory interface {
-		//NewDatasetBuilder() types.DataSetBuilder
-		//NewRowBuilder() types.RowBuilder
 		NewValueBuilder() types.ValueBuilder
 		NewDateBuilder() types.DateBuilder
 		NewTimeBuilder() types.TimeBuilder
 		NewDateTimeBuilder() types.DateTimeBuilder
-		//NewVertexBuilder() types.VertexBuilder
 		NewEdgeBuilder() types.EdgeBuilder
-		//NewPathBuilder() types.PathBuilder
 		NewNListBuilder() types.NListBuilder
 		NewNMapBuilder() types.NMapBuilder
-		//NewNSetBuilder() types.NSetBuilder
-		//NewGeographyBuilder() types.GeographyBuilder
-		//NewTagBuilder() types.TagBuilder
-		//NewStepBuilder() types.StepBuilder
-		//NewPointBuilder() types.PointBuilder
-		//NewLineStringBuilder() types.LineStringBuilder
-		//NewPolygonBuilder() types.PolygonBuilder
-		//NewCoordinateBuilder() types.CoordinateBuilder
-		//NewPlanDescriptionBuilder() types.PlanDescriptionBuilder
-		//NewPlanNodeDescriptionBuilder() types.PlanNodeDescriptionBuilder
-		//NewPairBuilder() types.PairBuilder
-		//NewProfilingStatsBuilder() types.ProfilingStatsBuilder
-		//NewPlanNodeBranchInfoBuilder() types.PlanNodeBranchInfoBuilder
 	}
 
 	defaultFactory struct {

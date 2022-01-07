@@ -72,7 +72,7 @@ func (c *defaultGraphClient) ExecuteWithParameter(sessionId int64, stmt []byte, 
 	if params == nil {
 		return c.Execute(sessionId, stmt)
 	}
-	return nil, nerrors.ErrMethodNotSupported
+	return nil, nerrors.ErrUnsupported
 }
 
 func (c *defaultGraphClient) Close() error {

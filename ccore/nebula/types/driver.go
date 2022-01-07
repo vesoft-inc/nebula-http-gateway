@@ -66,30 +66,13 @@ type (
 	}
 
 	FactoryDriver interface {
-		//NewDatasetBuilder() DataSetBuilder
-		//NewRowBuilder() RowBuilder
 		NewValueBuilder() ValueBuilder
 		NewDateBuilder() DateBuilder
 		NewTimeBuilder() TimeBuilder
 		NewDateTimeBuilder() DateTimeBuilder
-		//NewVertexBuilder() VertexBuilder
 		NewEdgeBuilder() EdgeBuilder
-		//NewPathBuilder() PathBuilder
 		NewNListBuilder() NListBuilder
 		NewNMapBuilder() NMapBuilder
-		//NewNSetBuilder() NSetBuilder
-		//NewGeographyBuilder() GeographyBuilder
-		//NewTagBuilder() TagBuilder
-		//NewStepBuilder() StepBuilder
-		//NewPointBuilder() PointBuilder
-		//NewLineStringBuilder() LineStringBuilder
-		//NewPolygonBuilder() PolygonBuilder
-		//NewCoordinateBuilder() CoordinateBuilder
-		//NewPlanDescriptionBuilder() PlanDescriptionBuilder
-		//NewPlanNodeDescriptionBuilder() PlanNodeDescriptionBuilder
-		//NewPairBuilder() PairBuilder
-		//NewProfilingStatsBuilder() ProfilingStatsBuilder
-		//NewPlanNodeBranchInfoBuilder() PlanNodeBranchInfoBuilder
 	}
 )
 
