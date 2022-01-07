@@ -77,7 +77,7 @@ func executeExample(gc nebula.GraphClient) {
 			"CREATE TAG IF NOT EXISTS person(name string, age int);" +
 			"CREATE EDGE IF NOT EXISTS like(likeness double);"
 
-		// Excute a query
+		// Execute a query
 		resp, err := gc.Execute([]byte(createSchema))
 		if err != nil {
 			panic(err)
@@ -144,6 +144,10 @@ func factoryExample(c nebula.Client) {
 
 	log.Println("get factory by client version:")
 	factory, _ := nebula.NewFactory(nebula.WithVersion(c.Version()))
+	examplef(factory)
+
+	log.Println("get factory by graph client version:")
+	factory, _ = nebula.NewFactory(nebula.WithVersion(c.Graph().Version()))
 	examplef(factory)
 
 	log.Println("get factory by client:")

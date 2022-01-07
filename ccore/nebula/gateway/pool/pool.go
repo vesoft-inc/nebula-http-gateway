@@ -269,6 +269,7 @@ func handleRequest(ncid string) {
 				}
 
 				if len(request.Gql) > 0 {
+					// use auth response to get timezone info
 					authResp, err := client.graphClient.Authenticate(client.account.username, client.account.password)
 					if err != nil && (isThriftProtoError(err) || isThriftTransportError(err)) {
 						err = errors.New(err.Error() + InterruptError.Error())

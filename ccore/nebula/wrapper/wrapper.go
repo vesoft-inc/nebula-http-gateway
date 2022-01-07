@@ -7,6 +7,7 @@ import (
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
+// construct time.Time to types.Time
 func WrapTime(localTime time.Time, factory types.FactoryDriver) types.Time {
 	tb := factory.NewTimeBuilder()
 	t := tb.Build()
@@ -18,6 +19,7 @@ func WrapTime(localTime time.Time, factory types.FactoryDriver) types.Time {
 	return t
 }
 
+// construct time.Time to types.DateTime
 func WrapDateTime(localDT time.Time, factory types.FactoryDriver) types.DateTime {
 	dtb := factory.NewDateTimeBuilder()
 	datetime := dtb.Build()
@@ -32,7 +34,7 @@ func WrapDateTime(localDT time.Time, factory types.FactoryDriver) types.DateTime
 	return datetime
 }
 
-// construct go-type to nebula.Value
+// construct go-type to types.Value
 func WrapValue(any interface{}, factory types.FactoryDriver) (types.Value, error) {
 	var err error
 	valueBuilder := factory.NewValueBuilder()
@@ -93,7 +95,7 @@ func WrapValue(any interface{}, factory types.FactoryDriver) (types.Value, error
 	return value, err
 }
 
-// construct Slice to nebula.NList
+// construct Slice to types.NList
 func Slice2Nlist(list []interface{}, factory types.FactoryDriver) (types.NList, error) {
 	sv := make([]types.Value, 0, len(list))
 	nListBuilder := factory.NewNListBuilder()
@@ -108,7 +110,7 @@ func Slice2Nlist(list []interface{}, factory types.FactoryDriver) (types.NList, 
 	return nListBuilder.Build(), nil
 }
 
-// construct map to nebula.NMap
+// construct map to types.NMap
 func Map2Nmap(m map[string]interface{}, factory types.FactoryDriver) (types.NMap, error) {
 	nMapBuilder := factory.NewNMapBuilder()
 	kvs := map[string]types.Value{}

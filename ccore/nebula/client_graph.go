@@ -53,6 +53,7 @@ func (c *defaultGraphClient) ExecuteJson(stmt []byte) ([]byte, error) {
 }
 
 func (c *defaultGraphClient) ExecuteWithParameter(stmt []byte, params types.ParameterMap) (ExecutionResponse, error) {
+	// wrap the map of interface{} to map of types.Value
 	paramsMap := make(map[string]types.Value)
 	for k, v := range params {
 		nv, er := wrapper.WrapValue(v, c.Factory())

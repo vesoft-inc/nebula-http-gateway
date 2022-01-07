@@ -20,6 +20,10 @@ import (
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
+/*
+	copy from nebula-go and fit with ccore/nebula/types
+*/
+
 type ResultSet struct {
 	resp            types.ExecutionResponse
 	columnNames     []string

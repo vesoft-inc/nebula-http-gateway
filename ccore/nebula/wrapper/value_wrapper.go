@@ -17,6 +17,10 @@ import (
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
+/*
+	copy from nebula-go and fit with ccore/nebula/types
+*/
+
 type ValueWrapper struct {
 	value        types.Value
 	factory      types.FactoryDriver
