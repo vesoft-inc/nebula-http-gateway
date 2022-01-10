@@ -257,6 +257,7 @@ func GenPathWrapper(path types.Path, factory types.FactoryDriver, timezoneInfo t
 		nodeList:         nodeList,
 		relationshipList: relationshipList,
 		segments:         segList,
+		factory:          factory,
 	}, nil
 }
 
