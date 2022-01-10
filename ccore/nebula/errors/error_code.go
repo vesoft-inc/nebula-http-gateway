@@ -1,25 +1,64 @@
 package errors
 
-import "fmt"
+import (
+	stderrors "errors"
+	"fmt"
+)
 
 type (
 	ErrorCode int64
 
-	ecError struct {
+	codeError struct {
 		errorCode ErrorCode
 		errorMsg  string
 	}
+
+	CodeError interface {
+		error
+		GetErrorCode() ErrorCode
+		GetErrorMsg() string
+	}
 )
 
+func AsCodeError(err error) (CodeError, bool) {
+	if e := new(codeError); stderrors.As(err, &e) {
+		return e, true
+	}
+	return nil, false
+}
+
+func IsCodeError(err error, c ...ErrorCode) bool {
+	ce, ok := AsCodeError(err)
+	if !ok {
+		return false
+	}
+	switch len(c) {
+	case 0:
+		return true
+	case 1:
+		return ce.GetErrorCode() == c[0]
+	default:
+		return false
+	}
+}
+
 func NewCodeError(errorCode ErrorCode, errorMsg string) error {
-	return &ecError{
+	return &codeError{
 		errorCode: errorCode,
 		errorMsg:  errorMsg,
 	}
 }
 
-func (e *ecError) Error() string {
+func (e *codeError) Error() string {
 	return fmt.Sprintf("%d:%s", int64(e.errorCode), e.errorMsg)
+}
+
+func (e *codeError) GetErrorCode() ErrorCode {
+	return e.errorCode
+}
+
+func (e *codeError) GetErrorMsg() string {
+	return e.errorMsg
 }
 
 const (

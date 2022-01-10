@@ -11,8 +11,14 @@ type (
 )
 
 var (
-	V2_0_0 = types.V2_0_0
-	V2_5_0 = types.V2_5_0
-	V2_5_1 = types.V2_5_1
-	V2_6_0 = types.V2_6_0
+	VersionAuto = Version("auto")
+	Version2_5  = types.Version2_5
+	Version2_6  = types.Version2_6
+	Version3_0  = types.Version3_0
+
+	Versions = []Version{
+		Version3_0,
+		Version2_6,
+		Version2_5,
+	}
 )

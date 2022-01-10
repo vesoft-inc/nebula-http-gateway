@@ -177,6 +177,7 @@ func (o *socketOptions) complete() {
 
 func defaultOptions() Options {
 	return Options{
+		version:      VersionAuto,
 		log:          noOpLogger{},
 		graph:        defaultSocketOptions(),
 		meta:         defaultSocketOptions(),
