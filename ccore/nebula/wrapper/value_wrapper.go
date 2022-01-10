@@ -331,7 +331,7 @@ func (valWrap ValueWrapper) String() string {
 		return `"` + string(value.GetSVal()) + `"`
 	} else if value.IsSetDVal() { // Date yyyy-mm-dd
 		date := value.GetDVal()
-		dateWrapper, _ := GenDateWrapper(date)
+		dateWrapper, _ := GenDateWrapper(date, valWrap.factory, valWrap.timezoneInfo)
 		return fmt.Sprintf("%04d-%02d-%02d",
 			dateWrapper.getYear(),
 			dateWrapper.getMonth(),
