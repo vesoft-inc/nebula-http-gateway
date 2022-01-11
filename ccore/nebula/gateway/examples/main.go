@@ -34,6 +34,8 @@ func main() {
 		}
 	}
 
+	log.Println(res)
+
 	gql = "DROP SPACE IF EXISTS basic_example_space;"
 	res, p, err = dao.Execute(nsid, gql, nil)
 	if err != nil {

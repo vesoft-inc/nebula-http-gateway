@@ -117,6 +117,8 @@ func GenResultSet(resp types.ExecutionResponse, factory types.FactoryDriver, tim
 			resp:            resp,
 			columnNames:     colNames,
 			colNameIndexMap: colNameIndexMap,
+			factory:         factory,
+			timezoneInfo:    timezoneInfo,
 		}, nil
 	}
 	for i, name := range resp.GetData().GetColumnNames() {
@@ -249,6 +251,8 @@ func GenPathWrapper(path types.Path, factory types.FactoryDriver, timezoneInfo t
 			startNode:    segStartNode,
 			relationship: relationship,
 			endNode:      segEndNode,
+			factory:      factory,
+			timezoneInfo: timezoneInfo,
 		})
 		src = dst
 	}
@@ -258,6 +262,7 @@ func GenPathWrapper(path types.Path, factory types.FactoryDriver, timezoneInfo t
 		relationshipList: relationshipList,
 		segments:         segList,
 		factory:          factory,
+		timezoneInfo:     timezoneInfo,
 	}, nil
 }
 
@@ -828,7 +833,6 @@ func (t TimeWrapper) getLocalTime() (types.Time, error) {
 		time.UTC)
 
 	// Use offset in seconds
-	// TODO support timezone when in execute response
 	offset, err := time.ParseDuration(fmt.Sprintf("%ds", t.timezoneInfo.GetOffset()))
 	if err != nil {
 		return nil, err
@@ -900,12 +904,14 @@ func (t1 TimeWrapper) IsEqualTo(t2 TimeWrapper) bool {
 		t1.getMicrosec() == t2.getMicrosec()
 }
 
-func GenDateWrapper(date types.Date) (*DateWrapper, error) {
+func GenDateWrapper(date types.Date, factory types.FactoryDriver, timezoneInfo types.TimezoneInfo) (*DateWrapper, error) {
 	if date == nil {
 		return nil, fmt.Errorf("failed to generate date: invalid date")
 	}
 	return &DateWrapper{
-		date: date,
+		date:         date,
+		factory:      factory,
+		timezoneInfo: timezoneInfo,
 	}, nil
 }
 
@@ -996,7 +1002,6 @@ func (dt DateTimeWrapper) getLocalDateTime() (types.DateTime, error) {
 		time.UTC)
 
 	// Use offset in seconds
-	// TODO support timezone when in execute response
 	offset, err := time.ParseDuration(fmt.Sprintf("%ds", dt.timezoneInfo.GetOffset()))
 	if err != nil {
 		return nil, err
