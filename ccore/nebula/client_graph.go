@@ -53,7 +53,7 @@ func (c *defaultGraphClient) ExecuteJson(stmt []byte) ([]byte, error) {
 }
 
 func (c *defaultGraphClient) ExecuteWithParameter(stmt []byte, params types.ParameterMap) (ExecutionResponse, error) {
-	if params == nil || len(params) == 0 {
+	if len(params) == 0 {
 		return c.Execute(stmt)
 	}
 	// wrap the map of interface{} to map of types.Value
