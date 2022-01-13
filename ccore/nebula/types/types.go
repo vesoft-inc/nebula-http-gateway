@@ -393,3 +393,24 @@ type PlanNodeBranchInfo interface {
 	String() string
 	Unwrap() interface{}
 }
+
+type (
+	BalanceCmd   string
+	BalanceStats string
+)
+
+const (
+	BalanceData       = BalanceCmd("Balance Data")
+	BalanceDataRemove = BalanceCmd("Balance Data Remove")
+	BalanceLeader     = BalanceCmd("Balance Leader")
+
+	Balanced   = BalanceStats("Balanced")
+	ImBalanced = BalanceStats("ImBalanced")
+	Balancing  = BalanceStats("Balancing")
+)
+
+type BalanceReq struct {
+	Cmd           BalanceCmd
+	Space         string
+	HostsToRemove []string
+}

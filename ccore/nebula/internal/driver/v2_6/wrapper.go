@@ -4,6 +4,7 @@ import (
 	nerrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
 	nthrift "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_6"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_6/graph"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_6/meta"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
 
@@ -1235,4 +1236,20 @@ func newPlanNodeBranchInfoWrapper(planNodeBranchInfo *graph.PlanNodeBranchInfo) 
 
 func (w planNodeBranchInfoWrapper) Unwrap() interface{} {
 	return w.PlanNodeBranchInfo
+}
+
+type spaceWrapper struct {
+	Space *meta.IdName
+}
+
+func newSpacesWrapper(spaces []*meta.IdName) types.Spaces {
+	s := make([]types.Space, 0, len(spaces))
+	for _, space := range spaces {
+		s = append(s, spaceWrapper{Space: space})
+	}
+	return s
+}
+
+func (w spaceWrapper) GetName() string {
+	return string(w.Space.GetName())
 }

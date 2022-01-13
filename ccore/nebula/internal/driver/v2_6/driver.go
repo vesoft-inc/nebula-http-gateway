@@ -2,6 +2,7 @@ package v2_6
 
 import (
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
+
 	nthrift "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_6"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
