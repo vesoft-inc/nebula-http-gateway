@@ -1,10 +1,15 @@
 package nebula
 
-import "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
+import (
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
+)
 
 type (
 	MetaClient interface {
 		Open() error
+		AddHosts(endpoints []string) error
+		DropHosts(endpoints []string) error
+		ListSpaces() (types.ListSpacesResponse, error)
 		Close() error
 	}
 
@@ -29,6 +34,18 @@ func (c *defaultMetaClient) Open() error {
 
 func (c *defaultMetaClient) Close() error {
 	return c.meta.close()
+}
+
+func (c *defaultMetaClient) AddHosts(endpoints []string) error {
+	return c.meta.AddHosts(endpoints)
+}
+
+func (c *defaultMetaClient) DropHosts(endpoints []string) error {
+	return c.meta.DropHosts(endpoints)
+}
+
+func (c *defaultMetaClient) ListSpaces() (types.ListSpacesResponse, error) {
+	return c.meta.ListSpaces()
 }
 
 func (c *defaultMetaClient) defaultClient() *defaultClient {

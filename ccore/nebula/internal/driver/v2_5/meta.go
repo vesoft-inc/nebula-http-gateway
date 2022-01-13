@@ -2,6 +2,9 @@ package v2_5
 
 import (
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	nthrift "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5"
+
+	nerrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5/meta"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
@@ -38,4 +41,23 @@ func (c *defaultMetaClient) Close() error {
 		}
 	}
 	return nil
+}
+
+func (c *defaultMetaClient) AddHosts(endpoints []string) error {
+	return nerrors.ErrUnsupported
+}
+
+func (c *defaultMetaClient) DropHosts(endpoints []string) error {
+	return nerrors.ErrUnsupported
+}
+
+func (c *defaultMetaClient) ListSpaces() (types.ListSpacesResponse, error) {
+	req := meta.NewListSpacesReq()
+
+	resp, err := c.meta.ListSpaces(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return newListSpacesResponseWrapper(resp.Spaces), codeErrorIfHappened(resp.Code, []byte(nthrift.ErrorCodeToName[resp.Code]))
 }
