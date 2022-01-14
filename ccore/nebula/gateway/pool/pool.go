@@ -214,7 +214,12 @@ func NewClient(address string, port int, username string, password string, versi
 		return "", err
 	}
 
-	ncid = uuid.NewV4().String()
+	u, err  := uuid.NewV4()
+	if err != nil {
+		return "", err
+	}
+
+	ncid = u.String()
 
 	client := &Client{
 		graphClient:    c,
