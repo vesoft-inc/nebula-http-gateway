@@ -3,6 +3,7 @@ package pool
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -257,7 +258,7 @@ func handleRequest(ncid string) {
 					showMap, err = executeCmd(request.ParamList, client.parameterMap)
 					if err != nil {
 						if len(request.Gql) > 0 {
-							err = errors.New(err.Error() + InterruptError.Error())
+							err = fmt.Errorf("%s. %s.\n", err.Error(), InterruptError.Error())
 						}
 						request.ResponseChannel <- ChannelResponse{
 							Result: nil,
@@ -272,7 +273,7 @@ func handleRequest(ncid string) {
 					// use auth response to get timezone info
 					authResp, err := client.graphClient.Authenticate(client.account.username, client.account.password)
 					if err != nil && (isThriftProtoError(err) || isThriftTransportError(err)) {
-						err = errors.New(err.Error() + InterruptError.Error())
+						err = fmt.Errorf("%s. %s.\n", err.Error(), InterruptError.Error())
 						request.ResponseChannel <- ChannelResponse{
 							Result: nil,
 							Error:  err,
@@ -292,7 +293,7 @@ func handleRequest(ncid string) {
 
 					res, err := wrapper.GenResultSet(execResponse, client.graphClient.Factory(), authResp.GetTimezoneInfo())
 					if err != nil {
-						err = errors.New(err.Error() + InterruptError.Error())
+						err = fmt.Errorf("%s. %s.\n", err.Error(), InterruptError.Error())
 					}
 					request.ResponseChannel <- ChannelResponse{
 						Result: res,
