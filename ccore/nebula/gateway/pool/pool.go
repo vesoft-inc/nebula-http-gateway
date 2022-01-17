@@ -215,7 +215,7 @@ func NewClient(address string, port int, username string, password string, versi
 		return "", err
 	}
 
-	u, err  := uuid.NewV4()
+	u, err := uuid.NewV4()
 	if err != nil {
 		return "", err
 	}
@@ -277,8 +277,10 @@ func handleRequest(ncid string) {
 				if len(request.Gql) > 0 {
 					// use auth response to get timezone info
 					authResp, err := client.graphClient.Authenticate(client.account.username, client.account.password)
-					if err != nil && (isThriftProtoError(err) || isThriftTransportError(err)) {
-						err = fmt.Errorf("%s. %s.\n", err.Error(), InterruptError.Error())
+					if err != nil {
+						if isThriftProtoError(err) || isThriftTransportError(err) {
+							err = fmt.Errorf("%s. %s.\n", err.Error(), InterruptError.Error())
+						}
 						request.ResponseChannel <- ChannelResponse{
 							Result: nil,
 							Error:  err,
@@ -287,8 +289,10 @@ func handleRequest(ncid string) {
 					}
 
 					execResponse, err := client.graphClient.ExecuteWithParameter([]byte(request.Gql), client.parameterMap)
-					if err != nil && (isThriftProtoError(err) || isThriftTransportError(err)) {
-						err = ConnectionClosedError
+					if err != nil {
+						if isThriftProtoError(err) || isThriftTransportError(err) {
+							err = ConnectionClosedError
+						}
 						request.ResponseChannel <- ChannelResponse{
 							Result: nil,
 							Error:  err,
