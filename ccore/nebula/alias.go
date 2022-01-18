@@ -11,12 +11,13 @@ type (
 )
 
 var (
-	VersionAuto = Version("auto")
-	Version2_5  = types.Version2_5
-	Version2_6  = types.Version2_6
-	Version3_0  = types.Version3_0
+	versionAuto = Version("auto")
 
-	Versions = []Version{
+	Version2_5 = types.Version2_5
+	Version2_6 = types.Version2_6
+	Version3_0 = types.Version3_0
+
+	supportedVersions = []Version{
 		Version3_0,
 		Version2_6,
 		Version2_5,

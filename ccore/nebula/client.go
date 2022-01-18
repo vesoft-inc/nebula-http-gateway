@@ -81,7 +81,7 @@ func (c *defaultClient) Version() Version {
 }
 
 func (c *defaultClient) initDriver(checkFn func(types.Driver) error) error {
-	if c.o.version != VersionAuto {
+	if c.o.version != versionAuto {
 		driver, err := types.GetDriver(c.o.version)
 		if err != nil {
 			return err
@@ -93,7 +93,7 @@ func (c *defaultClient) initDriver(checkFn func(types.Driver) error) error {
 		return nil
 	}
 
-	for _, v := range Versions {
+	for _, v := range c.o.autoVersions {
 		driver, err := types.GetDriver(v)
 		if err != nil {
 			return err

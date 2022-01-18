@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 
-	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/gateway/dao"
 )
 
@@ -15,7 +14,7 @@ func main() {
 		password = "123"
 	)
 
-	nsid, err := dao.Connect(address, port, username, password, nebula.VersionAuto)
+	nsid, err := dao.Connect(address, port, username, password)
 	if err != nil {
 		log.Println("error: ", err)
 	}

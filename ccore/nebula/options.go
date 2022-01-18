@@ -15,6 +15,7 @@ const (
 type (
 	Options struct {
 		version      Version
+		autoVersions []Version
 		log          Logger
 		graph        socketOptions
 		meta         socketOptions
@@ -34,6 +35,15 @@ type (
 func WithVersion(version Version) Option {
 	return func(o *Options) {
 		o.version = version
+	}
+}
+
+func WithAutoVersions(autoVersions ...Version) Option {
+	return func(o *Options) {
+		o.version = versionAuto
+		if len(autoVersions) > 0 {
+			o.autoVersions = autoVersions
+		}
 	}
 }
 
@@ -177,7 +187,8 @@ func (o *socketOptions) complete() {
 
 func defaultOptions() Options {
 	return Options{
-		version:      VersionAuto,
+		version:      versionAuto,
+		autoVersions: supportedVersions,
 		log:          noOpLogger{},
 		graph:        defaultSocketOptions(),
 		meta:         defaultSocketOptions(),
