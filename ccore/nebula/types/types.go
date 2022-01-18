@@ -405,7 +405,7 @@ const (
 	BalanceLeader     = BalanceCmd("Balance Leader")
 
 	Balanced   = BalanceStats("Balanced")
-	ImBalanced = BalanceStats("ImBalanced")
+	Unbalanced = BalanceStats("Unbalanced")
 	Balancing  = BalanceStats("Balancing")
 )
 
