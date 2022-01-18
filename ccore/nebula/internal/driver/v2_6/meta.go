@@ -2,6 +2,8 @@ package v2_6
 
 import (
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
+
+	nerrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_6/meta"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
 )
@@ -42,4 +44,32 @@ func (c *defaultMetaClient) Close() error {
 		}
 	}
 	return nil
+}
+
+func (c *defaultMetaClient) AddHosts(endpoints []string) error {
+	return nerrors.ErrUnsupported
+}
+
+func (c *defaultMetaClient) DropHosts(endpoints []string) error {
+	return nerrors.ErrUnsupported
+}
+
+func (c *defaultMetaClient) ListSpaces() (types.Spaces, error) {
+	req := meta.NewListSpacesReq()
+
+	resp, err := c.meta.ListSpaces(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := codeErrorIfHappened(resp.Code, nil); err != nil {
+		return nil, err
+	}
+
+	return newSpacesWrapper(resp.Spaces), nil
+}
+
+func (c *defaultMetaClient) Balance(req types.BalanceReq) (types.Balancer, error) {
+	// TODO: add 2.6 Balance logic
+	return nil, nerrors.ErrUnsupported
 }

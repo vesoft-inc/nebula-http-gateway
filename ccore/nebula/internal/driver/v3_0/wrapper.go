@@ -4,7 +4,9 @@ import (
 	nerrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
 	nthrift "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v3_0"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v3_0/graph"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v3_0/meta"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
+	"strconv"
 )
 
 type authResponseWrapper struct {
@@ -1199,4 +1201,60 @@ func newPlanNodeBranchInfoWrapper(planNodeBranchInfo *graph.PlanNodeBranchInfo) 
 
 func (w planNodeBranchInfoWrapper) Unwrap() interface{} {
 	return w.PlanNodeBranchInfo
+}
+
+type spaceWrapper struct {
+	Space *meta.IdName
+}
+
+func newSpacesWrapper(spaces []*meta.IdName) types.Spaces {
+	s := make([]types.Space, 0, len(spaces))
+	for _, space := range spaces {
+		s = append(s, spaceWrapper{Space: space})
+	}
+	return s
+}
+
+func (w spaceWrapper) GetName() string {
+	return string(w.Space.GetName())
+}
+
+type balancerWrap struct {
+	id     []byte
+	space  []byte
+	client *meta.MetaServiceClient
+}
+
+func newBalancerWrap(client *meta.MetaServiceClient, space string, id *int32) types.Balancer {
+	return balancerWrap{
+		id:     []byte(strconv.Itoa(int(*id))),
+		space:  []byte(space),
+		client: client,
+	}
+}
+
+func (b balancerWrap) GetStats() (types.BalanceStats, error) {
+	metaReq := &meta.AdminJobReq{
+		Op:    meta.AdminJobOp_SHOW,
+		Cmd:   meta.AdminCmd_STATS,
+		Paras: [][]byte{b.id, b.space},
+	}
+
+	resp, err := b.client.RunAdminJob(metaReq)
+	if err != nil {
+		return "", err
+	}
+
+	if len(resp.Result_.JobDesc) == 0 {
+		return "", nerrors.ErrNoJobStats
+	}
+
+	switch resp.Result_.JobDesc[0].Status {
+	case meta.JobStatus_FINISHED:
+		return types.Balanced, nil
+	case meta.JobStatus_QUEUE, meta.JobStatus_RUNNING:
+		return types.Balancing, nil
+	default:
+		return types.ImBalanced, nil
+	}
 }

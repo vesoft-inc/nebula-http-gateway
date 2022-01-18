@@ -36,6 +36,10 @@ type (
 	MetaClientDriver interface {
 		Open() error
 		VerifyClientVersion() error
+		AddHosts(endpoints []string) error
+		DropHosts(endpoints []string) error
+		ListSpaces() (Spaces, error)
+		Balance(req BalanceReq) (Balancer, error)
 		Close() error
 	}
 
@@ -65,6 +69,16 @@ type (
 		String() string
 	}
 
+	Space interface {
+		GetName() string
+	}
+
+	Spaces []Space
+
+	Balancer interface {
+		GetStats() (BalanceStats, error)
+	}
+
 	FactoryDriver interface {
 		NewValueBuilder() ValueBuilder
 		NewDateBuilder() DateBuilder
@@ -75,6 +89,14 @@ type (
 		NewNMapBuilder() NMapBuilder
 	}
 )
+
+func (s Spaces) GetSpaceNames() []string {
+	spaces := make([]string, 0, len(s))
+	for _, space := range s {
+		spaces = append(spaces, space.GetName())
+	}
+	return spaces
+}
 
 func Register(version Version, driver Driver, factory FactoryDriver) {
 	registerDriver(version, driver)
