@@ -1255,6 +1255,6 @@ func (b balancerWrap) GetStats() (types.BalanceStats, error) {
 	case meta.JobStatus_QUEUE, meta.JobStatus_RUNNING:
 		return types.Balancing, nil
 	default:
-		return types.ImBalanced, nil
+		return types.Unbalanced, nil
 	}
 }
