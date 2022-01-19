@@ -5,7 +5,6 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
-	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/gateway/dao"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/gateway/pool"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
@@ -49,7 +48,7 @@ func (this *DatabaseController) Connect() {
 	)
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
 
-	nsid, err := dao.Connect(params.Address, params.Port, params.Username, params.Password, nebula.VersionAuto)
+	nsid, err := dao.Connect(params.Address, params.Port, params.Username, params.Password)
 	if err == nil {
 		res.Code = 0
 		m := make(map[string]types.Any)
