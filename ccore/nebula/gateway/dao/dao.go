@@ -276,10 +276,10 @@ func getMapInfo(valWarp *wrapper.ValueWrapper, _verticesParsedList *list, _edges
 }
 
 // Connect return if the nebula connect succeed
-func Connect(address string, port int, username string, password string, opts ...nebula.Option) (nsid string, err error) {
-	nsid, err = pool.NewClient(address, port, username, password, opts...)
+func Connect(address string, port int, username string, password string, opts ...nebula.Option) (nsid string, ver nebula.Version, err error) {
+	nsid, ver, err = pool.NewClient(address, port, username, password, opts...)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 	return
 }

@@ -202,25 +202,26 @@ func ListParams(args string, tmpParameter types.ParameterMap, sessionMap types.P
 	return nil
 }
 
-func NewClient(address string, port int, username string, password string, opts ...nebula.Option) (ncid string, err error) {
+func NewClient(address string, port int, username string, password string, opts ...nebula.Option) (ncid string, ver nebula.Version, err error) {
 	clientMux.Lock()
 	defer clientMux.Unlock()
 
 	host := strings.Join([]string{address, strconv.Itoa(port)}, ":")
 	c, err := nebula.NewGraphClient([]string{host}, username, password, opts...)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 	if err := c.Open(); err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	u, err := uuid.NewV4()
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	ncid = u.String()
+	ver = c.Version()
 
 	client := &Client{
 		graphClient:    c,
@@ -239,7 +240,7 @@ func NewClient(address string, port int, username string, password string, opts 
 	// Make a goroutine to deal with concurrent requests from each connection
 	go handleRequest(ncid)
 
-	return ncid, err
+	return ncid, ver, err
 }
 
 func handleRequest(ncid string) {

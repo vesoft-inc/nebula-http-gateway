@@ -10,18 +10,25 @@ import (
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/wrapper"
 )
 
+type TestCase struct {
+	version nebula.Version
+	host    string
+}
+
 func main() {
-	for _, version := range []nebula.Version{
-		nebula.Version2_5,
-		nebula.Version2_6,
-		nebula.Version3_0,
-	} {
+	testCases := []TestCase{
+		{nebula.Version2_5, "192.168.8.157:9669"},
+		{nebula.Version2_6, "192.168.8.157:9669"},
+		{nebula.Version3_0, "192.168.8.143:9669"},
+	}
+	for _, testCase := range testCases {
 		var (
 			c   nebula.Client
 			gc  nebula.GraphClient
 			err error
 
-			host     = "192.168.8.167:9669"
+			version  = testCase.version
+			host     = testCase.host
 			username = "root"
 			password = "123"
 		)

@@ -8,17 +8,17 @@ import (
 
 func main() {
 	var (
-		address  = "192.168.8.167"
+		address  = "192.168.8.143"
 		port     = 9669
 		username = "root"
 		password = "123"
 	)
 
-	nsid, err := dao.Connect(address, port, username, password)
+	nsid, ver, err := dao.Connect(address, port, username, password)
 	if err != nil {
 		log.Println("error: ", err)
 	}
-	log.Println(nsid)
+	log.Println(nsid, ver)
 	defer dao.Disconnect(nsid)
 
 	gql := "CREATE SPACE IF NOT EXISTS basic_example_space(vid_type=FIXED_STRING(20)); " +
