@@ -48,7 +48,7 @@ func (this *DatabaseController) Connect() {
 	)
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
 
-	nsid, ver, err := dao.Connect(params.Address, params.Port, params.Username, params.Password)
+	nsid, _, err := dao.Connect(params.Address, params.Port, params.Username, params.Password)
 	if err == nil {
 		res.Code = 0
 		m := make(map[string]types.Any)
@@ -58,7 +58,7 @@ func (this *DatabaseController) Connect() {
 		this.Ctx.SetCookie("SameSite", "Strict")
 		this.SetSession(beego.AppConfig.String("sessionkey"), nsid)
 
-		res.Message = string(ver)
+		res.Message = "Login successfully"
 	} else {
 		res.Code = -1
 		res.Message = err.Error()
