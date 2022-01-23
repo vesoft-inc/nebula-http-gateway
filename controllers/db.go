@@ -48,7 +48,8 @@ func (this *DatabaseController) Connect() {
 	)
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
 
-	nsid, _, err := dao.Connect(params.Address, params.Port, params.Username, params.Password)
+	info, err := dao.Connect(params.Address, params.Port, params.Username, params.Password)
+	nsid := info.ClientID
 	if err == nil {
 		res.Code = 0
 		m := make(map[string]types.Any)

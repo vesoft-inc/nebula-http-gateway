@@ -19,7 +19,7 @@ func main() {
 	testCases := []TestCase{
 		{nebula.Version2_5, "192.168.8.157:9669"},
 		{nebula.Version2_6, "192.168.8.157:9669"},
-		{nebula.Version3_0, "192.168.8.143:9669"},
+		{nebula.Version3_0, "192.168.8.167:9669"},
 	}
 	for _, testCase := range testCases {
 		var (
