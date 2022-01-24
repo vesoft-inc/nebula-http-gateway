@@ -2558,7 +2558,7 @@ type VerifyClientVersionReq struct {
 
 func NewVerifyClientVersionReq() *VerifyClientVersionReq {
 	return &VerifyClientVersionReq{
-		Version: []byte("2.6.0"),
+		Version: []byte("3.0.0"),
 	}
 }
 
