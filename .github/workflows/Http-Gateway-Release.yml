@@ -2,7 +2,7 @@ name: Http-Gateway-Release
 on:
   push:
     branches:
-      - master
+      - v2.2.0
 jobs:
   release-image:
     runs-on: ubuntu-latest
@@ -30,4 +30,4 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: vesoft/nebula-http-gateway:nightly
+        tags: vesoft/nebula-http-gateway:v2.2.0
