@@ -89,11 +89,13 @@ func (d *driverGraph) open(driver types.Driver) error {
 	}
 
 	if err = graphClientDriver.VerifyClientVersion(); err != nil {
+		graphClientDriver.Close()
 		return err
 	}
 
 	resp, err := graphClientDriver.Authenticate(d.username, d.password)
 	if err != nil {
+		graphClientDriver.Close()
 		return err
 	}
 
