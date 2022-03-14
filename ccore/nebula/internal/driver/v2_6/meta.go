@@ -73,3 +73,14 @@ func (c *defaultMetaClient) Balance(req types.BalanceReq) (types.Balancer, error
 	// TODO: add 2.6 Balance logic
 	return nil, nerrors.ErrUnsupported
 }
+
+func (c *defaultMetaClient) ListHosts() (types.Hosts, error) {
+	req := meta.NewListHostsReq()
+
+	resp, err := c.meta.ListHosts(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return newHostsWrapper(resp), nil
+}

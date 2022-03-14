@@ -1174,6 +1174,53 @@ func newSpacesWrapper(resp *meta.ListSpacesResp) types.Spaces {
 	}
 }
 
+type hostWrapper struct {
+	HostItem *types.HostItem
+}
+
+func (h hostWrapper) GetHostItem() types.HostItem {
+	return *h.HostItem
+}
+
+type hostsWrapper struct {
+	metaBaserWrap
+	hosts []types.Host
+}
+
+func (h hostsWrapper) GetHosts() []types.Host {
+	return h.hosts
+}
+
+func newHostsWrapper(resp *meta.ListHostsResp) types.Hosts {
+	h := make([]types.Host, 0, len(resp.Hosts))
+	for _, hostItem := range resp.Hosts {
+		host := new(types.HostItem)
+		host.HostAddr.Host = hostItem.HostAddr.Host
+		host.HostAddr.Port = hostItem.HostAddr.Port
+		host.Status = types.HostStatus(hostItem.Status)
+		host.LeaderParts = hostItem.LeaderParts
+		host.AllParts = hostItem.AllParts
+		host.Role = int64(hostItem.Role)
+		host.GitInfoSha = hostItem.GitInfoSha
+		host.ZoneName = hostItem.ZoneName
+		host.Version = hostItem.Version
+		hostWrapper := hostWrapper{
+			HostItem: host,
+		}
+		h = append(h, hostWrapper)
+	}
+	return hostsWrapper{
+		metaBaserWrap: metaBaserWrap{
+			code: nerrors.ErrorCode(resp.GetCode()),
+			leader: types.HostAddr{
+				Host: resp.GetLeader().GetHost(),
+				Port: resp.GetLeader().GetPort(),
+			},
+		},
+		hosts: h,
+	}
+}
+
 type metaBaserWrap struct {
 	code   nerrors.ErrorCode
 	leader types.HostAddr
