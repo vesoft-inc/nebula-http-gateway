@@ -1,6 +1,8 @@
 package v2_5
 
 import (
+	"fmt"
+
 	nerrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
 	nthrift "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v2_5/graph"
@@ -1142,14 +1144,45 @@ type spaceWrapper struct {
 	Space *meta.IdName
 }
 
-func newSpacesWrapper(spaces []*meta.IdName) types.Spaces {
-	s := make([]types.Space, 0, len(spaces))
-	for _, space := range spaces {
-		s = append(s, spaceWrapper{Space: space})
-	}
-	return s
-}
-
 func (w spaceWrapper) GetName() string {
 	return string(w.Space.GetName())
+}
+
+type spacesWrap struct {
+	metaBaserWrap
+	Spaces []types.Space
+}
+
+func (w spacesWrap) GetSpaces() []types.Space {
+	return w.Spaces
+}
+
+func newSpacesWrapper(resp *meta.ListSpacesResp) types.Spaces {
+	list := make([]types.Space, 0, len(resp.GetSpaces()))
+	for _, space := range resp.GetSpaces() {
+		list = append(list, spaceWrapper{Space: space})
+	}
+	return spacesWrap{
+		metaBaserWrap: metaBaserWrap{
+			code: nerrors.ErrorCode(resp.GetCode()),
+			leader: types.HostAddr{
+				Host: resp.GetLeader().GetHost(),
+				Port: resp.GetLeader().GetPort(),
+			},
+		},
+		Spaces: list,
+	}
+}
+
+type metaBaserWrap struct {
+	code   nerrors.ErrorCode
+	leader types.HostAddr
+}
+
+func (m metaBaserWrap) GetCode() nerrors.ErrorCode {
+	return m.code
+}
+
+func (m metaBaserWrap) GetLeader() string {
+	return fmt.Sprintf("%s:%d", m.leader.Host, m.leader.Port)
 }

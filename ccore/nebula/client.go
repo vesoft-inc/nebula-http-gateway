@@ -92,7 +92,6 @@ func (c *defaultClient) initDriver(checkFn func(types.Driver) error) error {
 		c.driver = driver
 		return nil
 	}
-
 	for _, v := range c.o.autoVersions {
 		driver, err := types.GetDriver(v)
 		if err != nil {
