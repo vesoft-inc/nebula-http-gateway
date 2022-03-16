@@ -50,17 +50,17 @@ func (c *defaultMetaClient) Close() error {
 	return nil
 }
 
-func (c *defaultMetaClient) AddHosts(endpoints []string) error {
+func (c *defaultMetaClient) AddHosts(endpoints []string) (types.MetaBaser, error) {
 	hostsToAdd := make([]*nthrift.HostAddr, 0, len(endpoints))
 	for _, ep := range endpoints {
 		host, portStr, err := net.SplitHostPort(ep)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		port, err := strconv.Atoi(portStr)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		hostsToAdd = append(hostsToAdd, &nthrift.HostAddr{
@@ -74,22 +74,29 @@ func (c *defaultMetaClient) AddHosts(endpoints []string) error {
 	}
 	resp, err := c.meta.AddHosts(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return codeErrorIfHappened(resp.Code, nil)
+
+	return metaBaserWrap{
+		code: nerrors.ErrorCode(resp.GetCode()),
+		leader: types.HostAddr{
+			Host: resp.GetLeader().GetHost(),
+			Port: resp.GetLeader().GetPort(),
+		},
+	}, nil
 }
 
-func (c *defaultMetaClient) DropHosts(endpoints []string) error {
+func (c *defaultMetaClient) DropHosts(endpoints []string) (types.MetaBaser, error) {
 	hostsToDrop := make([]*nthrift.HostAddr, 0, len(endpoints))
 	for _, ep := range endpoints {
 		host, portStr, err := net.SplitHostPort(ep)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		port, err := strconv.Atoi(portStr)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		hostsToDrop = append(hostsToDrop, &nthrift.HostAddr{
@@ -103,9 +110,15 @@ func (c *defaultMetaClient) DropHosts(endpoints []string) error {
 	}
 	resp, err := c.meta.DropHosts(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return codeErrorIfHappened(resp.Code, nil)
+	return metaBaserWrap{
+		code: nerrors.ErrorCode(resp.GetCode()),
+		leader: types.HostAddr{
+			Host: resp.GetLeader().GetHost(),
+			Port: resp.GetLeader().GetPort(),
+		},
+	}, nil
 }
 
 func (c *defaultMetaClient) ListSpaces() (types.Spaces, error) {
@@ -116,11 +129,7 @@ func (c *defaultMetaClient) ListSpaces() (types.Spaces, error) {
 		return nil, err
 	}
 
-	if err := codeErrorIfHappened(resp.Code, nil); err != nil {
-		return nil, err
-	}
-
-	return newSpacesWrapper(resp.Spaces), nil
+	return newSpacesWrapper(resp), nil
 }
 
 func (c *defaultMetaClient) Balance(req types.BalanceReq) (types.Balancer, error) {
@@ -142,7 +151,6 @@ func (c *defaultMetaClient) Balance(req types.BalanceReq) (types.Balancer, error
 	}
 
 	paras = append(paras, []byte(req.Space))
-
 	metaReq := &meta.AdminJobReq{
 		Op:    meta.AdminJobOp_ADD,
 		Cmd:   cmd,
@@ -154,9 +162,5 @@ func (c *defaultMetaClient) Balance(req types.BalanceReq) (types.Balancer, error
 		return nil, err
 	}
 
-	if err := codeErrorIfHappened(resp.Code, nil); err != nil {
-		return nil, err
-	}
-
-	return newBalancerWrap(c.meta, req.Space, resp.Result_.JobID), nil
+	return newBalancerWrap(c.meta, req.Space, resp), nil
 }

@@ -46,12 +46,12 @@ func (c *defaultMetaClient) Close() error {
 	return nil
 }
 
-func (c *defaultMetaClient) AddHosts(endpoints []string) error {
-	return nerrors.ErrUnsupported
+func (c *defaultMetaClient) AddHosts(endpoints []string) (types.MetaBaser, error) {
+	return nil, nerrors.ErrUnsupported
 }
 
-func (c *defaultMetaClient) DropHosts(endpoints []string) error {
-	return nerrors.ErrUnsupported
+func (c *defaultMetaClient) DropHosts(endpoints []string) (types.MetaBaser, error) {
+	return nil, nerrors.ErrUnsupported
 }
 
 func (c *defaultMetaClient) ListSpaces() (types.Spaces, error) {
@@ -66,7 +66,7 @@ func (c *defaultMetaClient) ListSpaces() (types.Spaces, error) {
 		return nil, err
 	}
 
-	return newSpacesWrapper(resp.Spaces), nil
+	return newSpacesWrapper(resp), nil
 }
 
 func (c *defaultMetaClient) Balance(req types.BalanceReq) (types.Balancer, error) {

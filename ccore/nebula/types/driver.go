@@ -36,8 +36,8 @@ type (
 	MetaClientDriver interface {
 		Open() error
 		VerifyClientVersion() error
-		AddHosts(endpoints []string) error
-		DropHosts(endpoints []string) error
+		AddHosts(endpoints []string) (MetaBaser, error)
+		DropHosts(endpoints []string) (MetaBaser, error)
 		ListSpaces() (Spaces, error)
 		Balance(req BalanceReq) (Balancer, error)
 		Close() error
@@ -73,9 +73,13 @@ type (
 		GetName() string
 	}
 
-	Spaces []Space
+	Spaces interface {
+		MetaBaser
+		GetSpaces() []Space
+	}
 
 	Balancer interface {
+		MetaBaser
 		GetStats() (BalanceStats, error)
 	}
 
@@ -88,15 +92,21 @@ type (
 		NewNListBuilder() NListBuilder
 		NewNMapBuilder() NMapBuilder
 	}
-)
 
-func (s Spaces) GetSpaceNames() []string {
-	spaces := make([]string, 0, len(s))
-	for _, space := range s {
-		spaces = append(spaces, space.GetName())
+	HostAddr struct {
+		Host string
+		Port int32
 	}
-	return spaces
-}
+
+	Coder interface {
+		GetCode() nerrors.ErrorCode
+	}
+
+	MetaBaser interface {
+		Coder
+		GetLeader() string
+	}
+)
 
 func Register(version Version, driver Driver, factory FactoryDriver) {
 	registerDriver(version, driver)

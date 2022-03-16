@@ -1,12 +1,14 @@
 package v3_0
 
 import (
+	"fmt"
+	"strconv"
+
 	nerrors "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/errors"
 	nthrift "github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v3_0"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v3_0/graph"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/internal/thrift/v3_0/meta"
 	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/types"
-	"strconv"
 )
 
 type authResponseWrapper struct {
@@ -1207,29 +1209,55 @@ type spaceWrapper struct {
 	Space *meta.IdName
 }
 
-func newSpacesWrapper(spaces []*meta.IdName) types.Spaces {
-	s := make([]types.Space, 0, len(spaces))
-	for _, space := range spaces {
-		s = append(s, spaceWrapper{Space: space})
-	}
-	return s
-}
-
 func (w spaceWrapper) GetName() string {
 	return string(w.Space.GetName())
 }
 
+type spacesWrap struct {
+	metaBaserWrap
+	Spaces []types.Space
+}
+
+func (w spacesWrap) GetSpaces() []types.Space {
+	return w.Spaces
+}
+
+func newSpacesWrapper(resp *meta.ListSpacesResp) types.Spaces {
+	list := make([]types.Space, 0, len(resp.GetSpaces()))
+	for _, space := range resp.GetSpaces() {
+		list = append(list, spaceWrapper{Space: space})
+	}
+	return spacesWrap{
+		Spaces: list,
+		metaBaserWrap: metaBaserWrap{
+			code: nerrors.ErrorCode(resp.GetCode()),
+			leader: types.HostAddr{
+				Host: resp.GetLeader().GetHost(),
+				Port: resp.GetLeader().GetPort(),
+			},
+		},
+	}
+}
+
 type balancerWrap struct {
+	metaBaserWrap
 	id     []byte
 	space  []byte
 	client *meta.MetaServiceClient
 }
 
-func newBalancerWrap(client *meta.MetaServiceClient, space string, id *int32) types.Balancer {
+func newBalancerWrap(client *meta.MetaServiceClient, space string, resp *meta.AdminJobResp) types.Balancer {
 	return balancerWrap{
-		id:     []byte(strconv.Itoa(int(*id))),
+		id:     []byte(strconv.Itoa(int(*resp.Result_.JobID))),
 		space:  []byte(space),
 		client: client,
+		metaBaserWrap: metaBaserWrap{
+			code: nerrors.ErrorCode(resp.GetCode()),
+			leader: types.HostAddr{
+				Host: resp.GetLeader().GetHost(),
+				Port: resp.GetLeader().GetPort(),
+			},
+		},
 	}
 }
 
@@ -1257,4 +1285,17 @@ func (b balancerWrap) GetStats() (types.BalanceStats, error) {
 	default:
 		return types.Unbalanced, nil
 	}
+}
+
+type metaBaserWrap struct {
+	code   nerrors.ErrorCode
+	leader types.HostAddr
+}
+
+func (m metaBaserWrap) GetCode() nerrors.ErrorCode {
+	return m.code
+}
+
+func (m metaBaserWrap) GetLeader() string {
+	return fmt.Sprintf("%s:%d", m.leader.Host, m.leader.Port)
 }

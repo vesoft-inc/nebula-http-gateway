@@ -34,6 +34,7 @@ type (
 		o         *socketOptions
 		mu        sync.Mutex
 		endpoints []string
+		nextIndex int
 	}
 
 	driverFactory struct {
@@ -119,10 +120,6 @@ func (d *driverGraph) close() error {
 }
 
 func (d *driverMeta) open(driver types.Driver) error {
-	if d.MetaClientDriver != nil {
-		return nil
-	}
-
 	transport, pf, err := d.connection.connect()
 	if err != nil {
 		return err
@@ -182,11 +179,11 @@ func (d *driverStorageAdmin) close() error {
 }
 
 func (c *connectionMu) connect() (thrift.Transport, thrift.ProtocolFactory, error) {
-	// TODO: automatically open until success, only the first endpoints is supported now.
 	if len(c.endpoints) == 0 {
 		return nil, nil, nerrors.ErrNoEndpoints
 	}
-	return c.buildThriftTransport(c.endpoints[0])
+
+	return c.buildThriftTransport(c.endpoints[c.nextIndex])
 }
 
 func (c *connectionMu) buildThriftTransport(endpoint string) (thrift.Transport, thrift.ProtocolFactory, error) {
@@ -205,4 +202,26 @@ func (c *connectionMu) buildThriftTransport(endpoint string) (thrift.Transport, 
 	pf := thrift.NewBinaryProtocolFactoryDefault()
 
 	return transport, pf, nil
+}
+
+func (c *connectionMu) UpdateNextIndex() {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.nextIndex = (c.nextIndex + 1) % c.GetEndpointsLen()
+}
+
+func (c *connectionMu) SetEndpointIfExists(endpoint string) error {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	for i, ep := range c.endpoints {
+		if ep == endpoint {
+			c.nextIndex = i
+			return nil
+		}
+	}
+	return nerrors.ErrUnknownMetaEndpoint
+}
+
+func (c *connectionMu) GetEndpointsLen() int {
+	return len(c.endpoints)
 }
