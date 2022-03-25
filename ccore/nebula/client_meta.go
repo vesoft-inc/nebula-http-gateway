@@ -16,6 +16,7 @@ type (
 		BalanceData(space string) (types.Balancer, error)
 		BalanceLeader(space string) (types.Balancer, error)
 		BalanceDataRemove(space string, endpoints []string) (types.Balancer, error)
+		ListHosts() (types.Hosts, error)
 		Close() error
 	}
 
@@ -36,6 +37,18 @@ func (c *defaultMetaClient) Open() error {
 	return c.defaultClient().initDriver(func(driver types.Driver) error {
 		return c.openRetry(driver)
 	})
+}
+
+func (c *defaultMetaClient) ListHosts() (resp types.Hosts, err error) {
+	retryErr := c.retryDo(func() (types.MetaBaser, error) {
+		resp, err = c.meta.ListHosts()
+		return resp, err
+	})
+	if retryErr != nil {
+		return nil, retryErr
+	}
+
+	return
 }
 
 func (c *defaultMetaClient) Close() error {

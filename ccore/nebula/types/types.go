@@ -414,3 +414,23 @@ type BalanceReq struct {
 	Space         string
 	HostsToRemove []string
 }
+
+type (
+	HostStatus   int64
+)
+
+type HostItem struct {
+	HostAddr HostAddr
+	Status HostStatus
+	LeaderParts map[string][]int32
+	AllParts map[string][]int32
+	Role int64
+	GitInfoSha []byte
+	ZoneName []byte
+	Version []byte
+}
+
+type HostAddr struct {
+	Host string
+	Port int32
+}

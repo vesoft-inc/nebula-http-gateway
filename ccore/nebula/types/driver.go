@@ -40,6 +40,7 @@ type (
 		DropHosts(endpoints []string) (MetaBaser, error)
 		ListSpaces() (Spaces, error)
 		Balance(req BalanceReq) (Balancer, error)
+		ListHosts() (Hosts, error)
 		Close() error
 	}
 
@@ -93,9 +94,13 @@ type (
 		NewNMapBuilder() NMapBuilder
 	}
 
-	HostAddr struct {
-		Host string
-		Port int32
+	Host interface {
+		GetHostItem() HostItem
+	}
+
+	Hosts  interface {
+		MetaBaser
+		GetHosts() []Host
 	}
 
 	Coder interface {
