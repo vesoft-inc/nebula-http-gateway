@@ -355,21 +355,24 @@ func Execute(nsid string, gql string, paramList types.ParameterList) (ExecuteRes
 		return result, nil, errors.New(res.GetErrorMsg())
 	}
 	if !res.IsEmpty() {
-		rowSize := res.GetRowSize()
+		records, err := res.GetRecords()
+		if err != nil {
+			return result, nil, err
+		}
+
+		rowSize := len(records)
 		colSize := res.GetColSize()
 		colNames := res.GetColNames()
 		result.Headers = colNames
+
 		for i := 0; i < rowSize; i++ {
 			var rowValue = make(map[string]types.Any)
-			record, err := res.GetRowValuesByIndex(i)
 			var _verticesParsedList = make(list, 0)
 			var _edgesParsedList = make(list, 0)
 			var _pathsParsedList = make(list, 0)
-			if err != nil {
-				return result, nil, err
-			}
+
 			for j := 0; j < colSize; j++ {
-				rowData, err := record.GetValueByIndex(j)
+				rowData, err := records[i].GetValueByIndex(j)
 				if err != nil {
 					return result, nil, err
 				}

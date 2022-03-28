@@ -315,6 +315,26 @@ func (res ResultSet) GetRowValuesByIndex(index int) (*Record, error) {
 	}, nil
 }
 
+func (res ResultSet) GetRecords() ([]*Record, error) {
+	rows := res.resp.GetData().GetRows()
+	records := make([]*Record, len(rows))
+	for i, row := range rows {
+		valWrap, err := GenValWraps(row, res.factory, res.timezoneInfo)
+		if err != nil {
+			return nil, err
+		}
+		records[i] = &Record{
+			columnNames:     &res.columnNames,
+			_record:         valWrap,
+			colNameIndexMap: &res.colNameIndexMap,
+			factory:         res.factory,
+			timezoneInfo:    res.timezoneInfo,
+		}
+	}
+
+	return records, nil
+}
+
 // Returns the number of total rows
 func (res ResultSet) GetRowSize() int {
 	if res.resp.GetData() == nil {
