@@ -175,3 +175,14 @@ func (c *defaultMetaClient) ListHosts() (types.Hosts, error) {
 
 	return newHostsWrapper(resp), nil
 }
+
+func (c *defaultMetaClient) ListZones() (types.Zones, error) {
+	req := meta.NewListZonesReq()
+
+	resp, err := c.meta.ListZones(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return newZonesWrapper(resp), nil
+}

@@ -17,6 +17,7 @@ type (
 		BalanceLeader(space string) (types.Balancer, error)
 		BalanceDataRemove(space string, endpoints []string) (types.Balancer, error)
 		ListHosts() (types.Hosts, error)
+		ListZones() (types.Zones, error)
 		Close() error
 	}
 
@@ -42,6 +43,18 @@ func (c *defaultMetaClient) Open() error {
 func (c *defaultMetaClient) ListHosts() (resp types.Hosts, err error) {
 	retryErr := c.retryDo(func() (types.MetaBaser, error) {
 		resp, err = c.meta.ListHosts()
+		return resp, err
+	})
+	if retryErr != nil {
+		return nil, retryErr
+	}
+
+	return
+}
+
+func (c *defaultMetaClient) ListZones() (resp types.Zones, err error) {
+	retryErr := c.retryDo(func() (types.MetaBaser, error) {
+		resp, err = c.meta.ListZones()
 		return resp, err
 	})
 	if retryErr != nil {

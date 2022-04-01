@@ -41,6 +41,7 @@ type (
 		ListSpaces() (Spaces, error)
 		Balance(req BalanceReq) (Balancer, error)
 		ListHosts() (Hosts, error)
+		ListZones() (Zones, error)
 		Close() error
 	}
 
@@ -98,9 +99,19 @@ type (
 		GetHostItem() HostItem
 	}
 
-	Hosts  interface {
+	Hosts interface {
 		MetaBaser
 		GetHosts() []Host
+	}
+
+	Zone interface {
+		GetName() string
+		GetHosts() []*HostAddr
+	}
+
+	Zones interface {
+		MetaBaser
+		GetZones() []Zone
 	}
 
 	Coder interface {

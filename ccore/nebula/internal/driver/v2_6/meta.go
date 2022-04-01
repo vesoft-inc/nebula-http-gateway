@@ -84,3 +84,7 @@ func (c *defaultMetaClient) ListHosts() (types.Hosts, error) {
 
 	return newHostsWrapper(resp), nil
 }
+
+func (c *defaultMetaClient) ListZones() (types.Zones, error) {
+	return nil, nerrors.ErrUnsupported
+}
