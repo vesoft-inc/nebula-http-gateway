@@ -1334,6 +1334,55 @@ func newHostsWrapper(resp *meta.ListHostsResp) types.Hosts {
 	}
 }
 
+type zoneWrapper struct {
+	zoneName string
+	hosts    []*types.HostAddr
+}
+
+func (z zoneWrapper) GetName() string {
+	return z.zoneName
+}
+
+func (z zoneWrapper) GetHosts() []*types.HostAddr {
+	return z.hosts
+}
+
+type zonesWrapper struct {
+	metaBaserWrap
+	zones []types.Zone
+}
+
+func (z zonesWrapper) GetZones() []types.Zone {
+	return z.zones
+}
+
+func newZonesWrapper(resp *meta.ListZonesResp) types.Zones {
+	zones := make([]types.Zone, 0, len(resp.Zones))
+	for _, zone := range resp.Zones {
+		hosts := make([]*types.HostAddr, 0, len(zone.GetNodes()))
+		for _, host := range zone.GetNodes() {
+			hosts = append(hosts, &types.HostAddr{
+				Host: host.GetHost(),
+				Port: host.GetPort(),
+			})
+		}
+		zones = append(zones, zoneWrapper{
+			zoneName: string(zone.GetZoneName()),
+			hosts:    hosts,
+		})
+	}
+	return zonesWrapper{
+		metaBaserWrap: metaBaserWrap{
+			code: nerrors.ErrorCode(resp.GetCode()),
+			leader: types.HostAddr{
+				Host: resp.GetLeader().GetHost(),
+				Port: resp.GetLeader().GetPort(),
+			},
+		},
+		zones: zones,
+	}
+}
+
 type metaBaserWrap struct {
 	code   nerrors.ErrorCode
 	leader types.HostAddr
