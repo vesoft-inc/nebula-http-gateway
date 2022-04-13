@@ -18,6 +18,7 @@ type (
 		username   string
 		password   string
 		sessionId  int64
+		timezone   types.TimezoneInfo
 	}
 
 	driverMeta struct {
@@ -105,13 +106,18 @@ func (d *driverGraph) open(driver types.Driver) error {
 		panic("sessionId can not be nil after authenticate")
 	}
 	d.sessionId = *sessionId
-
+	d.timezone = resp.GetTimezoneInfo()
 	d.GraphClientDriver = graphClientDriver
 	return nil
 }
 
+func (d *driverGraph) GetTimezoneInfo() types.TimezoneInfo {
+	return d.timezone
+}
+
 func (d *driverGraph) close() error {
 	if d.GraphClientDriver != nil {
+		d.GraphClientDriver.Signout(d.sessionId)
 		if err := d.GraphClientDriver.Close(); err != nil {
 			return err
 		}
