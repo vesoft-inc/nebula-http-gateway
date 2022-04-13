@@ -15,6 +15,7 @@ type (
 		Close() error
 		Factory() Factory
 		Version() Version
+		GetTimezoneInfo() types.TimezoneInfo
 	}
 
 	defaultGraphClient defaultClient
@@ -32,6 +33,10 @@ func NewGraphClient(endpoints []string, username, password string, opts ...Optio
 		return nil, err
 	}
 	return c.Graph(), nil
+}
+
+func (c *defaultGraphClient) GetTimezoneInfo() types.TimezoneInfo {
+	return c.graph.GetTimezoneInfo()
 }
 
 func (c *defaultGraphClient) Open() error {

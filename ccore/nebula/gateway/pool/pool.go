@@ -55,6 +55,7 @@ type Client struct {
 	updateTime     int64
 	parameterMap   types.ParameterMap
 	account        *Account
+	timezone       types.TimezoneInfo
 }
 
 type ClientInfo struct {
@@ -239,6 +240,7 @@ func NewClient(address string, port int, username string, password string, opts 
 			username: username,
 			password: password,
 		},
+		timezone: c.GetTimezoneInfo(),
 	}
 	clientPool[ncid] = client
 	currentClientNum++
@@ -286,19 +288,6 @@ func handleRequest(ncid string) {
 				}
 
 				if len(request.Gql) > 0 {
-					// use auth response to get timezone info
-					authResp, err := client.graphClient.Authenticate(client.account.username, client.account.password)
-					if err != nil {
-						if isThriftProtoError(err) || isThriftTransportError(err) {
-							err = fmt.Errorf("%s. %s.\n", err.Error(), InterruptError.Error())
-						}
-						request.ResponseChannel <- ChannelResponse{
-							Result: nil,
-							Error:  err,
-						}
-						return
-					}
-
 					execResponse, err := client.graphClient.ExecuteWithParameter([]byte(request.Gql), client.parameterMap)
 					if err != nil {
 						if isThriftProtoError(err) || isThriftTransportError(err) {
@@ -311,7 +300,7 @@ func handleRequest(ncid string) {
 						return
 					}
 
-					res, err := wrapper.GenResultSet(execResponse, client.graphClient.Factory(), authResp.GetTimezoneInfo())
+					res, err := wrapper.GenResultSet(execResponse, client.graphClient.Factory(), client.timezone)
 					if err != nil {
 						err = fmt.Errorf("%s. %s.\n", err.Error(), InterruptError.Error())
 					}
