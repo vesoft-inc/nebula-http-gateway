@@ -8,7 +8,7 @@ require (
 	github.com/astaxie/beego v1.12.3
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/vesoft-inc/nebula-http-gateway/ccore v0.0.0
-	github.com/vesoft-inc/nebula-importer v1.0.1-0.20220214094549-1dd8e730a586
+	github.com/vesoft-inc/nebula-importer v1.0.1-0.20220426040009-20ff1284d0e5
 )
 
 require (

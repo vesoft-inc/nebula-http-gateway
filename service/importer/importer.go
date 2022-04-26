@@ -3,6 +3,7 @@ package importer
 import (
 	"errors"
 	"fmt"
+	"github.com/vesoft-inc/nebula-importer/pkg/logger"
 	"path/filepath"
 	"time"
 
@@ -33,12 +34,19 @@ func Import(taskID string, configPath string, configBody *config.YAMLConfig) (er
 
 	var conf *config.YAMLConfig
 
+	var logPath string
+	if configBody.LogPath == nil {
+		logPath = ""
+	} else {
+		logPath = *configBody.LogPath
+	}
+	runnerLogger := logger.NewRunnerLogger(logPath)
 	if configPath != "" {
 		conf, err = config.Parse(
 			filepath.Join(
 				beego.AppConfig.String("uploadspath"),
 				configPath,
-			),
+			), runnerLogger,
 		)
 
 		if err != nil {
@@ -49,7 +57,7 @@ func Import(taskID string, configPath string, configBody *config.YAMLConfig) (er
 		conf = configBody
 	}
 
-	if err := conf.ValidateAndReset(""); err != nil {
+	if err := conf.ValidateAndReset("", runnerLogger); err != nil {
 		return err
 	}
 
