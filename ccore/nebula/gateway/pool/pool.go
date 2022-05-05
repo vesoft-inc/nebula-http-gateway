@@ -28,6 +28,9 @@ const (
 	Unknown = -1
 	Param   = 1
 	Params  = 2
+	clientRecycleNum = 30
+	clientMaxNum = 200
+	SessionExpiredDuration int64 = 3600
 )
 
 type Account struct {
@@ -213,6 +216,14 @@ func NewClient(address string, port int, username string, password string, opts 
 	clientMux.Lock()
 	defer clientMux.Unlock()
 
+	// TODO: it's better to add a schedule to make it instead
+	if currentClientNum > clientRecycleNum {
+		go recycleClients()
+		if currentClientNum >= clientMaxNum {
+			return nil, errors.New("There is no idle connection now, please try it later")
+		}
+	}
+
 	host := strings.Join([]string{address, strconv.Itoa(port)}, ":")
 	c, err := nebula.NewGraphClient([]string{host}, username, password, opts...)
 	if err != nil {
@@ -227,7 +238,7 @@ func NewClient(address string, port int, username string, password string, opts 
 		return nil, err
 	}
 
-	ncid := u.String()
+	nsid := u.String()
 	ver := c.Version()
 
 	client := &Client{
@@ -242,22 +253,32 @@ func NewClient(address string, port int, username string, password string, opts 
 		},
 		timezone: c.GetTimezoneInfo(),
 	}
-	clientPool[ncid] = client
+	clientPool[nsid] = client
 	currentClientNum++
 
 	// Make a goroutine to deal with concurrent requests from each connection
-	go handleRequest(ncid)
+	go handleRequest(nsid)
 
 	info := &ClientInfo{
-		ClientID:      ncid,
+		ClientID:      nsid,
 		NebulaVersion: ver,
 	}
 	return info, err
 }
 
-func handleRequest(ncid string) {
+func recycleClients() {
+	for _, client := range clientPool {
+		now := time.Now().Unix()
+		expireAt := client.updateTime + SessionExpiredDuration
+		if now > expireAt {
+			client.CloseChannel <- true
+		}
+	}
+}
+
+func handleRequest(nsid string) {
 	var err error
-	client := clientPool[ncid]
+	client := clientPool[nsid]
 	for {
 		select {
 		case request := <-client.RequestChannel:
@@ -321,29 +342,19 @@ func handleRequest(ncid string) {
 			clientMux.Lock()
 			_ = client.graphClient.Close()
 			currentClientNum--
-			delete(clientPool, ncid)
+			delete(clientPool, nsid)
 			clientMux.Unlock()
 			return // Exit loop
 		}
 	}
 }
 
-func Close(ncid string) {
+func GetClient(nsid string) (*Client, error) {
 	clientMux.Lock()
 	defer clientMux.Unlock()
 
-	if client, ok := clientPool[ncid]; ok {
-		_ = client.graphClient.Close()
-		currentClientNum--
-		delete(clientPool, ncid)
-	}
-}
-
-func GetClient(ncid string) (*Client, error) {
-	clientMux.Lock()
-	defer clientMux.Unlock()
-
-	if client, ok := clientPool[ncid]; ok {
+	if client, ok := clientPool[nsid]; ok {
+		client.updateTime = time.Now().Unix()
 		return client, nil
 	}
 

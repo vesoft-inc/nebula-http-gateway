@@ -49,8 +49,8 @@ func (this *DatabaseController) Connect() {
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
 
 	info, err := dao.Connect(params.Address, params.Port, params.Username, params.Password)
-	nsid := info.ClientID
 	if err == nil {
+		nsid := info.ClientID
 		res.Code = 0
 		m := make(map[string]types.Any)
 		m["nsid"] = nsid
@@ -81,11 +81,20 @@ func (this *DatabaseController) Home() {
 func (this *DatabaseController) Disconnect() {
 	var res Response
 	nsid := this.GetSession(beego.AppConfig.String("sessionkey"))
-	if nsid != nil {
-		dao.Disconnect(nsid.(string))
+	if nsid == nil {
+		res.Code = -1
+		res.Message = "No connection existed"
+	} else {
+		err := dao.Disconnect(nsid.(string))
+		if err != nil {
+			res.Code = -1
+			res.Message = "Disconnect failed"
+		} else {
+			res.Code = 0
+			res.Message = "Disconnect successfully"
+		}
 	}
-	res.Code = 0
-	res.Message = "Disconnect successfully"
+
 	this.Data["json"] = &res
 	this.ServeJSON()
 }
