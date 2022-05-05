@@ -24,6 +24,7 @@ func CreateFileWithPerm(filePath string, permCode string) (*os.File, error) {
 	filedir := path.Dir(filePath)
 	os.MkdirAll(filedir, os.FileMode(perm))
 	fd, err := os.OpenFile(filePath, os.O_WRONLY|os.O_APPEND|os.O_CREATE, os.FileMode(perm))
+	defer fd.Close()
 	if os.IsExist(err) {
 		os.Chmod(filePath, os.FileMode(perm))
 	}
