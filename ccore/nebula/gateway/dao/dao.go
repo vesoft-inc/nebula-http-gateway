@@ -284,8 +284,14 @@ func Connect(address string, port int, username string, password string, opts ..
 	return info, nil
 }
 
-func Disconnect(nsid string) {
-	pool.Close(nsid)
+func Disconnect(nsid string) error {
+	client, err := pool.GetClient(nsid)
+	if err != nil {
+		return err
+	}
+	client.CloseChannel <- true
+
+	return nil
 }
 
 /*
