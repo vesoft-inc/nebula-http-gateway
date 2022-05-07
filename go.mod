@@ -8,7 +8,7 @@ require (
 	github.com/astaxie/beego v1.12.3
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/vesoft-inc/nebula-http-gateway/ccore v0.0.0
-	github.com/vesoft-inc/nebula-importer v1.0.1-0.20220426040009-20ff1284d0e5
+	github.com/vesoft-inc/nebula-importer v1.0.1-0.20220505095506-93febd41c2be
 )
 
 require (
@@ -16,6 +16,7 @@ require (
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/prometheus/client_golang v1.9.0 // indirect
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18 // indirect
+	github.com/vesoft-inc/nebula-go/v3 v3.1.0 // indirect
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
 	golang.org/x/sys v0.0.0-20210105210732-16f7687f5001 // indirect

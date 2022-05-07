@@ -318,10 +318,11 @@ github.com/tmc/grpc-websocket-proxy v0.0.0-20170815181823-89b8d40f7ca8/go.mod h1
 github.com/ugorji/go v0.0.0-20171122102828-84cb69a8af83/go.mod h1:hnLbHMwcvSihnDhEfx2/BzKp2xb0Y+ErdfYcrs9tkJQ=
 github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijbERA=
 github.com/urfave/cli v1.22.1/go.mod h1:Gos4lmkARVdJ6EkW0WaNv/tZAAMe9V7XWyB60NtXRu0=
+github.com/vesoft-inc/nebula-go/v3 v3.0.0-20220425030225-cdb52399b40a/go.mod h1:+sXv05jYQBARdTbTcIEsWVXCnF/6ttOlDK35xQ6m54s=
 github.com/vesoft-inc/nebula-go/v3 v3.1.0 h1:Fp99YPk3/kNY1HERagDfty3To+hdi97dCO73FNwkhwE=
 github.com/vesoft-inc/nebula-go/v3 v3.1.0/go.mod h1:+sXv05jYQBARdTbTcIEsWVXCnF/6ttOlDK35xQ6m54s=
-github.com/vesoft-inc/nebula-importer v1.0.1-0.20220426040009-20ff1284d0e5 h1:JUsR+0PmyQnqfdBcxooOdSKOOf1HESHLfhee+gMOaTM=
-github.com/vesoft-inc/nebula-importer v1.0.1-0.20220426040009-20ff1284d0e5/go.mod h1:m2L91hHgSGbfRB05J//Z8qqnEcYB6PsWbY1OX5f/uJY=
+github.com/vesoft-inc/nebula-importer v1.0.1-0.20220505095506-93febd41c2be h1:7YGSREZ6uS1WjCdKTlHEvhSeYURJFY7UXQZ008+EB2Y=
+github.com/vesoft-inc/nebula-importer v1.0.1-0.20220505095506-93febd41c2be/go.mod h1:8xAQi6KI2qe40Dop/GqDXmBEurt7qGp5Pjd1MESAVNA=
 github.com/wendal/errors v0.0.0-20130201093226-f66c77a7882b/go.mod h1:Q12BUT7DqIlHRmgv3RskH+UCM/4eqVMgI0EMmlSpAXc=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/yuin/gopher-lua v0.0.0-20171031051903-609c9cd26973/go.mod h1:aEV29XrmTYFr3CiRxZeGHpkvbwq+prZduBqMaascyCU=
