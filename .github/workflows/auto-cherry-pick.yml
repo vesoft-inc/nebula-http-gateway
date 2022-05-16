@@ -23,5 +23,5 @@ jobs:
       - name: auto cherry pick
         uses: xigongdaEricyang/cherry-pick-robot@with-python
         with:
-          from_repo: vesoft-inc/nebula-http-gateway
           pr_label: ^v[0-9]*\.[0-9]*-cherry-pick$
+          repo_token: ${{ secrets.CLOUD_GH_PAT }}
