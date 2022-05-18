@@ -161,6 +161,13 @@ func getPathInfo(valWarp *wrapper.ValueWrapper, data map[string]types.Any) (map[
 		_relationships = append(_relationships, _relation)
 	}
 	data["relationships"] = _relationships
+	if len(relationships) == 0 {
+		nodes := path.GetNodes()
+		if len(nodes) > 0 {
+			startNode := nodes[0]
+			data["srcID"] = getID(startNode.GetID())
+		}
+	}
 	return data, nil
 }
 
