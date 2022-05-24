@@ -86,7 +86,10 @@ func main() {
 	*/
 	done := make(chan bool, 1)
 	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	if !signal.Ignored(syscall.SIGHUP) {
+		signal.Notify(quit, syscall.SIGHUP)
+	}
 
 	go func() {
 		<-quit
