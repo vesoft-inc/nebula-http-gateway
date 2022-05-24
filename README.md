@@ -20,6 +20,15 @@ $ ./nebula-httpd
 - Go 1.13+
 - [beego](https://beego.me/)
 
+## Version
+| Nebula Graph version | Http-gateway tag | 
+|----------------------|---------------------------|
+| 1.x                  | v1.0                      |
+| 2.0.x & 2.5.x        | v2.0                      |
+| 2.6.x                | v2.1.x                    |
+| 3.0.x                | 2.2.x                     |
+| 3.1.x                | 3.1.x                     |
+
 ## User Guide
 
 ### API Definition
