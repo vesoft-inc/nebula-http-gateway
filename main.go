@@ -10,11 +10,12 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
+	"github.com/vesoft-inc/nebula-http-gateway/common"
 	_ "github.com/vesoft-inc/nebula-http-gateway/routers"
 
-	"github.com/astaxie/beego"
-	"github.com/vesoft-inc/nebula-http-gateway/common"
+	"github.com/vesoft-inc/nebula-http-gateway/ccore/nebula/gateway/pool"
 )
 
 func main() {
@@ -98,7 +99,7 @@ func main() {
 
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 		defer cancel()
-
+		pool.ClearClients()
 		beego.BeeApp.Server.SetKeepAlivesEnabled(false)
 		if err := beego.BeeApp.Server.Shutdown(ctx); err != nil {
 			logs.Error(err.Error())
