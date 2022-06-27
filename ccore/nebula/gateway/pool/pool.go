@@ -25,11 +25,11 @@ var (
 
 // Console side commands
 const (
-	Unknown = -1
-	Param   = 1
-	Params  = 2
-	clientRecycleNum = 30
-	clientMaxNum = 200
+	Unknown                      = -1
+	Param                        = 1
+	Params                       = 2
+	clientRecycleNum             = 30
+	clientMaxNum                 = 200
 	SessionExpiredDuration int64 = 3600
 )
 
@@ -264,6 +264,12 @@ func NewClient(address string, port int, username string, password string, opts 
 		NebulaVersion: ver,
 	}
 	return info, err
+}
+
+func ClearClients() {
+	for _, client := range clientPool {
+		client.graphClient.Close()
+	}
 }
 
 func recycleClients() {
