@@ -218,9 +218,10 @@ func NewClient(address string, port int, username string, password string, opts 
 
 	// TODO: it's better to add a schedule to make it instead
 	if currentClientNum > clientRecycleNum {
-		go recycleClients()
 		if currentClientNum >= clientMaxNum {
-			return nil, errors.New("There is no idle connection now, please try it later")
+			go forceRecycleClients()
+		} else {
+			go recycleClients()
 		}
 	}
 
@@ -245,7 +246,7 @@ func NewClient(address string, port int, username string, password string, opts 
 		graphClient:    c,
 		RequestChannel: make(chan ChannelRequest),
 		CloseChannel:   make(chan bool),
-		updateTime:     time.Now().Unix(),
+		updateTime:     time.Now().UnixMilli(),
 		parameterMap:   make(types.ParameterMap),
 		account: &Account{
 			username: username,
@@ -274,11 +275,29 @@ func ClearClients() {
 
 func recycleClients() {
 	for _, client := range clientPool {
-		now := time.Now().Unix()
-		expireAt := client.updateTime + SessionExpiredDuration
+		now := time.Now().UnixMilli()
+		expireAt := client.updateTime + SessionExpiredDuration*1000
 		if now > expireAt {
 			client.CloseChannel <- true
 		}
+	}
+}
+
+// if currentClientNum >= clientMaxNum
+// we should force recycle the client which is not used for longest time
+func forceRecycleClients() {
+	var lruClient *Client
+	for _, client := range clientPool {
+		if lruClient == nil {
+			lruClient = client
+			continue
+		}
+		if client.updateTime < lruClient.updateTime {
+			lruClient = client
+		}
+	}
+	if lruClient != nil {
+		lruClient.CloseChannel <- true
 	}
 }
 
@@ -360,7 +379,7 @@ func GetClient(nsid string) (*Client, error) {
 	defer clientMux.Unlock()
 
 	if client, ok := clientPool[nsid]; ok {
-		client.updateTime = time.Now().Unix()
+		client.updateTime = time.Now().UnixMilli()
 		return client, nil
 	}
 
