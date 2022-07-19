@@ -28,6 +28,7 @@ $ ./nebula-httpd
 | 2.6.x                | v2.1.x                    |
 | 3.0.x                | 2.2.x                     |
 | 3.1.x                | 3.1.x                     |
+| 3.2.x                | 3.2.x                     |
 
 ## User Guide
 
