@@ -136,7 +136,7 @@ response:
 #### Disconnect API ####
 
 ```bash
-$ curl -X POST http://127.0.0.1:8080/api/db/disconnect
+$ curl -X POST -H "Cookie:common-nsid=bec2e665ba62a13554b617d70de8b9b9" http://127.0.0.1:8080/api/db/disconnect
 ```
 
 response:
