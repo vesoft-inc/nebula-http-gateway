@@ -237,7 +237,7 @@ func getMapInfo(valWarp *wrapper.ValueWrapper, _verticesParsedList *list, _edges
 	for _, v := range valueMap {
 		vType := v.GetType()
 		if vType == "vertex" {
-			var _props map[string]types.Any
+			_props := make(map[string]types.Any)
 			_props, err = getVertexInfo(&v, _props)
 			if err == nil {
 				*_verticesParsedList = append(*_verticesParsedList, _props)
@@ -245,7 +245,7 @@ func getMapInfo(valWarp *wrapper.ValueWrapper, _verticesParsedList *list, _edges
 				return err
 			}
 		} else if vType == "edge" {
-			var _props map[string]types.Any
+			_props := make(map[string]types.Any)
 			_props, err = getEdgeInfo(&v, _props)
 			if err == nil {
 				*_edgesParsedList = append(*_edgesParsedList, _props)
@@ -253,7 +253,7 @@ func getMapInfo(valWarp *wrapper.ValueWrapper, _verticesParsedList *list, _edges
 				return err
 			}
 		} else if vType == "path" {
-			var _props map[string]types.Any
+			_props := make(map[string]types.Any)
 			_props, err = getPathInfo(&v, _props)
 			if err == nil {
 				*_pathsParsedList = append(*_pathsParsedList, _props)
@@ -302,8 +302,8 @@ func Disconnect(nsid string) error {
 }
 
 /*
-	executes the gql based on nsid,
-	and returns result, the runtime panic error and the result error.
+executes the gql based on nsid,
+and returns result, the runtime panic error and the result error.
 */
 func Execute(nsid string, gql string, paramList types.ParameterList) (ExecuteResult, interface{}, error) {
 	result := ExecuteResult{
