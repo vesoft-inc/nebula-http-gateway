@@ -3,9 +3,10 @@ package importer
 import (
 	"errors"
 	"fmt"
-	"github.com/vesoft-inc/nebula-importer/pkg/logger"
 	"path/filepath"
 	"time"
+
+	"github.com/vesoft-inc/nebula-importer/pkg/logger"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
@@ -135,7 +136,7 @@ func actionQuery(taskID string, result *ActionResult) {
 }
 
 /*
-	`actionQueryAll` will return all tasks with status Aborted or Processing
+`actionQueryAll` will return all tasks with status Aborted or Processing
 */
 func actionQueryAll(result *ActionResult) {
 	taskIDs := GetTaskMgr().GetAllTaskIDs()
@@ -159,7 +160,7 @@ func actionStop(taskID string, result *ActionResult) {
 }
 
 /*
-	`actionStopAll` will stop all tasks with status Processing
+`actionStopAll` will stop all tasks with status Processing
 */
 func actionStopAll(result *ActionResult) {
 	taskIDs := GetTaskMgr().GetAllTaskIDs()
