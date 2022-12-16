@@ -55,9 +55,9 @@ func WithLogger(log Logger) Option {
 
 func WithTimeout(timeout time.Duration) Option {
 	return func(o *Options) {
-		WithGraphTimeout(timeout)
-		WithMetaTimeout(timeout)
-		WithStorageTimeout(timeout)
+		WithGraphTimeout(timeout)(o)
+		WithMetaTimeout(timeout)(o)
+		WithStorageTimeout(timeout)(o)
 	}
 }
 
