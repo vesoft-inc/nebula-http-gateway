@@ -321,6 +321,8 @@ github.com/urfave/cli v1.22.1/go.mod h1:Gos4lmkARVdJ6EkW0WaNv/tZAAMe9V7XWyB60NtX
 github.com/vesoft-inc/nebula-go/v3 v3.0.0-20220425030225-cdb52399b40a/go.mod h1:+sXv05jYQBARdTbTcIEsWVXCnF/6ttOlDK35xQ6m54s=
 github.com/vesoft-inc/nebula-go/v3 v3.2.0 h1:f0IW6W5f91O6FyXAi+kFq1D2bNFXtPtkb/H9WywFGmM=
 github.com/vesoft-inc/nebula-go/v3 v3.2.0/go.mod h1:+sXv05jYQBARdTbTcIEsWVXCnF/6ttOlDK35xQ6m54s=
+github.com/vesoft-inc/nebula-go/v3 v3.4.0 h1:7q2DSW4QABwI2oGPSVuC+Ql7kGwj26G/YVPGD7gETys=
+github.com/vesoft-inc/nebula-go/v3 v3.4.0/go.mod h1:+sXv05jYQBARdTbTcIEsWVXCnF/6ttOlDK35xQ6m54s=
 github.com/vesoft-inc/nebula-importer v1.0.1-0.20220719030708-8e376665042e h1:Xj3N5lfKv+mG59Fh2GoWZ/89kWEwQtW/W4EiKkD2yI0=
 github.com/vesoft-inc/nebula-importer v1.0.1-0.20220719030708-8e376665042e/go.mod h1:8xAQi6KI2qe40Dop/GqDXmBEurt7qGp5Pjd1MESAVNA=
 github.com/wendal/errors v0.0.0-20130201093226-f66c77a7882b/go.mod h1:Q12BUT7DqIlHRmgv3RskH+UCM/4eqVMgI0EMmlSpAXc=

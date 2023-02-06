@@ -16,7 +16,7 @@ require (
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/prometheus/client_golang v1.9.0 // indirect
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18 // indirect
-	github.com/vesoft-inc/nebula-go/v3 v3.2.0 // indirect
+	github.com/vesoft-inc/nebula-go/v3 v3.4.0 // indirect
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
 	golang.org/x/sys v0.0.0-20210105210732-16f7687f5001 // indirect
