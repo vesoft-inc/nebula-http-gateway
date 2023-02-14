@@ -274,6 +274,7 @@ func ClearClients() {
 }
 
 func recycleClients() {
+	clientMux.Lock()
 	for _, client := range clientPool {
 		now := time.Now().Unix()
 		expireAt := client.updateTime + SessionExpiredDuration
@@ -281,6 +282,7 @@ func recycleClients() {
 			client.CloseChannel <- true
 		}
 	}
+	clientMux.Unlock()
 }
 
 func handleRequest(nsid string) {
