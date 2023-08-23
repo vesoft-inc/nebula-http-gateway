@@ -73,6 +73,7 @@ type (
 
 	Space interface {
 		GetName() string
+		GetId() string
 	}
 
 	Spaces interface {
