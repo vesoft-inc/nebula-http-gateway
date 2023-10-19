@@ -1,6 +1,7 @@
 package v3_0
 
 import (
+	"fmt"
 	"net"
 	"strconv"
 
@@ -73,6 +74,47 @@ func (c *defaultMetaClient) AddHosts(endpoints []string) (types.MetaBaser, error
 		Hosts: hostsToAdd,
 	}
 	resp, err := c.meta.AddHosts(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return metaBaserWrap{
+		code: nerrors.ErrorCode(resp.GetCode()),
+		leader: types.HostAddr{
+			Host: resp.GetLeader().GetHost(),
+			Port: resp.GetLeader().GetPort(),
+		},
+	}, nil
+}
+
+func (c *defaultMetaClient) AddHostsIntoZone(zone string, endpoints []string, isNew bool) (types.MetaBaser, error) {
+	hostsToAdd := make([]*nthrift.HostAddr, 0, len(endpoints))
+	for _, ep := range endpoints {
+		host, portStr, err := net.SplitHostPort(ep)
+		if err != nil {
+			return nil, err
+		}
+
+		port, err := strconv.Atoi(portStr)
+		if err != nil {
+			return nil, err
+		}
+
+		hostsToAdd = append(hostsToAdd, &nthrift.HostAddr{
+			Host: host,
+			Port: nthrift.Port(port),
+		})
+	}
+
+	req := &meta.AddHostsIntoZoneReq{
+		Hosts:    hostsToAdd,
+		ZoneName: []byte(zone),
+		IsNew:    isNew,
+	}
+
+	fmt.Println(req)
+
+	resp, err := c.meta.AddHostsIntoZone(req)
 	if err != nil {
 		return nil, err
 	}

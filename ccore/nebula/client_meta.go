@@ -11,6 +11,7 @@ type (
 	MetaClient interface {
 		Open() error
 		AddHosts(endpoints []string) (types.MetaBaser, error)
+		AddHostsIntoZone(zone string, endpoints []string, isNew bool) (types.MetaBaser, error)
 		DropHosts(endpoints []string) (types.MetaBaser, error)
 		ListSpaces() (types.Spaces, error)
 		BalanceData(space string) (types.Balancer, error)
@@ -71,6 +72,18 @@ func (c *defaultMetaClient) Close() error {
 func (c *defaultMetaClient) AddHosts(endpoints []string) (resp types.MetaBaser, err error) {
 	retryErr := c.retryDo(func() (types.MetaBaser, error) {
 		resp, err = c.meta.AddHosts(endpoints)
+		return resp, err
+	})
+	if retryErr != nil {
+		return nil, retryErr
+	}
+
+	return
+}
+
+func (c *defaultMetaClient) AddHostsIntoZone(zone string, endpoints []string, isNew bool) (resp types.MetaBaser, err error) {
+	retryErr := c.retryDo(func() (types.MetaBaser, error) {
+		resp, err = c.meta.AddHostsIntoZone(zone, endpoints, isNew)
 		return resp, err
 	})
 	if retryErr != nil {
