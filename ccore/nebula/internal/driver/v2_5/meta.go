@@ -46,6 +46,10 @@ func (c *defaultMetaClient) AddHosts(endpoints []string) (types.MetaBaser, error
 	return nil, nerrors.ErrUnsupported
 }
 
+func (c *defaultMetaClient) AddHostsIntoZone(zone string, endpoints []string, isNew bool) (types.MetaBaser, error) {
+	return nil, nerrors.ErrUnsupported
+}
+
 func (c *defaultMetaClient) DropHosts(endpoints []string) (types.MetaBaser, error) {
 	return nil, nerrors.ErrUnsupported
 }

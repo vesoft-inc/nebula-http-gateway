@@ -37,6 +37,7 @@ type (
 		Open() error
 		VerifyClientVersion() error
 		AddHosts(endpoints []string) (MetaBaser, error)
+		AddHostsIntoZone(zone string, endpoints []string, isNew bool) (MetaBaser, error)
 		DropHosts(endpoints []string) (MetaBaser, error)
 		ListSpaces() (Spaces, error)
 		Balance(req BalanceReq) (Balancer, error)
