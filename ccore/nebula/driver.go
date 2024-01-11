@@ -131,7 +131,7 @@ func (d *driverMeta) open(driver types.Driver) error {
 		return err
 	}
 
-	metaClientDriver := driver.NewMetaClientDriver(transport, pf)
+	metaClientDriver := driver.NewMetaClientDriver(transport, pf, d.connection.o.handshakeKey)
 
 	if err = metaClientDriver.Open(); err != nil {
 		return err

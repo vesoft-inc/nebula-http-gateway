@@ -25,7 +25,7 @@ func (d *defaultDriver) NewGraphClientDriver(transport thrift.Transport, pf thri
 	return newGraphClient(transport, pf)
 }
 
-func (d *defaultDriver) NewMetaClientDriver(transport thrift.Transport, pf thrift.ProtocolFactory) types.MetaClientDriver {
+func (d *defaultDriver) NewMetaClientDriver(transport thrift.Transport, pf thrift.ProtocolFactory, _ string) types.MetaClientDriver {
 	return newMetaClient(transport, pf)
 }
 

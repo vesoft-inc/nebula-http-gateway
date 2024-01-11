@@ -18,7 +18,7 @@ var (
 type (
 	Driver interface {
 		NewGraphClientDriver(thrift.Transport, thrift.ProtocolFactory) GraphClientDriver
-		NewMetaClientDriver(thrift.Transport, thrift.ProtocolFactory) MetaClientDriver
+		NewMetaClientDriver(thrift.Transport, thrift.ProtocolFactory, string) MetaClientDriver
 		NewStorageClientDriver(thrift.Transport, thrift.ProtocolFactory) StorageAdminClientDriver
 	}
 

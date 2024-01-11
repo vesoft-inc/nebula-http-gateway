@@ -25,8 +25,8 @@ func (d *defaultDriver) NewGraphClientDriver(transport thrift.Transport, pf thri
 	return newGraphClient(transport, pf)
 }
 
-func (d *defaultDriver) NewMetaClientDriver(transport thrift.Transport, pf thrift.ProtocolFactory) types.MetaClientDriver {
-	return newMetaClient(transport, pf)
+func (d *defaultDriver) NewMetaClientDriver(transport thrift.Transport, pf thrift.ProtocolFactory, handshakeKey string) types.MetaClientDriver {
+	return newMetaClient(transport, pf, handshakeKey)
 }
 
 func (d *defaultDriver) NewStorageClientDriver(transport thrift.Transport, pf thrift.ProtocolFactory) types.StorageAdminClientDriver {

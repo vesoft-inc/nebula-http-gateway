@@ -27,6 +27,7 @@ type (
 		bufferSize     int
 		frameMaxLength uint32
 		tlsConfig      *tls.Config
+		handshakeKey   string
 	}
 
 	Option func(o *Options)
@@ -50,6 +51,13 @@ func WithAutoVersions(autoVersions ...Version) Option {
 func WithLogger(log Logger) Option {
 	return func(o *Options) {
 		o.log = log
+	}
+}
+
+func WithHandshakeKey(handshakeKey string) Option {
+	return func(o *Options) {
+		o.graph.handshakeKey = handshakeKey
+		o.meta.handshakeKey = handshakeKey
 	}
 }
 

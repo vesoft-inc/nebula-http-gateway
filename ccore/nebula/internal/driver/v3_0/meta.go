@@ -19,13 +19,15 @@ var (
 
 type (
 	defaultMetaClient struct {
-		meta *meta.MetaServiceClient
+		meta         *meta.MetaServiceClient
+		handshakeKey string
 	}
 )
 
-func newMetaClient(transport thrift.Transport, pf thrift.ProtocolFactory) types.MetaClientDriver {
+func newMetaClient(transport thrift.Transport, pf thrift.ProtocolFactory, handshakeKey string) types.MetaClientDriver {
 	return &defaultMetaClient{
-		meta: meta.NewMetaServiceClientFactory(transport, pf),
+		meta:         meta.NewMetaServiceClientFactory(transport, pf),
+		handshakeKey: handshakeKey,
 	}
 }
 
@@ -35,6 +37,11 @@ func (c *defaultMetaClient) Open() error {
 
 func (c *defaultMetaClient) VerifyClientVersion() error {
 	req := meta.NewVerifyClientVersionReq()
+
+	if c.handshakeKey != "" {
+		req.ClientVersion = []byte(c.handshakeKey)
+	}
+
 	resp, err := c.meta.VerifyClientVersion(req)
 	if err != nil {
 		return err
