@@ -212,10 +212,10 @@ func (c *defaultMetaClient) openRetry(driver types.Driver) error {
 		_ = c.meta.close()
 
 		err := c.meta.open(driver)
-		c.meta.connection.UpdateNextIndex() // update nextIndex every time
 		if err == nil {
 			return nil
 		}
+		c.meta.connection.UpdateNextIndex() // update nextIndex when connect failed
 	}
 	return nerrors.ErrNoValidMetaEndpoint
 }
